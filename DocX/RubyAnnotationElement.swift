@@ -30,14 +30,23 @@ extension CTRubyAnnotation{
         rubyElement.addChild(rubyTextElementWrapper)
         let rubyTextElement=AEXMLElement(name: "w:r", value: nil, attributes: ["w:rsidR":"00604B72", "w:rsidRPr":"00604B72"])
         rubyTextElementWrapper.addChild(rubyTextElement)
+        
+        let rubyRunElement=AEXMLElement(name: "w:rPr")
+        rubyTextElement.addChild(rubyRunElement)
         if let font=baseString.attribute(.font, at: 0, effectiveRange: nil) as? NSFont{
             let scaleFactor=CTRubyAnnotationGetSizeFactor(self)
             let size=Int(font.pointSize*scaleFactor*2)
             let sizeElement=AEXMLElement(name: "w:sz", value: nil, attributes: ["w:val":String(size)])
-            let rubySizeElement=AEXMLElement(name: "w:rPr")
-            rubySizeElement.addChildren([sizeElement,FontElement(font: font)].compactMap({$0}))
-            rubyTextElement.addChild(rubySizeElement)
+            rubyRunElement.addChildren([sizeElement,FontElement(font: font)].compactMap({$0}))
+            
         }
+        
+        if let color=baseString.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? NSColor{
+            rubyRunElement.addChild(color.colorElement)
+        }
+       
+        
+        
         let rubyTextLiteral=AEXMLElement(name: "w:t", value: rubyText, attributes: [:])
         rubyTextElement.addChild(rubyTextLiteral)
         
@@ -46,11 +55,18 @@ extension CTRubyAnnotation{
         let baseRun=AEXMLElement(name: "w:r", value: nil, attributes: ["w:rsidR":"00604B72"])
         baseElement.addChild(baseRun)
         
+        let baseRunFormat=AEXMLElement(name: "w:rPr", value: nil, attributes: [:])
+        baseRun.addChild(baseRunFormat)
+        
         if let font=baseString.attribute(.font, at: 0, effectiveRange: nil) as? NSFont, let fontElement=FontElement(font: font){
-            let baseRunFormat=AEXMLElement(name: "w:rPr", value: nil, attributes: [:])
             baseRunFormat.addChild(fontElement)
-            baseRun.addChild(baseRunFormat)
         }
+        if let color=baseString.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? NSColor{
+            baseRunFormat.addChild(color.colorElement)
+        }
+        
+        
+        
         
         let baseLiteral=AEXMLElement(name: "w:t", value: baseString.string, attributes: [:])
         baseRun.addChild(baseLiteral)

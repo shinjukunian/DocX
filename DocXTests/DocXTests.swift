@@ -8,7 +8,6 @@
 
 import XCTest
 @testable import DocX
-@testable import ZipArchive
 
 class DocXTests: XCTestCase {
 
@@ -81,13 +80,8 @@ class DocXTests: XCTestCase {
     func testBlank(){
         let string=""
         let attributedString=NSAttributedString(string: string)
-        do{
-            testWriteDocX(attributedString: attributedString)
-            
-        }
-        catch let error{
-            XCTFail(error.localizedDescription)
-        }
+        
+        testWriteDocX(attributedString: attributedString)
     }
     
     func test山田Plain() {
@@ -117,7 +111,7 @@ class DocXTests: XCTestCase {
         let yamadaRuby=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, furigana as CFString, sizeFactorDictionary)
         
         let rubyKey=NSAttributedString.Key(kCTRubyAnnotationAttributeName as String)
-        let attributedString=NSMutableAttributedString(string: string, attributes: [.font:NSFont.systemFont(ofSize: NSFont.systemFontSize)])
+        let attributedString=NSMutableAttributedString(string: string, attributes: [.font:NSFont.systemFont(ofSize: NSFont.systemFontSize), .foregroundColor:NSColor.red])
         attributedString.addAttributes([rubyKey:yamadaRuby], range: NSRange(location: 0, length: 2))
         let denkiRuby=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, "でんき" as CFString, sizeFactorDictionary)
         attributedString.addAttributes([rubyKey:denkiRuby], range: NSRange(location: 2, length: 2))

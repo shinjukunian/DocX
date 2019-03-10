@@ -39,11 +39,14 @@ class ParagraphElement:AEXMLElement{
             if let font=attributes[.font] as? NSFont{
                 attributesElement.addChildren(font.attributeElements)
             }
+            if let color=attributes[.foregroundColor] as? NSColor{
+                attributesElement.addChild(color.colorElement)
+            }
             
             if let ruby=attributes[NSAttributedString.Key(kCTRubyAnnotationAttributeName as String)]{
                 let rubyAnnotation=ruby as! CTRubyAnnotation
                 if let element=rubyAnnotation.rubyElement(baseString: affectedSubstring){
-                    runElement.addChild(element)
+                    runElement.addChildren([attributesElement,element])
                 }
             }
             else{
@@ -57,3 +60,6 @@ class ParagraphElement:AEXMLElement{
         return elements
     }
 }
+
+
+
