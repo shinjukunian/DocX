@@ -110,5 +110,20 @@ class DocXTests: XCTestCase {
         testWriteDocX(attributedString: attributed)
     }
     
+    func test山田電気FuriganaAttributed() {
+        let string="山田電気"
+        let furigana="やまだ"
+        let sizeFactorDictionary=[kCTRubyAnnotationSizeFactorAttributeName:0.5] as CFDictionary
+        let yamadaRuby=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, furigana as CFString, sizeFactorDictionary)
+        
+        let rubyKey=NSAttributedString.Key(kCTRubyAnnotationAttributeName as String)
+        let attributedString=NSMutableAttributedString(string: string, attributes: [.font:NSFont.systemFont(ofSize: NSFont.systemFontSize)])
+        attributedString.addAttributes([rubyKey:yamadaRuby], range: NSRange(location: 0, length: 2))
+        let denkiRuby=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, "でんき" as CFString, sizeFactorDictionary)
+        attributedString.addAttributes([rubyKey:denkiRuby], range: NSRange(location: 2, length: 2))
+        
+        testWriteDocX(attributedString: attributedString)
+    }
+    
 
 }
