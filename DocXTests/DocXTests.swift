@@ -13,34 +13,40 @@ import XCTest
 class DocXTests: XCTestCase {
 
     
+    var tempURL:URL=URL(fileURLWithPath: "")
+    
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        let url=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
+        do{
+            try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: [:])
+            self.tempURL=url
+        }
+        catch let error{
+            print(error)
+            XCTFail()
+        }
+        
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-    
-    
-    func testUnzip(){
-        guard let dummyDoc=Bundle(for: DocXTests.self).url(forResource: "blank", withExtension: "docx") else{
-            XCTFail()
-            fatalError()
+        do{
+            try FileManager.default.removeItem(at: self.tempURL)
         }
-        let temp=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
-        let success=SSZipArchive.unzipFile(atPath: dummyDoc.path, toDestination: temp.path)
-        XCTAssert(success == true)
-        let outZip=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + "_rezip").appendingPathExtension("docx")
-        let zipSuccess=SSZipArchive.createZipFile(atPath: outZip.path, withContentsOfDirectory: temp.path)
-        XCTAssert(zipSuccess == true)
+        catch let error{
+            print(error)
+            XCTFail()
+        }
     }
+    
+    
+    
     
     func testWriteXML(){
         let string=""
         let attributedString=NSAttributedString(string: string)
         do{
             let xml=try attributedString.docXDocument()
-            let url=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension("xml")
+            let url=self.tempURL.appendingPathComponent("testXML").appendingPathExtension("xml")
             try xml.write(to: url, atomically: true, encoding: .utf8)
            
         }
@@ -52,7 +58,7 @@ class DocXTests: XCTestCase {
     func testWriteDocX(attributedString:NSAttributedString){
         
         do{
-            let url=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))").appendingPathExtension("docx")
+            let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))").appendingPathExtension("docx")
             try attributedString.saveTo(url: url)
             var readAttributes:NSDictionary?=nil
             let docXString=try NSAttributedString(url: url, options: [:], documentAttributes: &readAttributes)
@@ -95,19 +101,14 @@ class DocXTests: XCTestCase {
         testWriteDocX(attributedString: attributed)
     }
     
-    
-    
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func test山田FuriganaAttributed() {
+        let string="山田"
+        let furigana="やまだ"
+        let ruby=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, furigana as CFString, [kCTRubyAnnotationSizeFactorAttributeName:0.5] as CFDictionary)
+        let rubyKey=NSAttributedString.Key(kCTRubyAnnotationAttributeName as String)
+        let attributed=NSAttributedString(string: string, attributes: [.font:NSFont.systemFont(ofSize: NSFont.systemFontSize), rubyKey:ruby])
+        testWriteDocX(attributedString: attributed)
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
+    
 
 }

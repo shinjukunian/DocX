@@ -23,20 +23,37 @@ class ParagraphElement:AEXMLElement{
     
     fileprivate func buildRuns(string:NSAttributedString, range:Range<String.Index>)->[AEXMLElement]{
         
-        let runElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])
+        var elements=[AEXMLElement]()
         let subString=string.attributedSubstring(from: NSRange(range, in: self.string))
         guard subString.length>0 else{return [AEXMLElement]()}
         
-        let attributes=subString.attributes(at: 0, effectiveRange: nil)
-        let attributesElement=AEXMLElement(name: "w:rPr")
-        if let font=attributes[.font] as? NSFont{
-            attributesElement.addChildren(font.attributeElements)
-        }
         
-        let textElement=AEXMLElement(name: "w:t", value: subString.string, attributes: [:])
         
-        runElement.addChildren([attributesElement,textElement])
+        subString.enumerateAttributes(in: NSRange(location: 0, length: subString.length), options: [], using: {attributes, effectiveRange, stop in
+            
+            let runElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])
+            let affectedSubstring=subString.attributedSubstring(from: effectiveRange)
+            let affectedText=affectedSubstring.string
+            
+            let attributesElement=AEXMLElement(name: "w:rPr")
+            if let font=attributes[.font] as? NSFont{
+                attributesElement.addChildren(font.attributeElements)
+            }
+            
+            if let ruby=attributes[NSAttributedString.Key(kCTRubyAnnotationAttributeName as String)]{
+                let rubyAnnotation=ruby as! CTRubyAnnotation
+                if let element=rubyAnnotation.rubyElement(baseString: affectedSubstring){
+                    runElement.addChild(element)
+                }
+            }
+            else{
+                let textElement=AEXMLElement(name: "w:t", value: affectedText, attributes: [:])
+                runElement.addChildren([attributesElement,textElement])
+            }
+            
+            elements.append(runElement)
+        })
         
-        return [runElement]
+        return elements
     }
 }

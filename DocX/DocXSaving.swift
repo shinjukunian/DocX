@@ -9,12 +9,14 @@
 import Foundation
 import ZipArchive
 
-extension DocX{
+extension DocX where Self:NSAttributedString{
     
     func saveTo(url:URL)throws{
-        guard let blankDocument=Bundle(for: DocumentRoot.self).url(forResource: "blank", withExtension: nil) else{ throw DocXSavingErrors.noBlankDocument}
+
         let tempURL=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: false)
-        try FileManager.default.copyItem(at: blankDocument, to: tempURL)
+        let attributes=[NSAttributedString.DocumentAttributeKey.documentType:NSAttributedString.DocumentType.officeOpenXML]
+        let wrapper=try self.fileWrapper(from: NSRange(location: 0, length: self.length), documentAttributes: attributes)
+        try wrapper.write(to: tempURL, options: .atomic, originalContentsURL: nil)
         let docPath=tempURL.appendingPathComponent("word").appendingPathComponent("document").appendingPathExtension("xml")
         let xmlData = try self.docXDocument()
         try xmlData.write(to: docPath, atomically: true, encoding: .utf8)
@@ -23,7 +25,7 @@ extension DocX{
         guard success == true else{throw DocXSavingErrors.compressionFailed}
         try FileManager.default.removeItem(at: tempURL)
         try FileManager.default.copyItem(at: zipURL, to: url)
-        //try FileManager.default.removeItem(at: zipURL)
+        try FileManager.default.removeItem(at: zipURL)
         
     }
 }

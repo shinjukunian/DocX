@@ -21,6 +21,7 @@
 		5A9F70F522350476008E967C /* AEXML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70F02235046B008E967C /* AEXML.framework */; };
 		5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F622350D12008E967C /* ParagraphElement.swift */; };
 		5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F822350DDE008E967C /* AttributeElements.swift */; };
+		5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -142,6 +143,7 @@
 		5A9F70DB2235046B008E967C /* AEXML.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AEXML.xcodeproj; path = AEXML/AEXML.xcodeproj; sourceTree = "<group>"; };
 		5A9F70F622350D12008E967C /* ParagraphElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParagraphElement.swift; sourceTree = "<group>"; };
 		5A9F70F822350DDE008E967C /* AttributeElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeElements.swift; sourceTree = "<group>"; };
+		5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyAnnotationElement.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +197,7 @@
 				5A9F70BD22350300008E967C /* DocXSaving.swift */,
 				5A9F70BB22350300008E967C /* DocXWriting.swift */,
 				5A9F70F622350D12008E967C /* ParagraphElement.swift */,
+				5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */,
 				5A9F70F822350DDE008E967C /* AttributeElements.swift */,
 				5A9F70BE22350300008E967C /* NSAttributedString+DocX.swift */,
 				5A9F70A3223502D6008E967C /* DocX.h */,
@@ -453,6 +456,7 @@
 				5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */,
 				5A9F70C422350300008E967C /* NSAttributedString+DocX.swift in Sources */,
 				5A9F70C322350300008E967C /* DocXSaving.swift in Sources */,
+				5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */,
 				5A9F70C222350300008E967C /* DocX.swift in Sources */,
 				5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */,
 			);

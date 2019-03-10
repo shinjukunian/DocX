@@ -8,14 +8,15 @@
 
 import Foundation
 
-
 enum DocXSavingErrors:Error{
     case noBlankDocument
     case compressionFailed
 }
 
 
+
 protocol DocX{
+    
     static var fileExtension:String { get }
     
     func docXDocument()throws ->String
