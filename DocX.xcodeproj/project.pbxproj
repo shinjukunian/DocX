@@ -10,7 +10,6 @@
 		5A9F70AA223502D6008E967C /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70A0223502D6008E967C /* DocX.framework */; };
 		5A9F70AF223502D6008E967C /* DocXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70AE223502D6008E967C /* DocXTests.swift */; };
 		5A9F70B1223502D6008E967C /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5A9F70C022350300008E967C /* blank in Resources */ = {isa = PBXBuildFile; fileRef = 5A9F70BA22350300008E967C /* blank */; };
 		5A9F70C122350300008E967C /* DocXWriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BB22350300008E967C /* DocXWriting.swift */; };
 		5A9F70C222350300008E967C /* DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BC22350300008E967C /* DocX.swift */; };
 		5A9F70C322350300008E967C /* DocXSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BD22350300008E967C /* DocXSaving.swift */; };
@@ -132,7 +131,6 @@
 		5A9F70A9223502D6008E967C /* DocXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DocXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A9F70AE223502D6008E967C /* DocXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocXTests.swift; sourceTree = "<group>"; };
 		5A9F70B0223502D6008E967C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5A9F70BA22350300008E967C /* blank */ = {isa = PBXFileReference; lastKnownFileType = folder; path = blank; sourceTree = "<group>"; };
 		5A9F70BB22350300008E967C /* DocXWriting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXWriting.swift; sourceTree = "<group>"; };
 		5A9F70BC22350300008E967C /* DocX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocX.swift; sourceTree = "<group>"; };
 		5A9F70BD22350300008E967C /* DocXSaving.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXSaving.swift; sourceTree = "<group>"; };
@@ -191,7 +189,6 @@
 		5A9F70A2223502D6008E967C /* DocX */ = {
 			isa = PBXGroup;
 			children = (
-				5A9F70BA22350300008E967C /* blank */,
 				5A9F70BF22350300008E967C /* DocumentRoot.swift */,
 				5A9F70BC22350300008E967C /* DocX.swift */,
 				5A9F70BD22350300008E967C /* DocXSaving.swift */,
@@ -432,7 +429,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A9F70C022350300008E967C /* blank in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

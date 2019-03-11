@@ -12,20 +12,31 @@ import AEXML
 
 extension NSFont{
     var attributeElements:[AEXMLElement]{
-        return [FontElement(font: self), FontSizeElement(font: self)].compactMap({$0})
+        return [FontElement(font: self), FontSizeElement(font: self),BoldElement(font: self)].compactMap({$0})
     }
 }
 
 
 class FontElement:AEXMLElement{
     fileprivate override init(name: String, value: String? = nil, attributes: [String : String] = [String : String]()) {
-        fatalError()
+        super.init(name: name, value: value, attributes: attributes)
     }
     
     init?(font:NSFont) {
         if let name=font.familyName{
             let attributes=["w:ascii":name, "w:eastAsia":name, "w:hAnsi":name, "w:cs":name]
             super.init(name: "w:rFonts", value: nil, attributes: attributes)
+        }
+        else{
+            return nil
+        }
+    }
+}
+
+class BoldElement:FontElement{
+    override init?(font: NSFont) {
+        if font.fontDescriptor.symbolicTraits.contains(.bold){
+            super.init(name: "w:b")
         }
         else{
             return nil

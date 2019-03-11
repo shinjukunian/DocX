@@ -13,6 +13,7 @@ extension DocX where Self : NSAttributedString{
     
     var pageDef:AEXMLElement{
         let pageDef=AEXMLElement(name: "w:sectPr", value: nil, attributes: ["w:rsidR":"00045791", "w:rsidSect":"004F37A0"])
+        
         if self.usesVerticalForms{
             let vertical=AEXMLElement(name: "w:textDirection", value: nil, attributes: ["w:val":"tbRl"])
             pageDef.addChild(vertical)

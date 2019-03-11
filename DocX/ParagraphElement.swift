@@ -65,6 +65,9 @@ extension Dictionary where Key == NSAttributedString.Key{
         if let color=self[.foregroundColor] as? NSColor{
             attributesElement.addChild(color.colorElement)
         }
+//        if let underline=self[.underlineStyle] as? NSUnderlineStyle{
+//            
+//        }
         return attributesElement
     }
     

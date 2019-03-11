@@ -10,7 +10,7 @@ import Foundation
 import AEXML
 
 extension CTRubyAnnotation{
-    
+    // for documentation, see https://blogs.msdn.microsoft.com/murrays/2014/12/27/ruby-text-objects/
     func rubyElement(baseString:NSAttributedString)->AEXMLElement?{
         guard let rubyText=self.rubyText else{return nil}
         
@@ -55,7 +55,7 @@ extension CTRubyAnnotation{
         
     }
     
-    
+    //this is lacking the w:hpsRaise attribute that determines the distance of the annotation from the base text. CoreText doesnt support this, and word falls back to 0 offset if it isnt defined
     func rubyFormat(font:NSFont?)->AEXMLElement{
         let rubyFormat=AEXMLElement(name: "w:rubyPr")
         let scaleFactor=CTRubyAnnotationGetSizeFactor(self)
@@ -72,11 +72,21 @@ extension CTRubyAnnotation{
 }
 
 extension CTRubyAlignment{
-    #warning("not really implemented")
+    
     var alignmentElement:AEXMLElement{
         switch self {
-        default:
+        case .auto, .distributeSpace:
+            return AEXMLElement(name: "w:rubyAlign", value: nil, attributes: ["w:val":"distributeSpace"])
+        case .center:
             return AEXMLElement(name: "w:rubyAlign", value: nil, attributes: ["w:val":"center"])
+        case .distributeLetter:
+            return AEXMLElement(name: "w:rubyAlign", value: nil, attributes: ["w:val":"distributeLetter"])
+        case .start:
+            return AEXMLElement(name: "w:rubyAlign", value: nil, attributes: ["w:val":"left"])
+        case .end:
+            return AEXMLElement(name: "w:rubyAlign", value: nil, attributes: ["w:val":"right"])
+        default:
+            return AEXMLElement(name: "w:rubyAlign", value: nil, attributes: ["w:val":"distributeSpace"])
         }
     }
 }

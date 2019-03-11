@@ -137,8 +137,30 @@ class DocXTests: XCTestCase {
         attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         attributed.addAttribute(.verticalForms, value: true, range:NSRange(location: 0, length: attributed.length))
         testWriteDocX(attributedString: attributed)
+    }
+    
+    func test山田電気FuriganaAttributed_ParagraphStyle_bold() {
+        let attributed=yamadaDenkiString
+        let style=NSParagraphStyle.default
+        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
+        let boldFont=NSFont.boldSystemFont(ofSize: NSFont.systemFontSize)
+        attributed.addAttribute(.font, value: boldFont, range: NSRange(location: 0, length: 2))
+        testWriteDocX(attributedString: attributed)
         sleep(1)
     }
+    
+    // underline styles crash the cocoa docx wirter
+//    func test山田電気FuriganaAttributed_ParagraphStyle_underline() {
+//        let attributed=yamadaDenkiString
+//        let style=NSParagraphStyle.default
+//        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
+//        let underlineSTyle=NSUnderlineStyle(arrayLiteral: [NSUnderlineStyle.single])
+//        attributed.addAttribute(.underlineStyle, value: underlineSTyle, range:NSRange(location: 0, length: attributed.length))
+//        testWriteDocX(attributedString: attributed)
+//        sleep(1)
+//    }
+    
+    
     
     
 

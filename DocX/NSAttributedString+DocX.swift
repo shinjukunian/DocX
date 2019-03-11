@@ -22,13 +22,17 @@ extension NSAttributedString{
     var usesVerticalForms:Bool{
         var vertical=false
         
-        self.enumerateAttribute(.verticalForms, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attributes, _, stop in
-            vertical=true
-            stop.pointee=true
+        self.enumerateAttribute(.verticalForms, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
+            if let attribute = attribute as? Bool,attribute == true{
+                vertical=true
+                stop.pointee=true
+            }
         })
-        self.enumerateAttribute(.verticalGlyphForm, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attributes, _, stop in
-            vertical=true
-            stop.pointee=true
+        self.enumerateAttribute(.verticalGlyphForm, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
+            if let attribute = attribute as? Bool,attribute == true{
+                vertical=true
+                stop.pointee=true
+            }
         })
         
         return vertical
