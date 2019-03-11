@@ -34,7 +34,7 @@ extension DocX where Self : NSAttributedString{
     }
     
     
-    fileprivate var paragraphs:[AEXMLElement]{
+    var paragraphs:[AEXMLElement]{
         let paragraphs=self.paragraphRanges
         
         return paragraphs.map({range in
@@ -43,8 +43,6 @@ extension DocX where Self : NSAttributedString{
         })
         
     }
-    
-    
     
     func docXDocument()throws ->String{
         var options=AEXMLOptions()
@@ -57,8 +55,7 @@ extension DocX where Self : NSAttributedString{
         root.addChild(body)
         body.addChildren(self.paragraphs)
         body.addChild(pageDef)
-        
-        
         return document.xmlCompact
     }
+   
 }

@@ -13,20 +13,10 @@ enum DocXSavingErrors:Error{
     case compressionFailed
 }
 
-
-
 protocol DocX{
-    
-    static var fileExtension:String { get }
-    
     func docXDocument()throws ->String
     func saveTo(url:URL)throws
 }
 
-extension DocX{
-    static var fileExtension:String{
-        return "docx"
-    }
-}
 
 

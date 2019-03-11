@@ -33,6 +33,7 @@ class FontElement:AEXMLElement{
     }
 }
 
+//italic text isnt really supported by asian fonts, hence we can leave it out
 class BoldElement:FontElement{
     override init?(font: NSFont) {
         if font.fontDescriptor.symbolicTraits.contains(.bold){

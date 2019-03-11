@@ -146,7 +146,7 @@ class DocXTests: XCTestCase {
         let boldFont=NSFont.boldSystemFont(ofSize: NSFont.systemFontSize)
         attributed.addAttribute(.font, value: boldFont, range: NSRange(location: 0, length: 2))
         testWriteDocX(attributedString: attributed)
-        sleep(1)
+        
     }
     
     // underline styles crash the cocoa docx wirter

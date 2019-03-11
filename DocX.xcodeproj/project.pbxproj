@@ -12,7 +12,6 @@
 		5A9F70B1223502D6008E967C /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5A9F70C122350300008E967C /* DocXWriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BB22350300008E967C /* DocXWriting.swift */; };
 		5A9F70C222350300008E967C /* DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BC22350300008E967C /* DocX.swift */; };
-		5A9F70C322350300008E967C /* DocXSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BD22350300008E967C /* DocXSaving.swift */; };
 		5A9F70C422350300008E967C /* NSAttributedString+DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BE22350300008E967C /* NSAttributedString+DocX.swift */; };
 		5A9F70C522350300008E967C /* DocumentRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BF22350300008E967C /* DocumentRoot.swift */; };
 		5A9F70C72235031B008E967C /* blank.docx in Resources */ = {isa = PBXBuildFile; fileRef = 5A9F70C62235031B008E967C /* blank.docx */; };
@@ -21,6 +20,7 @@
 		5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F622350D12008E967C /* ParagraphElement.swift */; };
 		5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F822350DDE008E967C /* AttributeElements.swift */; };
 		5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */; };
+		5A9F711D223607A8008E967C /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -133,7 +133,6 @@
 		5A9F70B0223502D6008E967C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5A9F70BB22350300008E967C /* DocXWriting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXWriting.swift; sourceTree = "<group>"; };
 		5A9F70BC22350300008E967C /* DocX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocX.swift; sourceTree = "<group>"; };
-		5A9F70BD22350300008E967C /* DocXSaving.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXSaving.swift; sourceTree = "<group>"; };
 		5A9F70BE22350300008E967C /* NSAttributedString+DocX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+DocX.swift"; sourceTree = "<group>"; };
 		5A9F70BF22350300008E967C /* DocumentRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentRoot.swift; sourceTree = "<group>"; };
 		5A9F70C62235031B008E967C /* blank.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = blank.docx; sourceTree = "<group>"; };
@@ -142,6 +141,7 @@
 		5A9F70F622350D12008E967C /* ParagraphElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParagraphElement.swift; sourceTree = "<group>"; };
 		5A9F70F822350DDE008E967C /* AttributeElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeElements.swift; sourceTree = "<group>"; };
 		5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyAnnotationElement.swift; sourceTree = "<group>"; };
+		5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,12 +191,12 @@
 			children = (
 				5A9F70BF22350300008E967C /* DocumentRoot.swift */,
 				5A9F70BC22350300008E967C /* DocX.swift */,
-				5A9F70BD22350300008E967C /* DocXSaving.swift */,
+				5A9F70BE22350300008E967C /* NSAttributedString+DocX.swift */,
 				5A9F70BB22350300008E967C /* DocXWriting.swift */,
 				5A9F70F622350D12008E967C /* ParagraphElement.swift */,
 				5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */,
 				5A9F70F822350DDE008E967C /* AttributeElements.swift */,
-				5A9F70BE22350300008E967C /* NSAttributedString+DocX.swift */,
+				5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */,
 				5A9F70A3223502D6008E967C /* DocX.h */,
 				5A9F70A4223502D6008E967C /* Info.plist */,
 			);
@@ -448,10 +448,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A9F70C522350300008E967C /* DocumentRoot.swift in Sources */,
+				5A9F711D223607A8008E967C /* NSAttributedString+Extensions.swift in Sources */,
 				5A9F70C122350300008E967C /* DocXWriting.swift in Sources */,
 				5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */,
 				5A9F70C422350300008E967C /* NSAttributedString+DocX.swift in Sources */,
-				5A9F70C322350300008E967C /* DocXSaving.swift in Sources */,
 				5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */,
 				5A9F70C222350300008E967C /* DocX.swift in Sources */,
 				5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */,
