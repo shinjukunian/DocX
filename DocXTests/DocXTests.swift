@@ -128,6 +128,15 @@ class DocXTests: XCTestCase {
         let style=NSParagraphStyle.default
         attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         testWriteDocX(attributedString: attributed)
+        
+    }
+    
+    func test山田電気FuriganaAttributed_ParagraphStyle_vertical() {
+        let attributed=yamadaDenkiString
+        let style=NSParagraphStyle.default
+        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
+        attributed.addAttribute(.verticalForms, value: true, range:NSRange(location: 0, length: attributed.length))
+        testWriteDocX(attributedString: attributed)
         sleep(1)
     }
     

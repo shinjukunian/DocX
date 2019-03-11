@@ -43,7 +43,7 @@ class ParagraphElement:AEXMLElement{
                 }
             }
             else{
-                let textElement=AEXMLElement(name: "w:t", value: affectedText, attributes: [:])
+                let textElement=affectedText.element
                 runElement.addChildren([attributesElement,textElement])
             }
             

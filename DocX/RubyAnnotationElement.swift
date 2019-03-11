@@ -31,7 +31,7 @@ extension CTRubyAnnotation{
         let rubyRunElement=baseAttributes.rubyAnnotationRunProperties(scaleFactor: scaleFactor)
         rubyTextElement.addChild(rubyRunElement)
        
-        let rubyTextLiteral=AEXMLElement(name: "w:t", value: rubyText, attributes: [:])
+        let rubyTextLiteral=rubyText.element
         rubyTextElement.addChild(rubyTextLiteral)
         
         let baseElement=AEXMLElement(name: "w:rubyBase", value: nil, attributes: [:])
@@ -42,7 +42,7 @@ extension CTRubyAnnotation{
         let baseRunFormat=baseAttributes.runProperties
         baseRun.addChild(baseRunFormat)
         
-        let baseLiteral=AEXMLElement(name: "w:t", value: baseString.string, attributes: [:])
+        let baseLiteral=baseString.string.element
         baseRun.addChild(baseLiteral)
         
         return rubyElement

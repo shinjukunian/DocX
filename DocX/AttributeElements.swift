@@ -52,3 +52,10 @@ extension NSColor{
         return AEXMLElement(name: "w:color", value: nil, attributes: ["w:val":self.hexColorString])
     }
 }
+
+extension String{
+    var element:AEXMLElement{
+        let textElement=AEXMLElement(name: "w:t", value: self, attributes: ["xml:space":"preserve"])
+        return textElement
+    }
+}

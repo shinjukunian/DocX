@@ -18,11 +18,27 @@ extension NSAttributedString{
         })
         return ranges
     }
+    
+    var usesVerticalForms:Bool{
+        var vertical=false
+        
+        self.enumerateAttribute(.verticalForms, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attributes, _, stop in
+            vertical=true
+            stop.pointee=true
+        })
+        self.enumerateAttribute(.verticalGlyphForm, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attributes, _, stop in
+            vertical=true
+            stop.pointee=true
+        })
+        
+        return vertical
+    }
 }
 
 
 extension NSAttributedString.Key{
     static let ruby=NSAttributedString.Key(kCTRubyAnnotationAttributeName as String)
+    static let verticalForms=NSAttributedString.Key(kCTVerticalFormsAttributeName as String)
 }
 
 

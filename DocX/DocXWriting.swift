@@ -13,7 +13,10 @@ extension DocX where Self : NSAttributedString{
     
     var pageDef:AEXMLElement{
         let pageDef=AEXMLElement(name: "w:sectPr", value: nil, attributes: ["w:rsidR":"00045791", "w:rsidSect":"004F37A0"])
-        
+        if self.usesVerticalForms{
+            let vertical=AEXMLElement(name: "w:textDirection", value: nil, attributes: ["w:val":"tbRl"])
+            pageDef.addChild(vertical)
+        }
         
         //these elements are added for by word, but not by the cocoa docx exporter. word then falls pack to the page setup defined by the print settings of the machine. this eems useful
 //        let size=AEXMLElement(name: "w:pgSz", value: nil, attributes: ["w:w":"11901", "w:h":"16817", "w:code":"9"])
