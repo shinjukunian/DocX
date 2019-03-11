@@ -26,7 +26,18 @@ extension NSAttributedString:DocX{
         let success=SSZipArchive.createZipFile(atPath: zipURL.path, withContentsOfDirectory: tempURL.path, keepParentDirectory: false)
         guard success == true else{throw DocXSavingErrors.compressionFailed}
         try FileManager.default.removeItem(at: tempURL)
-        try FileManager.default.copyItem(at: zipURL, to: url)
+        do{
+            try FileManager.default.copyItem(at: zipURL, to: url)
+        }
+        catch let error as NSError{
+            if error.code == 516{ // file exisis, we overwrite relentlessly 
+                try FileManager.default.removeItem(at: url)
+                try FileManager.default.copyItem(at: zipURL, to: url)
+            }
+            else{
+                throw error
+            }
+        }
         try FileManager.default.removeItem(at: zipURL)
         
     }
