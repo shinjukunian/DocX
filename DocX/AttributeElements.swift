@@ -54,18 +54,18 @@ class FontSizeElement:AEXMLElement{
     }
 }
 
+extension String{
+    var element:AEXMLElement{
+        let textElement=AEXMLElement(name: "w:t", value: self, attributes: ["xml:space":"preserve"])
+        return textElement
+    }
+}
+
 extension NSColor{
     var hexColorString:String{
         return String.init(format: "%02X%02X%02X", Int(self.redComponent*255), Int(self.greenComponent*255), Int(self.blueComponent*255))
     }
     var colorElement:AEXMLElement{
         return AEXMLElement(name: "w:color", value: nil, attributes: ["w:val":self.hexColorString])
-    }
-}
-
-extension String{
-    var element:AEXMLElement{
-        let textElement=AEXMLElement(name: "w:t", value: self, attributes: ["xml:space":"preserve"])
-        return textElement
     }
 }
