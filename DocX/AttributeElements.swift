@@ -10,20 +10,30 @@ import Foundation
 
 extension NSFont{
     var attributeElements:[AEXMLElement]{
-        return [FontElement(font: self), FontSizeElement(font: self),BoldElement(font: self)].compactMap({$0})
+        return [FontElement(font: self), FontSizeElement(font: self),BoldElement(font: self),ItalicElement(font: self)].compactMap({$0})
     }
 }
-
 
 class FontElement:AEXMLElement{
     fileprivate override init(name: String, value: String? = nil, attributes: [String : String] = [String : String]()) {
         super.init(name: name, value: value, attributes: attributes)
     }
     
-    init?(font:NSFont) {
-        if let name=font.familyName{
-            let attributes=["w:ascii":name, "w:eastAsia":name, "w:hAnsi":name, "w:cs":name]
-            super.init(name: "w:rFonts", value: nil, attributes: attributes)
+    init(font:NSFont) {
+        #if os(iOS)
+        let name=font.familyName
+        #elseif os(macOS)
+        let name=font.familyName ?? font.fontName
+        #endif
+        let attributes=["w:ascii":name, "w:eastAsia":name, "w:hAnsi":name, "w:cs":name]
+        super.init(name: "w:rFonts", value: nil, attributes: attributes)
+    }
+}
+
+class BoldElement:AEXMLElement{
+    init?(font: NSFont) {
+        if font.fontDescriptor.symbolicTraits.contains(boldTrait){
+            super.init(name: "w:b")
         }
         else{
             return nil
@@ -31,11 +41,10 @@ class FontElement:AEXMLElement{
     }
 }
 
-//italic text isnt really supported by asian fonts, hence we can leave it out
-class BoldElement:FontElement{
-    override init?(font: NSFont) {
-        if font.fontDescriptor.symbolicTraits.contains(.bold){
-            super.init(name: "w:b")
+class ItalicElement:AEXMLElement{
+    init?(font: NSFont) {
+        if font.fontDescriptor.symbolicTraits.contains(italicTrait){
+            super.init(name: "w:i")
         }
         else{
             return nil
@@ -54,13 +63,6 @@ class FontSizeElement:AEXMLElement{
     }
 }
 
-extension String{
-    var element:AEXMLElement{
-        let textElement=AEXMLElement(name: "w:t", value: self, attributes: ["xml:space":"preserve"])
-        return textElement
-    }
-}
-
 extension NSColor{
     var hexColorString:String{
         return String.init(format: "%02X%02X%02X", Int(self.redComponent*255), Int(self.greenComponent*255), Int(self.blueComponent*255))
@@ -69,3 +71,12 @@ extension NSColor{
         return AEXMLElement(name: "w:color", value: nil, attributes: ["w:val":self.hexColorString])
     }
 }
+
+extension String{
+    var element:AEXMLElement{
+        let textElement=AEXMLElement(name: "w:t", value: self, attributes: ["xml:space":"preserve"])
+        return textElement
+    }
+}
+
+

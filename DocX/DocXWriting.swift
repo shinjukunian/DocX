@@ -18,7 +18,8 @@ extension DocX where Self : NSAttributedString{
             pageDef.addChild(vertical)
         }
         
-        //these elements are added for by word, but not by the cocoa docx exporter. word then falls pack to the page setup defined by the print settings of the machine. this eems useful
+        //these elements are added for by word, but not by the cocoa docx exporter. word then falls back to the page setup defined by the print settings of the machine. this seems useful
+        
 //        let size=AEXMLElement(name: "w:pgSz", value: nil, attributes: ["w:w":"11901", "w:h":"16817", "w:code":"9"])
 //        let margins=AEXMLElement(name: "w:pgMar", value: nil, attributes: ["w:top":"0", "w:right":"403", "w:bottom":"0", "w:left":"442", "w:header":"0", "w:footer":"113", "w:gutter":"0"])
 //        let cols=AEXMLElement(name: "w:cols", value: nil, attributes: ["w:space":"708"])

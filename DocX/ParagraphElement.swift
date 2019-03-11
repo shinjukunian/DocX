@@ -81,4 +81,3 @@ extension Dictionary where Key == NSAttributedString.Key{
         return element
     }
 }
-
