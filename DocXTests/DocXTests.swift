@@ -104,7 +104,8 @@ class DocXTests: XCTestCase {
         testWriteDocX(attributedString: attributed)
     }
     
-    func test山田電気FuriganaAttributed() {
+    
+    var yamadaDenkiString:NSMutableAttributedString{
         let string="山田電気"
         let furigana="やまだ"
         let sizeFactorDictionary=[kCTRubyAnnotationSizeFactorAttributeName:0.5] as CFDictionary
@@ -115,9 +116,21 @@ class DocXTests: XCTestCase {
         attributedString.addAttributes([rubyKey:yamadaRuby], range: NSRange(location: 0, length: 2))
         let denkiRuby=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, "でんき" as CFString, sizeFactorDictionary)
         attributedString.addAttributes([rubyKey:denkiRuby], range: NSRange(location: 2, length: 2))
-        
-        testWriteDocX(attributedString: attributedString)
+        return attributedString
     }
+    
+    func test山田電気FuriganaAttributed() {
+        testWriteDocX(attributedString: yamadaDenkiString)
+    }
+    
+    func test山田電気FuriganaAttributed_ParagraphStyle() {
+        let attributed=yamadaDenkiString
+        let style=NSParagraphStyle.default
+        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
+        testWriteDocX(attributedString: attributed)
+        sleep(1)
+    }
+    
     
 
 }

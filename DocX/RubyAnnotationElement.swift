@@ -10,43 +10,27 @@ import Foundation
 import AEXML
 
 extension CTRubyAnnotation{
+    
     func rubyElement(baseString:NSAttributedString)->AEXMLElement?{
         guard let rubyText=self.rubyText else{return nil}
         
+        let scaleFactor=CTRubyAnnotationGetSizeFactor(self)
+        let baseAttributes=baseString.attributes(at: 0, effectiveRange: nil)
+        
         let rubyElement=AEXMLElement(name: "w:ruby", value: nil, attributes: [:])
-        let rubyFormat=AEXMLElement(name: "w:rubyPr")
+        let rubyFormat=self.rubyFormat(font: baseAttributes[.font] as? NSFont)
         rubyElement.addChild(rubyFormat)
-        if let font=baseString.attribute(.font, at: 0, effectiveRange: nil) as? NSFont{
-            let scaleFactor=CTRubyAnnotationGetSizeFactor(self)
-            let size=Int(font.pointSize*scaleFactor*2)
-            let rubySizeElement=AEXMLElement(name: "w:hps", value: nil, attributes: ["w:val":String(size)])
-            let baseSizeElement=AEXMLElement(name: "w:hpsBaseText", value: nil, attributes: ["w:val":String(Int(font.pointSize*2))])
-            let lid=AEXMLElement(name: "w:lid", value: nil, attributes: ["w:val":"ja-JP"])
-            let alignment=CTRubyAnnotationGetAlignment(self).alignmentElement
-            rubyFormat.addChildren([rubySizeElement,baseSizeElement,lid,alignment])
-        }
+        
+        
         
         let rubyTextElementWrapper=AEXMLElement(name: "w:rt", value: nil, attributes: [:])
         rubyElement.addChild(rubyTextElementWrapper)
         let rubyTextElement=AEXMLElement(name: "w:r", value: nil, attributes: ["w:rsidR":"00604B72", "w:rsidRPr":"00604B72"])
         rubyTextElementWrapper.addChild(rubyTextElement)
         
-        let rubyRunElement=AEXMLElement(name: "w:rPr")
+        let rubyRunElement=baseAttributes.rubyAnnotationRunProperties(scaleFactor: scaleFactor)
         rubyTextElement.addChild(rubyRunElement)
-        if let font=baseString.attribute(.font, at: 0, effectiveRange: nil) as? NSFont{
-            let scaleFactor=CTRubyAnnotationGetSizeFactor(self)
-            let size=Int(font.pointSize*scaleFactor*2)
-            let sizeElement=AEXMLElement(name: "w:sz", value: nil, attributes: ["w:val":String(size)])
-            rubyRunElement.addChildren([sizeElement,FontElement(font: font)].compactMap({$0}))
-            
-        }
-        
-        if let color=baseString.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? NSColor{
-            rubyRunElement.addChild(color.colorElement)
-        }
        
-        
-        
         let rubyTextLiteral=AEXMLElement(name: "w:t", value: rubyText, attributes: [:])
         rubyTextElement.addChild(rubyTextLiteral)
         
@@ -54,19 +38,9 @@ extension CTRubyAnnotation{
         rubyElement.addChild(baseElement)
         let baseRun=AEXMLElement(name: "w:r", value: nil, attributes: ["w:rsidR":"00604B72"])
         baseElement.addChild(baseRun)
-        
-        let baseRunFormat=AEXMLElement(name: "w:rPr", value: nil, attributes: [:])
+
+        let baseRunFormat=baseAttributes.runProperties
         baseRun.addChild(baseRunFormat)
-        
-        if let font=baseString.attribute(.font, at: 0, effectiveRange: nil) as? NSFont, let fontElement=FontElement(font: font){
-            baseRunFormat.addChild(fontElement)
-        }
-        if let color=baseString.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? NSColor{
-            baseRunFormat.addChild(color.colorElement)
-        }
-        
-        
-        
         
         let baseLiteral=AEXMLElement(name: "w:t", value: baseString.string, attributes: [:])
         baseRun.addChild(baseLiteral)
@@ -79,6 +53,21 @@ extension CTRubyAnnotation{
         let text=positions.map({CTRubyAnnotationGetTextForPosition(self, $0)}).compactMap({$0}).first
         return text as String?
         
+    }
+    
+    
+    func rubyFormat(font:NSFont?)->AEXMLElement{
+        let rubyFormat=AEXMLElement(name: "w:rubyPr")
+        let scaleFactor=CTRubyAnnotationGetSizeFactor(self)
+        if let font=font{
+            let size=Int(font.pointSize*scaleFactor*2)
+            let rubySizeElement=AEXMLElement(name: "w:hps", value: nil, attributes: ["w:val":String(size)])
+            let baseSizeElement=AEXMLElement(name: "w:hpsBaseText", value: nil, attributes: ["w:val":String(Int(font.pointSize*2))])
+            let lid=AEXMLElement(name: "w:lid", value: nil, attributes: ["w:val":"ja-JP"])
+            let alignment=CTRubyAnnotationGetAlignment(self).alignmentElement
+            rubyFormat.addChildren([rubySizeElement,baseSizeElement,lid,alignment])
+        }
+        return rubyFormat
     }
 }
 

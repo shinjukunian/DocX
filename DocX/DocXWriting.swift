@@ -14,15 +14,17 @@ extension DocX where Self : NSAttributedString{
     var pageDef:AEXMLElement{
         let pageDef=AEXMLElement(name: "w:sectPr", value: nil, attributes: ["w:rsidR":"00045791", "w:rsidSect":"004F37A0"])
         
-        let size=AEXMLElement(name: "w:pgSz", value: nil, attributes: ["w:w":"11901", "w:h":"16817", "w:code":"9"])
-        let margins=AEXMLElement(name: "w:pgMar", value: nil, attributes: ["w:top":"0", "w:right":"403", "w:bottom":"0", "w:left":"442", "w:header":"0", "w:footer":"113", "w:gutter":"0"])
-        let cols=AEXMLElement(name: "w:cols", value: nil, attributes: ["w:space":"708"])
-        let grid=AEXMLElement(name: "w:docGrid", value: nil, attributes: ["w:type":"lines", "w:linePitch":"360"])
         
-        pageDef.addChild(size)
-        pageDef.addChild(margins)
-        pageDef.addChild(cols)
-        pageDef.addChild(grid)
+        //these elements are added for by word, but not by the cocoa docx exporter. word then falls pack to the page setup defined by the print settings of the machine. this eems useful
+//        let size=AEXMLElement(name: "w:pgSz", value: nil, attributes: ["w:w":"11901", "w:h":"16817", "w:code":"9"])
+//        let margins=AEXMLElement(name: "w:pgMar", value: nil, attributes: ["w:top":"0", "w:right":"403", "w:bottom":"0", "w:left":"442", "w:header":"0", "w:footer":"113", "w:gutter":"0"])
+//        let cols=AEXMLElement(name: "w:cols", value: nil, attributes: ["w:space":"708"])
+//        let grid=AEXMLElement(name: "w:docGrid", value: nil, attributes: ["w:type":"lines", "w:linePitch":"360"])
+//        
+//        pageDef.addChild(size)
+//        pageDef.addChild(margins)
+//        pageDef.addChild(cols)
+//        pageDef.addChild(grid)
         
         return pageDef
     }

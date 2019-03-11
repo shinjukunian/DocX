@@ -18,6 +18,7 @@ extension DocX where Self:NSAttributedString{
         let wrapper=try self.fileWrapper(from: NSRange(location: 0, length: self.length), documentAttributes: attributes)
         try wrapper.write(to: tempURL, options: .atomic, originalContentsURL: nil)
         let docPath=tempURL.appendingPathComponent("word").appendingPathComponent("document").appendingPathExtension("xml")
+        try FileManager.default.removeItem(at: docPath)
         let xmlData = try self.docXDocument()
         try xmlData.write(to: docPath, atomically: true, encoding: .utf8)
         let zipURL=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension("zip")

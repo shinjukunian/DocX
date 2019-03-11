@@ -25,9 +25,8 @@ class ParagraphElement:AEXMLElement{
         
         var elements=[AEXMLElement]()
         let subString=string.attributedSubstring(from: NSRange(range, in: self.string))
+        
         guard subString.length>0 else{return [AEXMLElement]()}
-        
-        
         
         subString.enumerateAttributes(in: NSRange(location: 0, length: subString.length), options: [], using: {attributes, effectiveRange, stop in
             
@@ -35,15 +34,9 @@ class ParagraphElement:AEXMLElement{
             let affectedSubstring=subString.attributedSubstring(from: effectiveRange)
             let affectedText=affectedSubstring.string
             
-            let attributesElement=AEXMLElement(name: "w:rPr")
-            if let font=attributes[.font] as? NSFont{
-                attributesElement.addChildren(font.attributeElements)
-            }
-            if let color=attributes[.foregroundColor] as? NSColor{
-                attributesElement.addChild(color.colorElement)
-            }
+            let attributesElement=attributes.runProperties
             
-            if let ruby=attributes[NSAttributedString.Key(kCTRubyAnnotationAttributeName as String)]{
+            if let ruby=attributes[.ruby]{
                 let rubyAnnotation=ruby as! CTRubyAnnotation
                 if let element=rubyAnnotation.rubyElement(baseString: affectedSubstring){
                     runElement.addChildren([attributesElement,element])
@@ -62,4 +55,28 @@ class ParagraphElement:AEXMLElement{
 }
 
 
+
+extension Dictionary where Key == NSAttributedString.Key{
+    var runProperties:AEXMLElement{
+        let attributesElement=AEXMLElement(name: "w:rPr")
+        if let font=self[.font] as? NSFont{
+            attributesElement.addChildren(font.attributeElements)
+        }
+        if let color=self[.foregroundColor] as? NSColor{
+            attributesElement.addChild(color.colorElement)
+        }
+        return attributesElement
+    }
+    
+    func rubyAnnotationRunProperties(scaleFactor:CGFloat)->AEXMLElement{
+        let element=self.runProperties
+        if let font=self[.font] as? NSFont{
+            let size=Int(font.pointSize*scaleFactor*2)
+            let sizeElement=AEXMLElement(name: "w:sz", value: nil, attributes: ["w:val":String(size)])
+            element.addChild(sizeElement)
+            
+        }
+        return element
+    }
+}
 
