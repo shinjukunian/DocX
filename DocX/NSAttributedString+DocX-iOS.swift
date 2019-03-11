@@ -24,7 +24,7 @@ extension NSAttributedString:DocX{
         try FileManager.default.copyItem(at: blankURL, to: docURL)
 
         let docPath=docURL.appendingPathComponent("word").appendingPathComponent("document").appendingPathExtension("xml")
-        try FileManager.default.removeItem(at: docPath)
+        
         let xmlData = try self.docXDocument()
         try xmlData.write(to: docPath, atomically: true, encoding: .utf8)
 

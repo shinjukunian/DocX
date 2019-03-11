@@ -141,7 +141,7 @@ class DocX_iOS_Tests: XCTestCase {
         let attributed=yamadaDenkiString
         let style=NSParagraphStyle.default
         attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
-        let boldFont=UIFont.boldSystemFont(ofSize: UIFont.systemFontSize)
+        let boldFont=UIFont.italicSystemFont(ofSize: UIFont.systemFontSize)
         attributed.addAttribute(.font, value: boldFont, range: NSRange(location: 0, length: 2))
         testWriteDocX(attributedString: attributed)
         
