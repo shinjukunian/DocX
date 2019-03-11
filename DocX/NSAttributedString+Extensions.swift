@@ -35,6 +35,18 @@ extension NSAttributedString{
         
         return vertical
     }
+    
+    var containsRubyAnnotations:Bool{
+        var hasRuby=false
+        
+        self.enumerateAttribute(.ruby, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
+            if attribute != nil{
+                hasRuby=true
+                stop.pointee=true
+            }
+        })
+        return hasRuby
+    }
 }
 
 

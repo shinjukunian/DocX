@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import AEXML
 
 extension CTRubyAnnotation{
     // for documentation, see https://blogs.msdn.microsoft.com/murrays/2014/12/27/ruby-text-objects/
