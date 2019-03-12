@@ -17,13 +17,15 @@ extension Dictionary where Key == NSAttributedString.Key{
         if let color=self[.foregroundColor] as? NSColor{
             attributesElement.addChild(color.colorElement)
         }
-        if let underline=self[.underlineStyle] as? NSUnderlineStyle, let color=self[.foregroundColor] as? NSColor{
+        if let style=self[.underlineStyle] as? Int, let color=self[.foregroundColor] as? NSColor{
+            let underline=NSUnderlineStyle(rawValue: style)
             attributesElement.addChild(underline.underlineElement(for: color))
         }
         if let backgroundColor=self[.backgroundColor] as? NSColor{
             attributesElement.addChild(backgroundColor.backgroundColorElement)
         }
-        if let strikeThrough=self[.strikethroughStyle] as? NSUnderlineStyle{
+        if let style=self[.strikethroughStyle] as? Int{
+            let strikeThrough=NSUnderlineStyle(rawValue: style)
             attributesElement.addChild(strikeThrough.strikeThroughElement)
         }
 

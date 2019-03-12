@@ -155,7 +155,7 @@ class DocXTests: XCTestCase {
 //        let style=NSParagraphStyle.default
 //        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         let underlineStyle:NSUnderlineStyle = .single
-        attributed.addAttribute(.underlineStyle, value: underlineStyle, range:NSRange(location: 0, length: attributed.length))
+        attributed.addAttribute(.underlineStyle, value: underlineStyle.rawValue, range:NSRange(location: 0, length: attributed.length))
         testWriteDocX(attributedString: attributed)
     }
 
