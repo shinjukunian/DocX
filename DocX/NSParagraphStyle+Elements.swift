@@ -64,8 +64,13 @@ extension NSParagraphStyle{
                 break
             }
         }
-        if self.tailIndent > 0{
-           attributes["w:end"]=String(Int(self.tailIndent * 20))
+        /* this isnt really compatible with how cocoa is handling tail indents, in the NSTextView, the indent is from the leading margin
+         word, howver, want the distance from the trailing margin, we don't know that, unless we know the page size
+         the tailindent could alo be negative, which means it is from the trailing margin. wehn using the standar ruler views to manipulate the indents, however, the value appears to be positive throughout
+         the Cocoa TextKit exporter ignores these attributes entirely
+         */
+        if self.tailIndent < 0{
+            attributes["w:end"]=String(Int(abs(self.tailIndent) * 20))
         }
 
         guard attributes.isEmpty == false else {return nil}

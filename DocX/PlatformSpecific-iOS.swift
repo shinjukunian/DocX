@@ -32,3 +32,36 @@ extension UIColor{
         return green
     }
 }
+
+
+public class DocXActivityItemProvider:UIActivityItemProvider{
+    
+    let attributedString:NSAttributedString
+    let tempURL:URL
+    
+    public init(attributedString:NSAttributedString) {
+        self.attributedString=attributedString
+        let tempURL=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension("docx")
+        self.tempURL=tempURL
+        super.init(placeholderItem: tempURL)
+    }
+    
+    public override func activityViewController(_ activityViewController: UIActivityViewController, dataTypeIdentifierForActivityType activityType: UIActivity.ActivityType?) -> String {
+        return docXUTIType
+    }
+    
+    public override func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
+        return self.tempURL
+    }
+    
+    public override var item: Any{
+        do{
+            try self.attributedString.writeDocX(to: self.tempURL)
+            return self.tempURL
+        }
+        catch let error{
+            print(error)
+            return error
+        }
+    }
+}

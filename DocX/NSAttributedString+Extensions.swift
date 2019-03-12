@@ -50,7 +50,7 @@ extension NSAttributedString{
 }
 
 
-extension NSAttributedString.Key{
+public extension NSAttributedString.Key{
     static let ruby=NSAttributedString.Key(kCTRubyAnnotationAttributeName as String)
     static let verticalForms=NSAttributedString.Key(kCTVerticalFormsAttributeName as String)
 }

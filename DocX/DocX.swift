@@ -24,5 +24,7 @@ protocol DocX{
     func prepareLinks(linkXML:AEXMLDocument)->[LinkRelationship]
 }
 
+public let docXUTIType="org.openxmlformats.wordprocessingml.document"
+
 
 

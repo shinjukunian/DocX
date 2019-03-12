@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.68" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.68"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="SavePanelAccessoryViewController" customModule="DocX_Examples_macOS" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="197" height="37"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <popUpButton verticalHuggingPriority="750" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="746" translatesAutoresizingMaskIntoConstraints="NO" id="9li-F6-Oif">
+                    <rect key="frame" x="61" y="5" width="77" height="25"/>
+                    <popUpButtonCell key="cell" type="push" title="DocX" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="nqm-Dc-HZs" id="NnN-KY-iVf">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="menu"/>
+                        <menu key="menu" id="Tli-0c-gDH">
+                            <items>
+                                <menuItem title="DocX" id="nqm-Dc-HZs"/>
+                                <menuItem title="Cocoa" state="on" id="CYT-2H-YOJ"/>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                    <connections>
+                        <binding destination="-2" name="selectedIndex" keyPath="self.selectedItem" id="Xxf-5J-9qz"/>
+                    </connections>
+                </popUpButton>
+            </subviews>
+            <constraints>
+                <constraint firstItem="9li-F6-Oif" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="4zA-cH-oSl"/>
+                <constraint firstAttribute="bottom" secondItem="9li-F6-Oif" secondAttribute="bottom" constant="8" id="bQg-Xo-VD4"/>
+                <constraint firstItem="9li-F6-Oif" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="8" id="wOz-Ps-GHA"/>
+            </constraints>
+            <point key="canvasLocation" x="-2.5" y="141"/>
+        </customView>
+        <userDefaultsController representsSharedInstance="YES" id="ofk-dK-kh9"/>
+    </objects>
+</document>
