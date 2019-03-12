@@ -27,6 +27,10 @@ class ParagraphElement:AEXMLElement{
         
         guard subString.length>0 else{return [AEXMLElement]()}
         
+        if let paragraphStyle=subString.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle{
+            elements.append(paragraphStyle.paragraphElements)
+        }
+        
         subString.enumerateAttributes(in: NSRange(location: 0, length: subString.length), options: [], using: {attributes, effectiveRange, stop in
             
             let runElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])

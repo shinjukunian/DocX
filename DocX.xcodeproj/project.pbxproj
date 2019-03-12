@@ -45,6 +45,8 @@
 		5AE833F3223688A400E68343 /* blank in Resources */ = {isa = PBXBuildFile; fileRef = 5AE833F2223688A400E68343 /* blank */; };
 		5AE8340422368ADC00E68343 /* DocX_iOS_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833FA22368A4500E68343 /* DocX_iOS_Tests.swift */; };
 		5AE834052236904E00E68343 /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE833E32236831500E68343 /* DocX.framework */; };
+		5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */; };
+		5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +138,7 @@
 		5AE833F822368A4500E68343 /* DocX-iOS-Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "DocX-iOS-Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE833FA22368A4500E68343 /* DocX_iOS_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocX_iOS_Tests.swift; sourceTree = "<group>"; };
 		5AE833FC22368A4500E68343 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSParagraphStyle+Elements.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +216,7 @@
 				5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */,
 				5AE833EE2236852500E68343 /* PlatformSpecific-iOS.swift */,
 				5AE833F02236861F00E68343 /* PlatformSpecific-macOS.swift */,
+				5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */,
 				5A9F70A3223502D6008E967C /* DocX.h */,
 				5A9F70A4223502D6008E967C /* Info.plist */,
 			);
@@ -495,6 +499,7 @@
 				5A9F713D22361FCE008E967C /* Element.swift in Sources */,
 				5A9F713E22361FCE008E967C /* Document.swift in Sources */,
 				5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */,
+				5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5A9F70C222350300008E967C /* DocX.swift in Sources */,
 				5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */,
 			);
@@ -524,6 +529,7 @@
 				5AE833D92236831500E68343 /* Document.swift in Sources */,
 				5AE833DA2236831500E68343 /* RubyAnnotationElement.swift in Sources */,
 				5AE833EC223683F000E68343 /* NSAttributedString+DocX-iOS.swift in Sources */,
+				5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5AE833DB2236831500E68343 /* DocX.swift in Sources */,
 				5AE833DC2236831500E68343 /* ParagraphElement.swift in Sources */,
 			);
