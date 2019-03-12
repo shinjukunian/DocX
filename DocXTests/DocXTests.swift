@@ -195,7 +195,28 @@ class DocXTests: XCTestCase {
     }
     
     
-    
+    func test_ParagraphStyle() {
+        let string =
+        """
+This property contains the space (measured in points) added at the end of the paragraph to separate it from the following paragraph. This value is always nonnegative. The space between paragraphs is determined by adding the previous paragraph’s paragraphSpacing and the current paragraph’s paragraphSpacingBefore.
+Specifies the border displayed above a set of paragraphs which have the same set of paragraph border settings. Note that if the adjoining paragraph has identical border settings and a between border is specified, a single between border will be used instead of the bottom border for the first and a top border for the second.
+"""
+        
+        let style=NSMutableParagraphStyle()
+        style.setParagraphStyle(NSParagraphStyle.default)
+        style.alignment = .left
+        style.paragraphSpacing=20
+        style.lineHeightMultiple=1.5
+        //style.firstLineHeadIndent=20
+        style.headIndent=20
+        style.tailIndent=20
+        
+        let font=NSFont(name: "Helvetica", size: 13) ?? NSFont.systemFont(ofSize: 13)
+        
+        let attributed=NSMutableAttributedString(string: string, attributes: [.paragraphStyle:style, .font:font])
+        testWriteDocX(attributedString: attributed)
+       
+    }
     
 
 }

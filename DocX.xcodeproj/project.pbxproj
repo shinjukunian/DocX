@@ -38,8 +38,7 @@
 		5AE833DB2236831500E68343 /* DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BC22350300008E967C /* DocX.swift */; };
 		5AE833DC2236831500E68343 /* ParagraphElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F622350D12008E967C /* ParagraphElement.swift */; };
 		5AE833EA2236838000E68343 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70D02235044A008E967C /* ZipArchive.framework */; };
-		5AE833EC223683F000E68343 /* NSAttributedString+DocX-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833EB223683F000E68343 /* NSAttributedString+DocX-iOS.swift */; };
-		5AE833ED2236842D00E68343 /* NSAttributedString+DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BE22350300008E967C /* NSAttributedString+DocX.swift */; };
+		5AE833EC223683F000E68343 /* NSAttributedString+DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */; };
 		5AE833EF2236852500E68343 /* PlatformSpecific-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833EE2236852500E68343 /* PlatformSpecific-iOS.swift */; };
 		5AE833F12236861F00E68343 /* PlatformSpecific-macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833F02236861F00E68343 /* PlatformSpecific-macOS.swift */; };
 		5AE833F3223688A400E68343 /* blank in Resources */ = {isa = PBXBuildFile; fileRef = 5AE833F2223688A400E68343 /* blank */; };
@@ -51,6 +50,8 @@
 		5AE834132237573F00E68343 /* FontElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE834112237573F00E68343 /* FontElements.swift */; };
 		5AE8341B22375D9E00E68343 /* NSUnderlineStyle+Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */; };
 		5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */; };
+		5AE83428223781F600E68343 /* NSAttributedString+DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */; };
+		5AE834292237822B00E68343 /* blank in Resources */ = {isa = PBXBuildFile; fileRef = 5AE833F2223688A400E68343 /* blank */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,7 +122,7 @@
 		5A9F70B0223502D6008E967C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5A9F70BB22350300008E967C /* DocXWriting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXWriting.swift; sourceTree = "<group>"; };
 		5A9F70BC22350300008E967C /* DocX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocX.swift; sourceTree = "<group>"; };
-		5A9F70BE22350300008E967C /* NSAttributedString+DocX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+DocX.swift"; sourceTree = "<group>"; };
+		5A9F70BE22350300008E967C /* NSAttributedString+DocX-macOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+DocX-macOS.swift"; sourceTree = "<group>"; };
 		5A9F70BF22350300008E967C /* DocumentRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentRoot.swift; sourceTree = "<group>"; };
 		5A9F70C62235031B008E967C /* blank.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = blank.docx; sourceTree = "<group>"; };
 		5A9F70C82235044A008E967C /* ZipArchive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipArchive.xcodeproj; path = ZipArchive/ZipArchive.xcodeproj; sourceTree = "<group>"; };
@@ -135,7 +136,7 @@
 		5A9F713922361FCE008E967C /* Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Document.swift; path = AEXML/Sources/AEXML/Document.swift; sourceTree = SOURCE_ROOT; };
 		5A9F713A22361FCE008E967C /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = AEXML/Sources/AEXML/Error.swift; sourceTree = SOURCE_ROOT; };
 		5AE833E32236831500E68343 /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AE833EB223683F000E68343 /* NSAttributedString+DocX-iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+DocX-iOS.swift"; sourceTree = "<group>"; };
+		5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+DocX.swift"; sourceTree = "<group>"; };
 		5AE833EE2236852500E68343 /* PlatformSpecific-iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlatformSpecific-iOS.swift"; sourceTree = "<group>"; };
 		5AE833F02236861F00E68343 /* PlatformSpecific-macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlatformSpecific-macOS.swift"; sourceTree = "<group>"; };
 		5AE833F2223688A400E68343 /* blank */ = {isa = PBXFileReference; lastKnownFileType = folder; path = blank; sourceTree = "<group>"; };
@@ -213,8 +214,8 @@
 				5AE833F2223688A400E68343 /* blank */,
 				5A9F70BF22350300008E967C /* DocumentRoot.swift */,
 				5A9F70BC22350300008E967C /* DocX.swift */,
-				5A9F70BE22350300008E967C /* NSAttributedString+DocX.swift */,
-				5AE833EB223683F000E68343 /* NSAttributedString+DocX-iOS.swift */,
+				5A9F70BE22350300008E967C /* NSAttributedString+DocX-macOS.swift */,
+				5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */,
 				5A9F70BB22350300008E967C /* DocXWriting.swift */,
 				5A9F70F622350D12008E967C /* ParagraphElement.swift */,
 				5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */,
@@ -462,6 +463,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AE834292237822B00E68343 /* blank in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,7 +501,6 @@
 				5AE834122237573F00E68343 /* FontElements.swift in Sources */,
 				5A9F711D223607A8008E967C /* NSAttributedString+Extensions.swift in Sources */,
 				5AE833F12236861F00E68343 /* PlatformSpecific-macOS.swift in Sources */,
-				5AE833ED2236842D00E68343 /* NSAttributedString+DocX.swift in Sources */,
 				5A9F713C22361FCE008E967C /* Parser.swift in Sources */,
 				5A9F713F22361FCE008E967C /* Error.swift in Sources */,
 				5A9F70C122350300008E967C /* DocXWriting.swift in Sources */,
@@ -512,6 +513,7 @@
 				5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5A9F70C222350300008E967C /* DocX.swift in Sources */,
 				5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */,
+				5AE83428223781F600E68343 /* NSAttributedString+DocX.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,7 +541,7 @@
 				5AE833D72236831500E68343 /* Element.swift in Sources */,
 				5AE833D92236831500E68343 /* Document.swift in Sources */,
 				5AE833DA2236831500E68343 /* RubyAnnotationElement.swift in Sources */,
-				5AE833EC223683F000E68343 /* NSAttributedString+DocX-iOS.swift in Sources */,
+				5AE833EC223683F000E68343 /* NSAttributedString+DocX.swift in Sources */,
 				5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
 				5AE833DB2236831500E68343 /* DocX.swift in Sources */,
