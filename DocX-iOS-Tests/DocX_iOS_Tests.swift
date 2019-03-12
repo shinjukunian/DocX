@@ -56,7 +56,7 @@ class DocX_iOS_Tests: XCTestCase {
         
         do{
             let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))").appendingPathExtension("docx")
-            try attributedString.saveTo(url: url)
+            try attributedString.writeDocX(to: url)
 //            var readAttributes:NSDictionary?=nil
 //            let docXString=try NSAttributedString(url: url, options: [:], documentAttributes: &readAttributes)
 //            guard let attributes=readAttributes as? [String:Any] else{
@@ -146,5 +146,52 @@ class DocX_iOS_Tests: XCTestCase {
         testWriteDocX(attributedString: attributed)
         
     }
+    
+    func testLink(){
+        let string="楽天 https://www.rakuten-sec.co.jp/"
+        let attributed=NSMutableAttributedString(string: string)
+        attributed.addAttributes([.font:NSFont.systemFont(ofSize: NSFont.systemFontSize)], range: NSRange(location: 0, length: attributed.length))
+        let furigana="らくてん"
+        let furiganaAnnotation=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, furigana as CFString, [kCTRubyAnnotationSizeFactorAttributeName:0.5] as CFDictionary)
+        attributed.addAttribute(.ruby, value: furiganaAnnotation, range: NSRange(location: 0, length: 2))
+        attributed.addAttribute(.link, value: URL(string: "https://www.rakuten-sec.co.jp/")!, range: NSRange(location: 3, length: 30))
+        testWriteDocX(attributedString: attributed)
+        
+        
+    }
 
+    func test山田電気FuriganaAttributed_ParagraphStyle_underline() {
+        let attributed=yamadaDenkiString
+        //        let style=NSParagraphStyle.default
+        //        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
+        let underlineStyle:NSUnderlineStyle = [.single,.byWord]
+        attributed.addAttribute(.underlineStyle, value: underlineStyle, range:NSRange(location: 0, length: attributed.length))
+        testWriteDocX(attributedString: attributed)
+        
+        
+    }
+    
+    func test山田電気FuriganaAttributed_ParagraphStyle_strikethrough() {
+        let attributed=yamadaDenkiString
+        //        let style=NSParagraphStyle.default
+        //        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
+        let underlineStyle:NSUnderlineStyle = [.single]
+        attributed.addAttribute(.strikethroughStyle, value: underlineStyle, range:NSRange(location: 0, length: attributed.length))
+        testWriteDocX(attributedString: attributed)
+        
+        sleep(1)
+    }
+    
+    func test山田電気FuriganaAttributed_ParagraphStyle_backgroundColor() {
+        let attributed=yamadaDenkiString
+        let style=NSMutableParagraphStyle()
+        style.setParagraphStyle(NSParagraphStyle.default)
+        style.alignment = .center
+        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
+        
+        attributed.addAttribute(.backgroundColor, value: NSColor.blue, range:NSRange(location: 0, length: attributed.length))
+        testWriteDocX(attributedString: attributed)
+        
+        sleep(1)
+    }
 }

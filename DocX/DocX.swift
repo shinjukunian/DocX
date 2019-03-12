@@ -13,9 +13,15 @@ enum DocXSavingErrors:Error{
     case compressionFailed
 }
 
+struct LinkRelationship:Equatable{
+    let relationshipID:String
+    let linkURL:URL
+}
+
 protocol DocX{
-    func docXDocument()throws ->String
-    func saveTo(url:URL)throws
+    func docXDocument(linkRelations:[LinkRelationship])throws ->String
+    func writeDocX(to url:URL)throws
+    func prepareLinks(linkXML:AEXMLDocument)->[LinkRelationship]
 }
 
 

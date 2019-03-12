@@ -8,60 +8,53 @@
 
 import Foundation
 
-extension NSFont{
-    var attributeElements:[AEXMLElement]{
-        return [FontElement(font: self), FontSizeElement(font: self),BoldElement(font: self),ItalicElement(font: self)].compactMap({$0})
-    }
-}
+extension Dictionary where Key == NSAttributedString.Key{
+    var runProperties:AEXMLElement{
+        let attributesElement=AEXMLElement(name: "w:rPr")
+        if let font=self[.font] as? NSFont{
+            attributesElement.addChildren(font.attributeElements)
+        }
+        if let color=self[.foregroundColor] as? NSColor{
+            attributesElement.addChild(color.colorElement)
+        }
+        if let underline=self[.underlineStyle] as? NSUnderlineStyle, let color=self[.foregroundColor] as? NSColor{
+            attributesElement.addChild(underline.underlineElement(for: color))
+        }
+        if let backgroundColor=self[.backgroundColor] as? NSColor{
+            attributesElement.addChild(backgroundColor.backgroundColorElement)
+        }
+        if let strikeThrough=self[.strikethroughStyle] as? NSUnderlineStyle{
+            attributesElement.addChild(strikeThrough.strikeThroughElement)
+        }
 
-class FontElement:AEXMLElement{
-    fileprivate override init(name: String, value: String? = nil, attributes: [String : String] = [String : String]()) {
-        super.init(name: name, value: value, attributes: attributes)
+        
+        return attributesElement
     }
     
-    init(font:NSFont) {
-        #if os(iOS)
-        let name=font.familyName
-        #elseif os(macOS)
-        let name=font.familyName ?? font.fontName
-        #endif
-        let attributes=["w:ascii":name, "w:eastAsia":name, "w:hAnsi":name, "w:cs":name]
-        super.init(name: "w:rFonts", value: nil, attributes: attributes)
+    func rubyAnnotationRunProperties(scaleFactor:CGFloat)->AEXMLElement{
+        let element=self.runProperties
+        if let font=self[.font] as? NSFont{
+            let size=Int(font.pointSize*scaleFactor*2)
+            let sizeElement=AEXMLElement(name: "w:sz", value: nil, attributes: ["w:val":String(size)])
+            element.addChild(sizeElement)
+            
+        }
+        return element
+    }
+    
+    
+    func linkProperties(relationship:LinkRelationship, affectedString:NSAttributedString)->AEXMLElement{
+        let hyperlinkElement=AEXMLElement(name: "w:hyperlink ", value: nil, attributes: ["r:id":relationship.relationshipID])
+        let runElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])
+        hyperlinkElement.addChild(runElement)
+        runElement.addChild(self.runProperties)
+        runElement.addChild(affectedString.string.element)
+        return hyperlinkElement
     }
 }
 
-class BoldElement:AEXMLElement{
-    init?(font: NSFont) {
-        if font.fontDescriptor.symbolicTraits.contains(boldTrait){
-            super.init(name: "w:b")
-        }
-        else{
-            return nil
-        }
-    }
-}
 
-class ItalicElement:AEXMLElement{
-    init?(font: NSFont) {
-        if font.fontDescriptor.symbolicTraits.contains(italicTrait){
-            super.init(name: "w:i")
-        }
-        else{
-            return nil
-        }
-    }
-}
 
-class FontSizeElement:AEXMLElement{
-    fileprivate override init(name: String, value: String? = nil, attributes: [String : String] = [String : String]()) {
-        fatalError()
-    }
-    init(font:NSFont) {
-        let attributes=["w:val":String(Int(font.pointSize*2))]
-        super.init(name: "w:sz", value: nil, attributes: attributes)
-        
-    }
-}
 
 extension NSColor{
     var hexColorString:String{
@@ -69,6 +62,10 @@ extension NSColor{
     }
     var colorElement:AEXMLElement{
         return AEXMLElement(name: "w:color", value: nil, attributes: ["w:val":self.hexColorString])
+    }
+    //http://officeopenxml.com/WPtextShading.php
+    var backgroundColorElement:AEXMLElement{
+        return AEXMLElement(name: "w:shd", value: nil, attributes: ["w:fill":self.hexColorString, "w:val":"clear", "w:color":self.hexColorString])
     }
 }
 

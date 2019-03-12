@@ -47,6 +47,10 @@
 		5AE834052236904E00E68343 /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE833E32236831500E68343 /* DocX.framework */; };
 		5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */; };
 		5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */; };
+		5AE834122237573F00E68343 /* FontElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE834112237573F00E68343 /* FontElements.swift */; };
+		5AE834132237573F00E68343 /* FontElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE834112237573F00E68343 /* FontElements.swift */; };
+		5AE8341B22375D9E00E68343 /* NSUnderlineStyle+Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */; };
+		5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,6 +143,8 @@
 		5AE833FA22368A4500E68343 /* DocX_iOS_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocX_iOS_Tests.swift; sourceTree = "<group>"; };
 		5AE833FC22368A4500E68343 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSParagraphStyle+Elements.swift"; sourceTree = "<group>"; };
+		5AE834112237573F00E68343 /* FontElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontElements.swift; sourceTree = "<group>"; };
+		5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSUnderlineStyle+Elements.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,9 +219,11 @@
 				5A9F70F622350D12008E967C /* ParagraphElement.swift */,
 				5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */,
 				5A9F70F822350DDE008E967C /* AttributeElements.swift */,
-				5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */,
+				5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */,
+				5AE834112237573F00E68343 /* FontElements.swift */,
 				5AE833EE2236852500E68343 /* PlatformSpecific-iOS.swift */,
 				5AE833F02236861F00E68343 /* PlatformSpecific-macOS.swift */,
+				5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */,
 				5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */,
 				5A9F70A3223502D6008E967C /* DocX.h */,
 				5A9F70A4223502D6008E967C /* Info.plist */,
@@ -488,6 +496,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A9F70C522350300008E967C /* DocumentRoot.swift in Sources */,
+				5AE834122237573F00E68343 /* FontElements.swift in Sources */,
 				5A9F711D223607A8008E967C /* NSAttributedString+Extensions.swift in Sources */,
 				5AE833F12236861F00E68343 /* PlatformSpecific-macOS.swift in Sources */,
 				5AE833ED2236842D00E68343 /* NSAttributedString+DocX.swift in Sources */,
@@ -495,6 +504,7 @@
 				5A9F713F22361FCE008E967C /* Error.swift in Sources */,
 				5A9F70C122350300008E967C /* DocXWriting.swift in Sources */,
 				5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */,
+				5AE8341B22375D9E00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
 				5A9F713B22361FCE008E967C /* Options.swift in Sources */,
 				5A9F713D22361FCE008E967C /* Element.swift in Sources */,
 				5A9F713E22361FCE008E967C /* Document.swift in Sources */,
@@ -518,6 +528,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AE833D02236831500E68343 /* DocumentRoot.swift in Sources */,
+				5AE834132237573F00E68343 /* FontElements.swift in Sources */,
 				5AE833EF2236852500E68343 /* PlatformSpecific-iOS.swift in Sources */,
 				5AE833D12236831500E68343 /* NSAttributedString+Extensions.swift in Sources */,
 				5AE833D22236831500E68343 /* Parser.swift in Sources */,
@@ -530,6 +541,7 @@
 				5AE833DA2236831500E68343 /* RubyAnnotationElement.swift in Sources */,
 				5AE833EC223683F000E68343 /* NSAttributedString+DocX-iOS.swift in Sources */,
 				5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
+				5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
 				5AE833DB2236831500E68343 /* DocX.swift in Sources */,
 				5AE833DC2236831500E68343 /* ParagraphElement.swift in Sources */,
 			);

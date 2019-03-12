@@ -34,17 +34,14 @@ extension DocX where Self : NSAttributedString{
     }
     
     
-    var paragraphs:[AEXMLElement]{
-        let paragraphs=self.paragraphRanges
-        
-        return paragraphs.map({range in
-            let paragraph=ParagraphElement(string: self, range: range)
+    func buildParagraphs(paragraphRanges:[Range<String.Index>], linkRelations:[LinkRelationship])->[AEXMLElement]{
+        return paragraphRanges.map({range in
+            let paragraph=ParagraphElement(string: self, range: range, linkRelations: linkRelations)
             return paragraph
         })
-        
     }
     
-    func docXDocument()throws ->String{
+    func docXDocument(linkRelations:[LinkRelationship] = [LinkRelationship]())throws ->String{
         var options=AEXMLOptions()
         options.documentHeader.standalone="yes"
         options.escape=false
@@ -53,9 +50,45 @@ extension DocX where Self : NSAttributedString{
         let document=AEXMLDocument(root: root, options: options)
         let body=AEXMLElement(name: "w:body")
         root.addChild(body)
-        body.addChildren(self.paragraphs)
+        body.addChildren(self.buildParagraphs(paragraphRanges: self.paragraphRanges, linkRelations: linkRelations))
         body.addChild(pageDef)
         return document.xmlCompact
     }
    
+    func prepareLinks(linkXML: AEXMLDocument) -> [LinkRelationship] {
+        var linkURLS=[URL]()
+        self.enumerateAttribute(.link, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
+            if let link=attribute as? URL{
+                linkURLS.append(link)
+            }
+        })
+        guard linkURLS.count > 0 else {return [LinkRelationship]()}
+        let relationships=linkXML["Relationships"]
+        let presentIds=relationships.children.map({$0.attributes}).compactMap({$0["Id"]}).sorted(by: {s1, s2 in
+            return s1.compare(s2, options: [.numeric], range: nil, locale: nil) == .orderedAscending
+        })
+        guard let lastID=presentIds.last?.trimmingCharacters(in: .letters), let lastIdIDX=Int(lastID) else{return [LinkRelationship]()}
+        
+        let linkRelationShips=linkURLS.enumerated().map({(arg)->LinkRelationship in
+            let (idx, url) = arg
+            let newID="rId\(lastIdIDX+1+idx)"
+            let relationShip=LinkRelationship(relationshipID: newID, linkURL: url)
+            return relationShip
+        })
+        
+        relationships.addChildren(linkRelationShips.map({$0.element}))
+        
+        return linkRelationShips
+    }
+    
+}
+
+extension LinkRelationship{
+    
+    //<Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink" Target="https://www.rakuten-sec.co.jp/ITS/V_ACT_Login.html" TargetMode="External"/>
+    var element:AEXMLElement{
+        return AEXMLElement(name: "Relationship", value: nil, attributes: ["Id":self.relationshipID, "Type":"http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink", "Target":self.linkURL.absoluteString, "TargetMode":"External"])
+    }
+    
+    
 }
