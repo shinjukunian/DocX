@@ -31,15 +31,26 @@ extension UIColor{
         self.getRed(nil, green: &green, blue: nil, alpha: nil)
         return green
     }
+    
+    var hexColorString:String{
+        if let cgRGB=self.cgColor.converted(to: CGColorSpaceCreateDeviceRGB(), intent: .defaultIntent, options: nil){
+            let rgbColor=UIColor(cgColor: cgRGB)
+            return String.init(format: "%02X%02X%02X", Int(rgbColor.redComponent*255), Int(rgbColor.greenComponent*255), Int(rgbColor.blueComponent*255))
+        }
+        else{
+            return "FFFFFF"
+        }
+        
+    }
 }
 
 
-public class DocXActivityItemProvider:UIActivityItemProvider{
+@objc public class DocXActivityItemProvider:UIActivityItemProvider{
     
     let attributedString:NSAttributedString
     let tempURL:URL
     
-    public init(attributedString:NSAttributedString) {
+    @objc public init(attributedString:NSAttributedString) {
         self.attributedString=attributedString
         let tempURL=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension("docx")
         self.tempURL=tempURL

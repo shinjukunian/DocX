@@ -13,30 +13,54 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="197" height="37"/>
+            <rect key="frame" x="0.0" y="0.0" width="198" height="37"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <popUpButton verticalHuggingPriority="750" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="746" translatesAutoresizingMaskIntoConstraints="NO" id="9li-F6-Oif">
-                    <rect key="frame" x="61" y="5" width="77" height="25"/>
-                    <popUpButtonCell key="cell" type="push" title="DocX" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="nqm-Dc-HZs" id="NnN-KY-iVf">
-                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
-                        <font key="font" metaFont="menu"/>
-                        <menu key="menu" id="Tli-0c-gDH">
-                            <items>
-                                <menuItem title="DocX" id="nqm-Dc-HZs"/>
-                                <menuItem title="Cocoa" state="on" id="CYT-2H-YOJ"/>
-                            </items>
-                        </menu>
-                    </popUpButtonCell>
-                    <connections>
-                        <binding destination="-2" name="selectedIndex" keyPath="self.selectedItem" id="Xxf-5J-9qz"/>
-                    </connections>
-                </popUpButton>
+                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KaW-Le-Tdb">
+                    <rect key="frame" x="21" y="8" width="156" height="21"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jCq-fV-gZX">
+                            <rect key="frame" x="-2" y="2" width="78" height="17"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="DocX Writer" id="3oM-eJ-ct6">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <popUpButton verticalHuggingPriority="750" horizontalCompressionResistancePriority="752" verticalCompressionResistancePriority="752" translatesAutoresizingMaskIntoConstraints="NO" id="9li-F6-Oif">
+                            <rect key="frame" x="82" y="-3" width="77" height="25"/>
+                            <popUpButtonCell key="cell" type="push" title="DocX" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="nqm-Dc-HZs" id="NnN-KY-iVf">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="Tli-0c-gDH">
+                                    <items>
+                                        <menuItem title="DocX" state="on" id="nqm-Dc-HZs"/>
+                                        <menuItem title="Cocoa" id="CYT-2H-YOJ"/>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                            <connections>
+                                <binding destination="-2" name="selectedIndex" keyPath="self.selectedItem" id="Xxf-5J-9qz"/>
+                            </connections>
+                        </popUpButton>
+                    </subviews>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
             </subviews>
             <constraints>
-                <constraint firstItem="9li-F6-Oif" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="4zA-cH-oSl"/>
-                <constraint firstAttribute="bottom" secondItem="9li-F6-Oif" secondAttribute="bottom" constant="8" id="bQg-Xo-VD4"/>
-                <constraint firstItem="9li-F6-Oif" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="8" id="wOz-Ps-GHA"/>
+                <constraint firstItem="KaW-Le-Tdb" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="3TM-WL-Lle"/>
+                <constraint firstItem="KaW-Le-Tdb" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="6Gp-bQ-EfG"/>
+                <constraint firstItem="KaW-Le-Tdb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="10" id="Brh-wb-vpr"/>
+                <constraint firstAttribute="bottom" secondItem="KaW-Le-Tdb" secondAttribute="bottom" constant="8" id="RgB-Am-7zm"/>
+                <constraint firstItem="KaW-Le-Tdb" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="8" id="oPJ-So-Q5U"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="KaW-Le-Tdb" secondAttribute="trailing" constant="10" id="w27-rC-dbe"/>
             </constraints>
             <point key="canvasLocation" x="-2.5" y="141"/>
         </customView>

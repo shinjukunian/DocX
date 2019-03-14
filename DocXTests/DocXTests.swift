@@ -218,5 +218,18 @@ Specifies the border displayed above a set of paragraphs which have the same set
        
     }
     
+    func testOutline(){
+        let outlineString=NSAttributedString(string: "An outlined String\r", attributes: [.font:NSFont.systemFont(ofSize: 13),.strokeWidth:3,.strokeColor:NSColor.green, .foregroundColor:NSColor.blue, .backgroundColor:NSColor.orange])
+        let outlinedAndStroked=NSMutableAttributedString(attributedString: outlineString)
+        outlinedAndStroked.addAttribute(.strokeWidth, value: -3, range: NSRange(location: 0, length: outlinedAndStroked.length))
+        let noBG=NSMutableAttributedString(attributedString: outlineString)
+        noBG.removeAttribute(.backgroundColor, range: NSMakeRange(0, noBG.length))
+        noBG.append(outlinedAndStroked)
+        noBG.append(outlineString)
+        
+        testWriteDocX(attributedString: noBG)
+    
+    }
+    
 
 }

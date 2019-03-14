@@ -14,9 +14,22 @@ extension Dictionary where Key == NSAttributedString.Key{
         if let font=self[.font] as? NSFont{
             attributesElement.addChildren(font.attributeElements)
         }
+        
         if let color=self[.foregroundColor] as? NSColor{
-            attributesElement.addChild(color.colorElement)
+            if let strokeWidth=self[.strokeWidth] as? CGFloat,
+                strokeWidth != 0,
+                let font=self[.font] as? NSFont{
+                attributesElement.addChildren(self.outlineProperties(strokeWidth: strokeWidth, font:font))
+            }
+            else{
+                attributesElement.addChild(color.colorElement)
+            }
+        }else if let strokeWidth=self[.strokeWidth] as? CGFloat, //stroke only without any fill color
+            strokeWidth != 0,
+            let font=self[.font] as? NSFont{
+            attributesElement.addChildren(self.outlineProperties(strokeWidth: strokeWidth, font:font))
         }
+        
         if let style=self[.underlineStyle] as? Int, let color=self[.foregroundColor] as? NSColor{
             let underline=NSUnderlineStyle(rawValue: style)
             attributesElement.addChild(underline.underlineElement(for: color))
@@ -28,7 +41,7 @@ extension Dictionary where Key == NSAttributedString.Key{
             let strikeThrough=NSUnderlineStyle(rawValue: style)
             attributesElement.addChild(strikeThrough.strikeThroughElement)
         }
-
+        
         
         return attributesElement
     }
@@ -53,15 +66,46 @@ extension Dictionary where Key == NSAttributedString.Key{
         runElement.addChild(affectedString.string.element)
         return hyperlinkElement
     }
+    
+    
+    //https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2010/ee863804%28v%3Doffice.14%29
+    func outlineProperties(strokeWidth:CGFloat, font:NSFont)->[AEXMLElement]{ //we need the font becasue the stroke width is in percent of the font size
+        let strokeColor:NSColor
+        let fillColor:NSColor
+        
+        if strokeWidth > 0{ //stroke only
+            strokeColor=(self[.strokeColor] as? NSColor ?? self[.foregroundColor] as? NSColor) ?? NSColor.black
+            fillColor=self[.backgroundColor] as? NSColor ?? NSColor.white // we only have rgb, so wa cant define transparent fills
+        }
+        else{//stroke and fill
+            strokeColor=(self[.strokeColor] as? NSColor ?? self[.foregroundColor] as? NSColor) ?? NSColor.black
+            fillColor=self[.foregroundColor] as? NSColor ?? NSColor.black
+        }
+        
+        let fontSize=font.pointSize
+        let strokeWidth=abs(fontSize * strokeWidth / 100)
+        let wordStrokeWidth=Int(strokeWidth * 12700) //magic number that word uses for 1 pnt, it is apparently in EMUs
+        let colorElement=fillColor.colorElement
+        let outlineElement=AEXMLElement(name: "w14:textOutline", value: nil, attributes: ["w14:cap":"flat", "w14:cmpd":"sng", "w14:algn":"ctr","w14:w":String(wordStrokeWidth)])
+        let fillElement=AEXMLElement(name: "w14:solidFill")
+        outlineElement.addChild(fillElement)
+        let strokeColorElement=AEXMLElement(name: "w14:srgbClr", value: nil, attributes: ["w14:val":strokeColor.hexColorString])
+        fillElement.addChild(strokeColorElement)
+        let dashElement=AEXMLElement(name: "w14:prstDash", value: nil, attributes: ["w14:val":"solid"])
+        outlineElement.addChild(dashElement)
+        let lineCapElement=AEXMLElement(name: "w14:round")
+        outlineElement.addChild(lineCapElement)
+        
+        return [colorElement,outlineElement]
+        
+    }
+    
 }
 
 
 
 
 extension NSColor{
-    var hexColorString:String{
-        return String.init(format: "%02X%02X%02X", Int(self.redComponent*255), Int(self.greenComponent*255), Int(self.blueComponent*255))
-    }
     var colorElement:AEXMLElement{
         return AEXMLElement(name: "w:color", value: nil, attributes: ["w:val":self.hexColorString])
     }
