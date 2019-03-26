@@ -11,6 +11,7 @@ import Foundation
 extension Dictionary where Key == NSAttributedString.Key{
     var runProperties:AEXMLElement{
         let attributesElement=AEXMLElement(name: "w:rPr")
+        
         if let font=self[.font] as? NSFont{
             attributesElement.addChildren(font.attributeElements)
         }
@@ -34,9 +35,11 @@ extension Dictionary where Key == NSAttributedString.Key{
             let underline=NSUnderlineStyle(rawValue: style)
             attributesElement.addChild(underline.underlineElement(for: color))
         }
+        
         if let backgroundColor=self[.backgroundColor] as? NSColor{
             attributesElement.addChild(backgroundColor.backgroundColorElement)
         }
+        
         if let style=self[.strikethroughStyle] as? Int{
             let strikeThrough=NSUnderlineStyle(rawValue: style)
             attributesElement.addChild(strikeThrough.strikeThroughElement)
@@ -68,7 +71,12 @@ extension Dictionary where Key == NSAttributedString.Key{
     }
     
     
-    //https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2010/ee863804%28v%3Doffice.14%29
+    
+    /*
+     we could use w:outline as well, but that doesnt allow us to specify the width and the fill color (this is what cocoa does)
+     http://officeopenxml.com/WPtextFormatting.php
+     https://docs.microsoft.com/en-us/previous-versions/office/developer/office-2010/ee863804%28v%3Doffice.14%29
+     */
     func outlineProperties(strokeWidth:CGFloat, font:NSFont)->[AEXMLElement]{ //we need the font becasue the stroke width is in percent of the font size
         let strokeColor:NSColor
         let fillColor:NSColor

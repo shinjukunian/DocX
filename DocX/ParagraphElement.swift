@@ -49,7 +49,7 @@ class ParagraphElement:AEXMLElement{
                 let attributesElement=attributes.runProperties
                 
                 if let ruby=attributes[.ruby]{
-                    let rubyAnnotation=ruby as! CTRubyAnnotation
+                    let rubyAnnotation=ruby as! CTRubyAnnotation // no idea how to avoid force casting here
                     if let element=rubyAnnotation.rubyElement(baseString: affectedSubstring){
                         runElement.addChildren([attributesElement,element])
                     }

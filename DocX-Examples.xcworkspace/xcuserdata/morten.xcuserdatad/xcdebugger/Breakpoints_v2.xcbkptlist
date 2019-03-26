@@ -296,11 +296,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DocX/AttributeElements.swift"
-            timestampString = "574223050.882844"
+            timestampString = "574233770.2073359"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
             landmarkName = "runProperties"
             landmarkType = "24">
          </BreakpointContent>
@@ -312,11 +312,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DocX/AttributeElements.swift"
-            timestampString = "574223050.882907"
+            timestampString = "574233770.207863"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "outlineProperties(strokeWidth:font:)"
             landmarkType = "7">
          </BreakpointContent>
