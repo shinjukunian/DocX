@@ -5,7 +5,7 @@ A small framework that converts NSAttributedString to .docx Word files on iOS an
 
 On iOS, `NSAttributedString.DocumentType` supports only HTML and Rich Text, while on macOS .doc and .docx are available options. Even then .docx exporter on macOS supports only a subset of the attributes os NSAttributedString. 
 
-This library is used in SimpleFurigana for macOS <https://itunes.apple.com/de/app/simple-furigana/id997615882?l=en&mt=12> and iOS <https://itunes.apple.com/de/app/simple-furigana/id924351286?l=en&mt=8>, hence the focus on furigana annotation export.
+This library is used in [SimpleFurigana for macOS](https://itunes.apple.com/de/app/simple-furigana/id997615882?l=en&mt=12) and [SimpleFurigana for iOS](https://itunes.apple.com/de/app/simple-furigana/id924351286?l=en&mt=8), hence the focus on furigana annotation export.
 
 ## Installation
 
@@ -24,9 +24,11 @@ See the attached sample projects (for iOS and macOS) for usage and limitations.
 On iOS, DocX also includes a `UIActivityItemProvider` subclass (`DocXActivityItemProvider`) for exporting .docx files through `UIActivityViewController`.
 
 ![Screenshot macOS](/images/screenshot_mac.jpg)
+
 A sample output on macOS opened in Word365.
 
 ![Screenshot iOS](/images/screenshot_iOS.png)
+
 A sample output on iOS opened in Word for iOS. Furigana annotations are preserved. The link is clickable.
 Please note that Quicklook (on both platforms) only supports a limited number of attributes.
 
