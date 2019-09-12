@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AEXML
 
 enum DocXSavingErrors:Error{
     case noBlankDocument

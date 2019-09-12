@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AEXML
 
 extension DocX where Self : NSAttributedString{
     

@@ -8,6 +8,7 @@
 
 import Foundation
 import ZipArchive
+import AEXML
 
 extension NSAttributedString:DocX{
     

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AEXML
 
 extension Dictionary where Key == NSAttributedString.Key{
     var runProperties:AEXMLElement{

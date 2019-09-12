@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,21 +19,13 @@
 		5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F822350DDE008E967C /* AttributeElements.swift */; };
 		5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */; };
 		5A9F711D223607A8008E967C /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */; };
-		5A9F713B22361FCE008E967C /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F713622361FCE008E967C /* Options.swift */; };
-		5A9F713C22361FCE008E967C /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F713722361FCE008E967C /* Parser.swift */; };
-		5A9F713D22361FCE008E967C /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F713822361FCE008E967C /* Element.swift */; };
-		5A9F713E22361FCE008E967C /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F713922361FCE008E967C /* Document.swift */; };
-		5A9F713F22361FCE008E967C /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F713A22361FCE008E967C /* Error.swift */; };
+		5AB10ECE232A451200F0B19F /* AEXML in Frameworks */ = {isa = PBXBuildFile; productRef = 5AB10ECD232A451200F0B19F /* AEXML */; };
+		5AB10ED0232A45BF00F0B19F /* AEXML in Frameworks */ = {isa = PBXBuildFile; productRef = 5AB10ECF232A45BF00F0B19F /* AEXML */; };
 		5AE833CE2236831500E68343 /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5AE833D02236831500E68343 /* DocumentRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BF22350300008E967C /* DocumentRoot.swift */; };
 		5AE833D12236831500E68343 /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */; };
-		5AE833D22236831500E68343 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F713722361FCE008E967C /* Parser.swift */; };
-		5AE833D32236831500E68343 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F713A22361FCE008E967C /* Error.swift */; };
 		5AE833D42236831500E68343 /* DocXWriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BB22350300008E967C /* DocXWriting.swift */; };
 		5AE833D52236831500E68343 /* AttributeElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F822350DDE008E967C /* AttributeElements.swift */; };
-		5AE833D62236831500E68343 /* Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F713622361FCE008E967C /* Options.swift */; };
-		5AE833D72236831500E68343 /* Element.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F713822361FCE008E967C /* Element.swift */; };
-		5AE833D92236831500E68343 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F713922361FCE008E967C /* Document.swift */; };
 		5AE833DA2236831500E68343 /* RubyAnnotationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */; };
 		5AE833DB2236831500E68343 /* DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BC22350300008E967C /* DocX.swift */; };
 		5AE833DC2236831500E68343 /* ParagraphElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F622350D12008E967C /* ParagraphElement.swift */; };
@@ -130,11 +122,6 @@
 		5A9F70F822350DDE008E967C /* AttributeElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeElements.swift; sourceTree = "<group>"; };
 		5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyAnnotationElement.swift; sourceTree = "<group>"; };
 		5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
-		5A9F713622361FCE008E967C /* Options.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Options.swift; path = AEXML/Sources/AEXML/Options.swift; sourceTree = SOURCE_ROOT; };
-		5A9F713722361FCE008E967C /* Parser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Parser.swift; path = AEXML/Sources/AEXML/Parser.swift; sourceTree = SOURCE_ROOT; };
-		5A9F713822361FCE008E967C /* Element.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Element.swift; path = AEXML/Sources/AEXML/Element.swift; sourceTree = SOURCE_ROOT; };
-		5A9F713922361FCE008E967C /* Document.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Document.swift; path = AEXML/Sources/AEXML/Document.swift; sourceTree = SOURCE_ROOT; };
-		5A9F713A22361FCE008E967C /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = AEXML/Sources/AEXML/Error.swift; sourceTree = SOURCE_ROOT; };
 		5AE833E32236831500E68343 /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+DocX.swift"; sourceTree = "<group>"; };
 		5AE833EE2236852500E68343 /* PlatformSpecific-iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlatformSpecific-iOS.swift"; sourceTree = "<group>"; };
@@ -153,6 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AB10ECE232A451200F0B19F /* AEXML in Frameworks */,
 				5A9F70DA2235045A008E967C /* ZipArchive.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -169,6 +157,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AB10ED0232A45BF00F0B19F /* AEXML in Frameworks */,
 				5AE833EA2236838000E68343 /* ZipArchive.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -189,7 +178,6 @@
 			children = (
 				5A9F70C82235044A008E967C /* ZipArchive.xcodeproj */,
 				5A9F70A2223502D6008E967C /* DocX */,
-				5A9F713522361FA4008E967C /* AEXML */,
 				5A9F70AD223502D6008E967C /* DocXTests */,
 				5AE833F922368A4500E68343 /* DocX-iOS-Tests */,
 				5A9F70A1223502D6008E967C /* Products */,
@@ -260,19 +248,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		5A9F713522361FA4008E967C /* AEXML */ = {
-			isa = PBXGroup;
-			children = (
-				5A9F713922361FCE008E967C /* Document.swift */,
-				5A9F713822361FCE008E967C /* Element.swift */,
-				5A9F713A22361FCE008E967C /* Error.swift */,
-				5A9F713622361FCE008E967C /* Options.swift */,
-				5A9F713722361FCE008E967C /* Parser.swift */,
-			);
-			name = AEXML;
-			path = DocX;
-			sourceTree = "<group>";
-		};
 		5AE833F922368A4500E68343 /* DocX-iOS-Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -319,6 +294,9 @@
 				5A9F70D822350453008E967C /* PBXTargetDependency */,
 			);
 			name = DocX;
+			packageProductDependencies = (
+				5AB10ECD232A451200F0B19F /* AEXML */,
+			);
 			productName = DocX;
 			productReference = 5A9F70A0223502D6008E967C /* DocX.framework */;
 			productType = "com.apple.product-type.framework";
@@ -356,6 +334,9 @@
 				5AE833E92236837900E68343 /* PBXTargetDependency */,
 			);
 			name = "DocX-iOS";
+			packageProductDependencies = (
+				5AB10ECF232A45BF00F0B19F /* AEXML */,
+			);
 			productName = DocX;
 			productReference = 5AE833E32236831500E68343 /* DocX.framework */;
 			productType = "com.apple.product-type.framework";
@@ -409,6 +390,9 @@
 				Base,
 			);
 			mainGroup = 5A9F7096223502D6008E967C;
+			packageReferences = (
+				5AB10ECC232A451200F0B19F /* XCRemoteSwiftPackageReference "AEXML" */,
+			);
 			productRefGroup = 5A9F70A1223502D6008E967C /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -501,14 +485,9 @@
 				5AE834122237573F00E68343 /* FontElements.swift in Sources */,
 				5A9F711D223607A8008E967C /* NSAttributedString+Extensions.swift in Sources */,
 				5AE833F12236861F00E68343 /* PlatformSpecific-macOS.swift in Sources */,
-				5A9F713C22361FCE008E967C /* Parser.swift in Sources */,
-				5A9F713F22361FCE008E967C /* Error.swift in Sources */,
 				5A9F70C122350300008E967C /* DocXWriting.swift in Sources */,
 				5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */,
 				5AE8341B22375D9E00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
-				5A9F713B22361FCE008E967C /* Options.swift in Sources */,
-				5A9F713D22361FCE008E967C /* Element.swift in Sources */,
-				5A9F713E22361FCE008E967C /* Document.swift in Sources */,
 				5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */,
 				5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5A9F70C222350300008E967C /* DocX.swift in Sources */,
@@ -533,13 +512,8 @@
 				5AE834132237573F00E68343 /* FontElements.swift in Sources */,
 				5AE833EF2236852500E68343 /* PlatformSpecific-iOS.swift in Sources */,
 				5AE833D12236831500E68343 /* NSAttributedString+Extensions.swift in Sources */,
-				5AE833D22236831500E68343 /* Parser.swift in Sources */,
-				5AE833D32236831500E68343 /* Error.swift in Sources */,
 				5AE833D42236831500E68343 /* DocXWriting.swift in Sources */,
 				5AE833D52236831500E68343 /* AttributeElements.swift in Sources */,
-				5AE833D62236831500E68343 /* Options.swift in Sources */,
-				5AE833D72236831500E68343 /* Element.swift in Sources */,
-				5AE833D92236831500E68343 /* Document.swift in Sources */,
 				5AE833DA2236831500E68343 /* RubyAnnotationElement.swift in Sources */,
 				5AE833EC223683F000E68343 /* NSAttributedString+DocX.swift in Sources */,
 				5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
@@ -810,7 +784,7 @@
 		5AE833E12236831500E68343 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -836,6 +810,7 @@
 				PRODUCT_NAME = DocX;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -845,7 +820,7 @@
 		5AE833E22236831500E68343 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
@@ -871,6 +846,7 @@
 				PRODUCT_NAME = DocX;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -972,6 +948,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5AB10ECC232A451200F0B19F /* XCRemoteSwiftPackageReference "AEXML" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/shinjukunian/AEXML.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5AB10ECD232A451200F0B19F /* AEXML */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5AB10ECC232A451200F0B19F /* XCRemoteSwiftPackageReference "AEXML" */;
+			productName = AEXML;
+		};
+		5AB10ECF232A45BF00F0B19F /* AEXML */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5AB10ECC232A451200F0B19F /* XCRemoteSwiftPackageReference "AEXML" */;
+			productName = AEXML;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5A9F7097223502D6008E967C /* Project object */;
 }

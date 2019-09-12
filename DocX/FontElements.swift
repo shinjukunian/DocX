@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AEXML
 
 extension NSFont{
     var attributeElements:[AEXMLElement]{

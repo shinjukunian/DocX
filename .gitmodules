@@ -1,6 +1,3 @@
 [submodule "ZipArchive"]
 	path = ZipArchive
 	url = git@github.com:ZipArchive/ZipArchive.git
-[submodule "AEXML"]
-	path = AEXML
-	url = git@github.com:shinjukunian/AEXML.git
