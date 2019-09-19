@@ -77,6 +77,7 @@ class TextViewViewController: DocXPreviewingViewController {
         guard let url=Bundle.main.url(forResource: "TestDocument", withExtension: "rtf"),
             let string=try? NSAttributedString(url: url, options: [:], documentAttributes: nil) else{return}
         self.textView.attributedText=string
+        self.textView.backgroundColor = .white
     }
     
     override var attributedText: NSAttributedString?{

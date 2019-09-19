@@ -16,13 +16,24 @@ class ComplexTextViewController: DocXPreviewingViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let string=NSMutableAttributedString(string: "楽天証券\nhttps://www.rakuten-sec.co.jp/")
+        let color : UIColor={
+            if #available(iOS 13.0, *) {
+                return .label
+            } else {
+                return .black
+            }
+        }()
+        
         string.addAttribute(.font, value: UIFont.preferredFont(forTextStyle: .body), range: NSRange(location: 0, length: string.length))
         string.addAttribute(.link, value: URL(string: "https://www.rakuten-sec.co.jp/") ?? "", range: NSRange(location: 5, length: 30))
+        string.addAttribute(.foregroundColor, value: color, range: NSRange(location: 0, length: string.length))
+        
         let rakutenRuby=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, "らくてん" as CFString, [kCTRubyAnnotationSizeFactorAttributeName:0.5, kCTForegroundColorAttributeName:UIColor.red] as CFDictionary)
         string.addAttribute(.ruby, value: rakutenRuby, range: NSRange(location: 0, length: 2))
         let shoken=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, "しょうけん" as CFString, [kCTRubyAnnotationSizeFactorAttributeName:0.5, kCTForegroundColorAttributeName:UIColor.red] as CFDictionary)
         string.addAttribute(.ruby, value: shoken, range: NSRange(location: 2, length: 2))
-        string.addAttribute(.foregroundColor, value: UIColor.red, range: NSRange(location: 0, length: 4))
+        string.addAttribute(.foregroundColor, value: UIColor.systemRed, range: NSRange(location: 0, length: 4))
+        
         let paragraphStyle=NSMutableParagraphStyle()
         paragraphStyle.setParagraphStyle(NSParagraphStyle.default)
         paragraphStyle.alignment = .center
