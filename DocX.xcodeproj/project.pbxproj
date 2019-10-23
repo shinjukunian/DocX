@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5A9754D623606CD90002B521 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9754D523606CD90002B521 /* ZipArchive */; };
+		5A9754E523606ED80002B521 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9754E423606ED80002B521 /* ZipArchive */; };
 		5A9F70AA223502D6008E967C /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70A0223502D6008E967C /* DocX.framework */; };
 		5A9F70AF223502D6008E967C /* DocXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70AE223502D6008E967C /* DocXTests.swift */; };
 		5A9F70B1223502D6008E967C /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -114,6 +115,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AB10ED0232A45BF00F0B19F /* AEXML in Frameworks */,
+				5A9754E523606ED80002B521 /* ZipArchive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +280,7 @@
 			name = "DocX-iOS";
 			packageProductDependencies = (
 				5AB10ECF232A45BF00F0B19F /* AEXML */,
+				5A9754E423606ED80002B521 /* ZipArchive */,
 			);
 			productName = DocX;
 			productReference = 5AE833E32236831500E68343 /* DocX.framework */;
@@ -866,6 +869,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		5A9754D523606CD90002B521 /* ZipArchive */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A9754D423606CD90002B521 /* XCRemoteSwiftPackageReference "ZipArchive" */;
+			productName = ZipArchive;
+		};
+		5A9754E423606ED80002B521 /* ZipArchive */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5A9754D423606CD90002B521 /* XCRemoteSwiftPackageReference "ZipArchive" */;
 			productName = ZipArchive;
