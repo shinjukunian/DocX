@@ -348,7 +348,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "512FE4FC-D9F6-4B31-A788-004C37B2CCF9"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DocXTests/DocXTests.swift"
@@ -357,6 +357,22 @@
             startingLineNumber = "181"
             endingLineNumber = "181"
             landmarkName = "test&#x5c71;&#x7530;&#x96fb;&#x6c17;FuriganaAttributed_ParagraphStyle_strikethrough()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5E8B5F77-DD37-4F71-A0E1-4EF1EC51A257"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DocXTests/DocXTests.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
+            landmarkName = "testLink()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

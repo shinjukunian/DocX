@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A9754D623606CD90002B521 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9754D523606CD90002B521 /* ZipArchive */; };
 		5A9F70AA223502D6008E967C /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70A0223502D6008E967C /* DocX.framework */; };
 		5A9F70AF223502D6008E967C /* DocXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70AE223502D6008E967C /* DocXTests.swift */; };
 		5A9F70B1223502D6008E967C /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -14,7 +15,6 @@
 		5A9F70C222350300008E967C /* DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BC22350300008E967C /* DocX.swift */; };
 		5A9F70C522350300008E967C /* DocumentRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BF22350300008E967C /* DocumentRoot.swift */; };
 		5A9F70C72235031B008E967C /* blank.docx in Resources */ = {isa = PBXBuildFile; fileRef = 5A9F70C62235031B008E967C /* blank.docx */; };
-		5A9F70DA2235045A008E967C /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70D22235044A008E967C /* ZipArchive.framework */; };
 		5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F622350D12008E967C /* ParagraphElement.swift */; };
 		5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F822350DDE008E967C /* AttributeElements.swift */; };
 		5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */; };
@@ -29,7 +29,6 @@
 		5AE833DA2236831500E68343 /* RubyAnnotationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */; };
 		5AE833DB2236831500E68343 /* DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BC22350300008E967C /* DocX.swift */; };
 		5AE833DC2236831500E68343 /* ParagraphElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F622350D12008E967C /* ParagraphElement.swift */; };
-		5AE833EA2236838000E68343 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70D02235044A008E967C /* ZipArchive.framework */; };
 		5AE833EC223683F000E68343 /* NSAttributedString+DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */; };
 		5AE833EF2236852500E68343 /* PlatformSpecific-iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833EE2236852500E68343 /* PlatformSpecific-iOS.swift */; };
 		5AE833F12236861F00E68343 /* PlatformSpecific-macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833F02236861F00E68343 /* PlatformSpecific-macOS.swift */; };
@@ -54,48 +53,6 @@
 			remoteGlobalIDString = 5A9F709F223502D6008E967C;
 			remoteInfo = DocX;
 		};
-		5A9F70CF2235044A008E967C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5A9F70C82235044A008E967C /* ZipArchive.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = B423AE1A1C0DF76A0004A2F1;
-			remoteInfo = "ZipArchive-iOS";
-		};
-		5A9F70D12235044A008E967C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5A9F70C82235044A008E967C /* ZipArchive.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = AFF75A241C37279600F450AC;
-			remoteInfo = "ZipArchive-Mac";
-		};
-		5A9F70D32235044A008E967C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5A9F70C82235044A008E967C /* ZipArchive.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 37952C261F63B50D00DD6677;
-			remoteInfo = "ZipArchive-tvos";
-		};
-		5A9F70D52235044A008E967C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5A9F70C82235044A008E967C /* ZipArchive.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 37952C5E1F63BB7100DD6677;
-			remoteInfo = "ZipArchive-watchos";
-		};
-		5A9F70D722350453008E967C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5A9F70C82235044A008E967C /* ZipArchive.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = AFF75A231C37279600F450AC;
-			remoteInfo = "ZipArchive-Mac";
-		};
-		5AE833E82236837900E68343 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5A9F70C82235044A008E967C /* ZipArchive.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = B423AE191C0DF76A0004A2F1;
-			remoteInfo = "ZipArchive-iOS";
-		};
 		5AE833FE22368A4500E68343 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5A9F7097223502D6008E967C /* Project object */;
@@ -117,7 +74,6 @@
 		5A9F70BE22350300008E967C /* NSAttributedString+DocX-macOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+DocX-macOS.swift"; sourceTree = "<group>"; };
 		5A9F70BF22350300008E967C /* DocumentRoot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentRoot.swift; sourceTree = "<group>"; };
 		5A9F70C62235031B008E967C /* blank.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = blank.docx; sourceTree = "<group>"; };
-		5A9F70C82235044A008E967C /* ZipArchive.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ZipArchive.xcodeproj; path = ZipArchive/ZipArchive.xcodeproj; sourceTree = "<group>"; };
 		5A9F70F622350D12008E967C /* ParagraphElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParagraphElement.swift; sourceTree = "<group>"; };
 		5A9F70F822350DDE008E967C /* AttributeElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeElements.swift; sourceTree = "<group>"; };
 		5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyAnnotationElement.swift; sourceTree = "<group>"; };
@@ -141,7 +97,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AB10ECE232A451200F0B19F /* AEXML in Frameworks */,
-				5A9F70DA2235045A008E967C /* ZipArchive.framework in Frameworks */,
+				5A9754D623606CD90002B521 /* ZipArchive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,7 +114,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AB10ED0232A45BF00F0B19F /* AEXML in Frameworks */,
-				5AE833EA2236838000E68343 /* ZipArchive.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,7 +131,6 @@
 		5A9F7096223502D6008E967C = {
 			isa = PBXGroup;
 			children = (
-				5A9F70C82235044A008E967C /* ZipArchive.xcodeproj */,
 				5A9F70A2223502D6008E967C /* DocX */,
 				5A9F70AD223502D6008E967C /* DocXTests */,
 				5AE833F922368A4500E68343 /* DocX-iOS-Tests */,
@@ -230,17 +184,6 @@
 			path = DocXTests;
 			sourceTree = "<group>";
 		};
-		5A9F70C92235044A008E967C /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5A9F70D02235044A008E967C /* ZipArchive.framework */,
-				5A9F70D22235044A008E967C /* ZipArchive.framework */,
-				5A9F70D42235044A008E967C /* ZipArchive.framework */,
-				5A9F70D62235044A008E967C /* ZipArchive.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		5A9F70D92235045A008E967C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,11 +234,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				5A9F70D822350453008E967C /* PBXTargetDependency */,
 			);
 			name = DocX;
 			packageProductDependencies = (
 				5AB10ECD232A451200F0B19F /* AEXML */,
+				5A9754D523606CD90002B521 /* ZipArchive */,
 			);
 			productName = DocX;
 			productReference = 5A9F70A0223502D6008E967C /* DocX.framework */;
@@ -331,7 +274,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				5AE833E92236837900E68343 /* PBXTargetDependency */,
 			);
 			name = "DocX-iOS";
 			packageProductDependencies = (
@@ -392,15 +334,10 @@
 			mainGroup = 5A9F7096223502D6008E967C;
 			packageReferences = (
 				5AB10ECC232A451200F0B19F /* XCRemoteSwiftPackageReference "AEXML" */,
+				5A9754D423606CD90002B521 /* XCRemoteSwiftPackageReference "ZipArchive" */,
 			);
 			productRefGroup = 5A9F70A1223502D6008E967C /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 5A9F70C92235044A008E967C /* Products */;
-					ProjectRef = 5A9F70C82235044A008E967C /* ZipArchive.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				5A9F709F223502D6008E967C /* DocX */,
@@ -410,37 +347,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		5A9F70D02235044A008E967C /* ZipArchive.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ZipArchive.framework;
-			remoteRef = 5A9F70CF2235044A008E967C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5A9F70D22235044A008E967C /* ZipArchive.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ZipArchive.framework;
-			remoteRef = 5A9F70D12235044A008E967C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5A9F70D42235044A008E967C /* ZipArchive.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ZipArchive.framework;
-			remoteRef = 5A9F70D32235044A008E967C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5A9F70D62235044A008E967C /* ZipArchive.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ZipArchive.framework;
-			remoteRef = 5A9F70D52235044A008E967C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5A9F709E223502D6008E967C /* Resources */ = {
@@ -538,16 +444,6 @@
 			isa = PBXTargetDependency;
 			target = 5A9F709F223502D6008E967C /* DocX */;
 			targetProxy = 5A9F70AB223502D6008E967C /* PBXContainerItemProxy */;
-		};
-		5A9F70D822350453008E967C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ZipArchive-Mac";
-			targetProxy = 5A9F70D722350453008E967C /* PBXContainerItemProxy */;
-		};
-		5AE833E92236837900E68343 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "ZipArchive-iOS";
-			targetProxy = 5AE833E82236837900E68343 /* PBXContainerItemProxy */;
 		};
 		5AE833FF22368A4500E68343 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -950,6 +846,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		5A9754D423606CD90002B521 /* XCRemoteSwiftPackageReference "ZipArchive" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/victor-pavlychko/ZipArchive.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		5AB10ECC232A451200F0B19F /* XCRemoteSwiftPackageReference "AEXML" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/shinjukunian/AEXML.git";
@@ -961,6 +865,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5A9754D523606CD90002B521 /* ZipArchive */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A9754D423606CD90002B521 /* XCRemoteSwiftPackageReference "ZipArchive" */;
+			productName = ZipArchive;
+		};
 		5AB10ECD232A451200F0B19F /* AEXML */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5AB10ECC232A451200F0B19F /* XCRemoteSwiftPackageReference "AEXML" */;
