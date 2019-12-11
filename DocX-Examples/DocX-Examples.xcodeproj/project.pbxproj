@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A33580923A1455000C63CFC /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A33580823A1455000C63CFC /* DocX.framework */; };
+		5A33580A23A1455000C63CFC /* DocX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5A33580823A1455000C63CFC /* DocX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5AE8343F2237AF2600E68343 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8343E2237AF2600E68343 /* AppDelegate.swift */; };
 		5AE834412237AF2600E68343 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE834402237AF2600E68343 /* ViewController.swift */; };
 		5AE834432237AF2900E68343 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AE834422237AF2900E68343 /* Assets.xcassets */; };
 		5AE834462237AF2900E68343 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AE834442237AF2900E68343 /* Main.storyboard */; };
 		5AE834602237AF7600E68343 /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE8345F2237AF7600E68343 /* DocX.framework */; };
-		5AE834622237AF8100E68343 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE834612237AF8100E68343 /* ZipArchive.framework */; };
-		5AE834632237AF8100E68343 /* ZipArchive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE834612237AF8100E68343 /* ZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5AE834652237AF8100E68343 /* DocX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE8345F2237AF7600E68343 /* DocX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5AE8346F2237BC7500E68343 /* SavePanelAccessoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8346D2237BC7500E68343 /* SavePanelAccessoryViewController.swift */; };
 		5AE834702237BC7500E68343 /* SavePanelAccessoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AE8346E2237BC7500E68343 /* SavePanelAccessoryViewController.xib */; };
@@ -22,10 +22,6 @@
 		5AE834A12237BF9700E68343 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AE8349F2237BF9700E68343 /* Main.storyboard */; };
 		5AE834A32237BF9800E68343 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AE834A22237BF9800E68343 /* Assets.xcassets */; };
 		5AE834A62237BF9800E68343 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AE834A42237BF9800E68343 /* LaunchScreen.storyboard */; };
-		5AE834AD2237C02900E68343 /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE834AC2237C02900E68343 /* ZipArchive.framework */; };
-		5AE834AE2237C02900E68343 /* ZipArchive.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE834AC2237C02900E68343 /* ZipArchive.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5AE834B02237C02900E68343 /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE834AF2237C02900E68343 /* DocX.framework */; };
-		5AE834B12237C02900E68343 /* DocX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5AE834AF2237C02900E68343 /* DocX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5AE834B42237DCF900E68343 /* ComplexTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE834B32237DCF900E68343 /* ComplexTextViewController.swift */; };
 		5AE834BB2237EA0D00E68343 /* TestDocument.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 5AE834BA2237EA0D00E68343 /* TestDocument.rtf */; };
 /* End PBXBuildFile section */
@@ -38,7 +34,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				5AE834652237AF8100E68343 /* DocX.framework in Embed Frameworks */,
-				5AE834632237AF8100E68343 /* ZipArchive.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,8 +44,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5AE834B12237C02900E68343 /* DocX.framework in Embed Frameworks */,
-				5AE834AE2237C02900E68343 /* ZipArchive.framework in Embed Frameworks */,
+				5A33580A23A1455000C63CFC /* DocX.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,6 +52,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5A33580823A1455000C63CFC /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE8343B2237AF2600E68343 /* DocX-Examples-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DocX-Examples-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE8343E2237AF2600E68343 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5AE834402237AF2600E68343 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -65,7 +60,6 @@
 		5AE834452237AF2900E68343 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5AE834472237AF2900E68343 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5AE8345F2237AF7600E68343 /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AE834612237AF8100E68343 /* ZipArchive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ZipArchive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE8346C2237B3AB00E68343 /* DocX-Examples-macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "DocX-Examples-macOS.entitlements"; sourceTree = "<group>"; };
 		5AE8346D2237BC7500E68343 /* SavePanelAccessoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavePanelAccessoryViewController.swift; sourceTree = "<group>"; };
 		5AE8346E2237BC7500E68343 /* SavePanelAccessoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SavePanelAccessoryViewController.xib; sourceTree = "<group>"; };
@@ -76,8 +70,6 @@
 		5AE834A22237BF9800E68343 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5AE834A52237BF9800E68343 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5AE834A72237BF9800E68343 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5AE834AC2237C02900E68343 /* ZipArchive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ZipArchive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5AE834AF2237C02900E68343 /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE834B32237DCF900E68343 /* ComplexTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplexTextViewController.swift; sourceTree = "<group>"; };
 		5AE834BA2237EA0D00E68343 /* TestDocument.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = TestDocument.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,7 +80,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AE834602237AF7600E68343 /* DocX.framework in Frameworks */,
-				5AE834622237AF8100E68343 /* ZipArchive.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,8 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5AE834B02237C02900E68343 /* DocX.framework in Frameworks */,
-				5AE834AD2237C02900E68343 /* ZipArchive.framework in Frameworks */,
+				5A33580923A1455000C63CFC /* DocX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,9 +97,6 @@
 		5AE834322237AF2600E68343 = {
 			isa = PBXGroup;
 			children = (
-				5AE834AF2237C02900E68343 /* DocX.framework */,
-				5AE834AC2237C02900E68343 /* ZipArchive.framework */,
-				5AE834612237AF8100E68343 /* ZipArchive.framework */,
 				5AE8343D2237AF2600E68343 /* DocX-Examples */,
 				5AE8349A2237BF9700E68343 /* DocX-Examples-iOS */,
 				5AE8343C2237AF2600E68343 /* Products */,
@@ -144,6 +131,7 @@
 		5AE8345E2237AF7600E68343 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5A33580823A1455000C63CFC /* DocX.framework */,
 				5AE8345F2237AF7600E68343 /* DocX.framework */,
 			);
 			name = Frameworks;
