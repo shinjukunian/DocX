@@ -9,13 +9,17 @@ This library is used in [SimpleFurigana for macOS](https://itunes.apple.com/de/a
 
 ## Installation
 
-Clone this repository (and its submodules) and add the DocX and the ZipArchive frameworks to 'Embeded Binaries'. 
+Clone this repository ~~(and its submodules)~~ and add the DocX ~~and the ZipArchive~~ frameworks to 'Embeded Binaries'. 
+
+DocX now relies in the Swift package manager for its dependencies. Hence Xcode will take care of these steps for you, you only need to add the DocX framework to your app.
+
+Once SPM supports resources (likely in Swift 5.2), DocX will become a proper swift package.
 The framework provides an extension on NSAttributedString to export the string as a .docx file.
 
 ## Usage
 
 ```swift
-let string = NSAttributedString(string: "This is a string", attributes: [.font:UIFont.systemFont(ofSize: UIFont.systemFontSize), .backgroundColor, value: UIColor.blue])
+let string = NSAttributedString(string: "This is a string", attributes: [.font: UIFont.systemFont(ofSize: UIFont.systemFontSize), .backgroundColor: UIColor.blue])
 let url = URL(fileURLWithPath:"myPath")
 try? string.writeDocX(to: url)
 ```
@@ -48,7 +52,7 @@ Some attributes don't have a direct correspondence. For example `NSAttributedStr
 ## Dependencies
 
 - my fork of [AEXML](https://github.com/shinjukunian/AEXML), many thanks to the original author [tadija](https://github.com/tadija/AEXML)
-- [ZipArchive](https://github.com/ZipArchive/ZipArchive). I could not get one of the native Swift Zip libraries to work with the .docx folder structure.
+- [ZipArchive](https://github.com/ZipArchive/ZipArchive). I could not get any of the native Swift Zip libraries to work with the .docx folder structure.
 
 ## Alternatives
 
