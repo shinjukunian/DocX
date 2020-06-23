@@ -9,6 +9,12 @@
 import Foundation
 import AEXML
 
+#if canImport(Cocoa)
+import Cocoa
+#elseif canImport(UIKit)
+import UIKit
+#endif
+
 extension NSFont{
     var attributeElements:[AEXMLElement]{
         return [FontElement(font: self), FontSizeElement(font: self),BoldElement(font: self),ItalicElement(font: self)].compactMap({$0})

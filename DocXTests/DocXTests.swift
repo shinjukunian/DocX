@@ -9,10 +9,13 @@
 import XCTest
 @testable import DocX
 
+#if os(macOS)
+@available(iOS 10.0, *)
 class DocXTests: XCTestCase {
 
     
     var tempURL:URL=URL(fileURLWithPath: "")
+    
     
     override func setUp() {
         let url=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
@@ -233,3 +236,6 @@ Specifies the border displayed above a set of paragraphs which have the same set
     
 
 }
+
+#endif
+

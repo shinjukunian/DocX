@@ -8,7 +8,10 @@
 
 import Foundation
 import ZipArchive
+import AEXML
 
+
+#if os(macOS)
 
 // this version is based on in initially using the TextKit docx Writer. Since it doesnt support furigana, links, and crashes on underline or strikethrough attributes, we might go entirely with our own implementatuion
 extension NSAttributedString:DocX{
@@ -63,6 +66,8 @@ extension NSAttributedString:DocX{
     }
     
 }
+
+#endif
 
 
 

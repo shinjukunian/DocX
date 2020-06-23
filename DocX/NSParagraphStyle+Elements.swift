@@ -9,6 +9,12 @@
 import Foundation
 import AEXML
 
+#if canImport(Cocoa)
+import Cocoa
+#elseif canImport(UIKit)
+import UIKit
+#endif
+
 extension NSParagraphStyle{
     
     var paragraphElements:AEXMLElement{

@@ -8,6 +8,9 @@
 
 import Foundation
 
+#if os(macOS)
+import Cocoa
+
 let boldTrait=NSFontDescriptor.SymbolicTraits.bold
 let italicTrait=NSFontDescriptor.SymbolicTraits.italic
 
@@ -22,3 +25,4 @@ extension NSColor{
         
     }
 }
+#endif

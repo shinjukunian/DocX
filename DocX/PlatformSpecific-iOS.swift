@@ -8,6 +8,9 @@
 
 import Foundation
 
+#if os(iOS)
+import UIKit
+
 typealias NSColor = UIColor
 typealias NSFont = UIFont
 let boldTrait=UIFontDescriptor.SymbolicTraits.traitBold
@@ -52,7 +55,12 @@ extension UIColor{
     
     @objc public init(attributedString:NSAttributedString) {
         self.attributedString=attributedString
-        let tempURL=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension("docx")
+        let tempURL:URL
+        if #available(iOS 10.0, *) {
+            tempURL=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension("docx")
+        } else {
+            tempURL=URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(UUID().uuidString).appendingPathExtension("docx")
+        }
         self.tempURL=tempURL
         super.init(placeholderItem: tempURL)
     }
@@ -77,9 +85,10 @@ extension UIColor{
     }
 }
 
-@available(iOSApplicationExtension 13.0, *)
+@available(iOSApplicationExtension 12.0, *)
 public extension NSAttributedString{
     
+    @available(iOS 13.0, *)
     @objc func attributedString(for userInterfaceStyle:UIUserInterfaceStyle)->NSAttributedString{
         let traitCollection=UITraitCollection(userInterfaceStyle: userInterfaceStyle)
         
@@ -107,3 +116,5 @@ public extension NSAttributedString{
     }
     
 }
+
+#endif

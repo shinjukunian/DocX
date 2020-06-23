@@ -7,6 +7,12 @@
 //
 
 import Foundation
+#if canImport(Cocoa)
+import Cocoa
+#elseif canImport(UIKit)
+import UIKit
+#endif
+
 import AEXML
 
 extension Dictionary where Key == NSAttributedString.Key{

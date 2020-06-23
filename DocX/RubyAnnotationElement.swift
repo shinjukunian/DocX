@@ -9,6 +9,12 @@
 import Foundation
 import AEXML
 
+#if canImport(Cocoa)
+import Cocoa
+#elseif canImport(UIKit)
+import UIKit
+#endif
+
 extension CTRubyAnnotation{
     // for documentation, see https://blogs.msdn.microsoft.com/murrays/2014/12/27/ruby-text-objects/
     func rubyElement(baseString:NSAttributedString)->AEXMLElement?{

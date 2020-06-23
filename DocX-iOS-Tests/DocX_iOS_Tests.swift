@@ -9,6 +9,9 @@
 import XCTest
 @testable import DocX
 
+#if os(iOS)
+
+@available(iOS 10.0, *)
 class DocX_iOS_Tests: XCTestCase {
 
     var tempURL:URL=URL(fileURLWithPath: "")
@@ -195,3 +198,5 @@ class DocX_iOS_Tests: XCTestCase {
         sleep(1)
     }
 }
+
+#endif
