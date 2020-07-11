@@ -44,6 +44,7 @@
 		5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */; };
 		5AE83428223781F600E68343 /* NSAttributedString+DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */; };
 		5AE834292237822B00E68343 /* blank in Resources */ = {isa = PBXBuildFile; fileRef = 5AE833F2223688A400E68343 /* blank */; };
+		B754D9E024BA0F0900AF320A /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B754D9DF24BA0EFF00AF320A /* libiconv.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSParagraphStyle+Elements.swift"; sourceTree = "<group>"; };
 		5AE834112237573F00E68343 /* FontElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontElements.swift; sourceTree = "<group>"; };
 		5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSUnderlineStyle+Elements.swift"; sourceTree = "<group>"; };
+		B754D9DF24BA0EFF00AF320A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B754D9E024BA0F0900AF320A /* libiconv.tbd in Frameworks */,
 				5AB10ECE232A451200F0B19F /* AEXML in Frameworks */,
 				5A9754D623606CD90002B521 /* ZipArchive in Frameworks */,
 			);
@@ -189,6 +192,7 @@
 		5A9F70D92235045A008E967C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B754D9DF24BA0EFF00AF320A /* libiconv.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -311,7 +315,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "telethon k.k.";
 				TargetAttributes = {
 					5A9F709F223502D6008E967C = {
@@ -482,6 +486,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -546,6 +551,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -593,7 +599,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = DocX/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -626,7 +632,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = DocX/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -696,7 +702,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/DocX/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -732,7 +738,7 @@
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/DocX/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -759,7 +765,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DVQ96RL2KL;
 				INFOPLIST_FILE = "DocX-iOS-Tests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -782,7 +788,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DVQ96RL2KL;
 				INFOPLIST_FILE = "DocX-iOS-Tests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
