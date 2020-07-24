@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5A9754D623606CD90002B521 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9754D523606CD90002B521 /* ZipArchive */; };
 		5A9754E523606ED80002B521 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9754E423606ED80002B521 /* ZipArchive */; };
+		5A9A862024A968BC00BAE53E /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9A861F24A968BC00BAE53E /* libiconv.tbd */; };
 		5A9F70AA223502D6008E967C /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70A0223502D6008E967C /* DocX.framework */; };
 		5A9F70AF223502D6008E967C /* DocXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70AE223502D6008E967C /* DocXTests.swift */; };
 		5A9F70B1223502D6008E967C /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -64,6 +65,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5A9A861E24A968AD00BAE53E /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		5A9A861F24A968BC00BAE53E /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
 		5A9F70A0223502D6008E967C /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A9F70A3223502D6008E967C /* DocX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocX.h; sourceTree = "<group>"; };
 		5A9F70A4223502D6008E967C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -114,6 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A9A862024A968BC00BAE53E /* libiconv.tbd in Frameworks */,
 				5AB10ED0232A45BF00F0B19F /* AEXML in Frameworks */,
 				5A9754E523606ED80002B521 /* ZipArchive in Frameworks */,
 			);
@@ -189,6 +193,8 @@
 		5A9F70D92235045A008E967C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5A9A861F24A968BC00BAE53E /* libiconv.tbd */,
+				5A9A861E24A968AD00BAE53E /* libiconv.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
