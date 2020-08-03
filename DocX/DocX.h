@@ -6,7 +6,7 @@
 //  Copyright © 2019 telethon k.k. All rights reserved.
 //
 
-#import "TargetConditionals.h"
+#import <TargetConditionals.h>
 #if TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 #else
