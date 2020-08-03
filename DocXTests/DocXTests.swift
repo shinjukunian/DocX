@@ -57,11 +57,11 @@ class DocXTests: XCTestCase {
         }
     }
     
-    func testWriteDocX(attributedString:NSAttributedString){
+    func testWriteDocX(attributedString:NSAttributedString, useBuiltin:Bool = true){
         
         do{
             let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))").appendingPathExtension("docx")
-            try attributedString.writeDocX(to: url)
+            try attributedString.writeDocX(to: url, useBuiltIn: useBuiltin)
             var readAttributes:NSDictionary?=nil
             let docXString=try NSAttributedString(url: url, options: [:], documentAttributes: &readAttributes)
             guard let attributes=readAttributes as? [String:Any] else{
@@ -178,7 +178,7 @@ class DocXTests: XCTestCase {
         //        let style=NSParagraphStyle.default
         //        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         let underlineStyle:NSUnderlineStyle = [.single]
-        attributed.addAttribute(.strikethroughStyle, value: underlineStyle, range:NSRange(location: 0, length: attributed.length))
+        attributed.addAttribute(.strikethroughStyle, value: underlineStyle.rawValue, range:NSRange(location: 0, length: attributed.length))
         testWriteDocX(attributedString: attributed)
         
         sleep(1)
@@ -192,10 +192,12 @@ class DocXTests: XCTestCase {
         let furiganaAnnotation=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, furigana as CFString, [kCTRubyAnnotationSizeFactorAttributeName:0.5] as CFDictionary)
         attributed.addAttribute(.ruby, value: furiganaAnnotation, range: NSRange(location: 0, length: 2))
         attributed.addAttribute(.link, value: URL(string: "https://www.rakuten-sec.co.jp/")!, range: NSRange(location: 3, length: 30))
-        testWriteDocX(attributedString: attributed)
+        testWriteDocX(attributedString: attributed, useBuiltin: false)
         
         sleep(1)
     }
+    
+    
     
     
     func test_ParagraphStyle() {

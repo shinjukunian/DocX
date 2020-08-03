@@ -168,7 +168,7 @@ class DocX_iOS_Tests: XCTestCase {
         //        let style=NSParagraphStyle.default
         //        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         let underlineStyle:NSUnderlineStyle = [.single,.byWord]
-        attributed.addAttribute(.underlineStyle, value: underlineStyle, range:NSRange(location: 0, length: attributed.length))
+        attributed.addAttribute(.underlineStyle, value: underlineStyle.rawValue, range:NSRange(location: 0, length: attributed.length))
         testWriteDocX(attributedString: attributed)
         
         
@@ -179,7 +179,7 @@ class DocX_iOS_Tests: XCTestCase {
         //        let style=NSParagraphStyle.default
         //        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         let underlineStyle:NSUnderlineStyle = [.single]
-        attributed.addAttribute(.strikethroughStyle, value: underlineStyle, range:NSRange(location: 0, length: attributed.length))
+        attributed.addAttribute(.strikethroughStyle, value: underlineStyle.rawValue, range:NSRange(location: 0, length: attributed.length))
         testWriteDocX(attributedString: attributed)
         
         sleep(1)
