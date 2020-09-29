@@ -8,12 +8,19 @@
 
 import Foundation
 import ZipArchive
+import AEXML
 
 
-// this version is based on in initially using the TextKit docx Writer. Since it doesnt support furigana, links, and crashes on underline or strikethrough attributes, we might go entirely with our own implementatuion
+#if os(macOS)
+
+// this version is based on in initially using the TextKit docx Writer. Since it doesnt support furigana or links, we might go entirely with our own implementatuion
 extension NSAttributedString:DocX{
+    @objc public func writeDocX(to url: URL) throws {
+        try self.writeDocX(to: url, useBuiltIn: true)
+    }
+    
         
-    @objc public func writeDocX(to url: URL) throws{
+    @objc public func writeDocX(to url: URL, useBuiltIn:Bool = true) throws{
         
         let tempURL=try FileManager.default.url(for: .itemReplacementDirectory, in: .userDomainMask, appropriateFor: url, create: true)
         
@@ -26,7 +33,7 @@ extension NSAttributedString:DocX{
         let wrapper=try self.fileWrapper(from: NSRange(location: 0, length: self.length), documentAttributes: attributes)
         try wrapper.write(to: docURL, options: .atomic, originalContentsURL: nil)
         
-        if self.containsRubyAnnotations{ // this is the main attribute that is not conserved by the cocoa exporter. there might, potentially, be others
+        if self.containsRubyAnnotations || useBuiltIn == false{ // this is the main attribute that is not conserved by the cocoa exporter. there might, potentially, be others
             let docPath=docURL.appendingPathComponent("word").appendingPathComponent("document").appendingPathExtension("xml")
             let linkURL=docURL.appendingPathComponent("word").appendingPathComponent("_rels").appendingPathComponent("document.xml.rels")
             let linkData=try Data(contentsOf: linkURL)
@@ -63,6 +70,8 @@ extension NSAttributedString:DocX{
     }
     
 }
+
+#endif
 
 
 

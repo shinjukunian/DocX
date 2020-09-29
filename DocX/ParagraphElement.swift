@@ -7,6 +7,11 @@
 //
 
 import Foundation
+#if canImport(Cocoa)
+import Cocoa
+#elseif canImport(UIKit)
+import UIKit
+#endif
 import AEXML
 
 class ParagraphElement:AEXMLElement{
@@ -27,7 +32,7 @@ class ParagraphElement:AEXMLElement{
     fileprivate func buildRuns(string:NSAttributedString, range:Range<String.Index>)->[AEXMLElement]{
         
         var elements=[AEXMLElement]()
-        let subString=string.attributedSubstring(from: NSRange(range, in: self.string))
+        let subString=string.attributedSubstring(from: NSRange(range, in: string.string))
         
         guard subString.length>0 else{return [AEXMLElement]()}
         

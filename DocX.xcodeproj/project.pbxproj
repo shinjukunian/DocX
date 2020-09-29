@@ -21,6 +21,7 @@
 		5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F822350DDE008E967C /* AttributeElements.swift */; };
 		5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */; };
 		5A9F711D223607A8008E967C /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */; };
+		5AA95C7424A1C30A005D0645 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AA95C7224A1C04A005D0645 /* libiconv.tbd */; };
 		5AB10ECE232A451200F0B19F /* AEXML in Frameworks */ = {isa = PBXBuildFile; productRef = 5AB10ECD232A451200F0B19F /* AEXML */; };
 		5AB10ED0232A45BF00F0B19F /* AEXML in Frameworks */ = {isa = PBXBuildFile; productRef = 5AB10ECF232A45BF00F0B19F /* AEXML */; };
 		5AE833CE2236831500E68343 /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -83,6 +84,8 @@
 		5A9F70F822350DDE008E967C /* AttributeElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeElements.swift; sourceTree = "<group>"; };
 		5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyAnnotationElement.swift; sourceTree = "<group>"; };
 		5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
+		5AA95C7224A1C04A005D0645 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		5AA95C7524A1C342005D0645 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
 		5AE833E32236831500E68343 /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+DocX.swift"; sourceTree = "<group>"; };
 		5AE833EE2236852500E68343 /* PlatformSpecific-iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlatformSpecific-iOS.swift"; sourceTree = "<group>"; };
@@ -140,6 +143,7 @@
 		5A9F7096223502D6008E967C = {
 			isa = PBXGroup;
 			children = (
+				5AA95C7524A1C342005D0645 /* Package.swift */,
 				5A9F70A2223502D6008E967C /* DocX */,
 				5A9F70AD223502D6008E967C /* DocXTests */,
 				5AE833F922368A4500E68343 /* DocX-iOS-Tests */,

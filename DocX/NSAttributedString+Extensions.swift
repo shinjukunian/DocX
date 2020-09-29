@@ -7,11 +7,16 @@
 //
 
 import Foundation
+#if canImport(Cocoa)
+import Cocoa
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
 extension NSAttributedString{
     var paragraphRanges:[Range<String.Index>]{
         var ranges=[Range<String.Index>]()
-        self.string.enumerateSubstrings(in: self.string.startIndex..<self.string.endIndex, options: [.byParagraphs], {_, range, rangeIncludingSeperators, _ in
+        self.string.enumerateSubstrings(in: self.string.startIndex..<self.string.endIndex, options: [.byParagraphs, .substringNotRequired], {_, range, rangeIncludingSeperators, _ in
             ranges.append(range)
         })
         return ranges

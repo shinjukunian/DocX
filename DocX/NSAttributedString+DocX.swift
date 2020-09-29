@@ -10,6 +10,8 @@ import Foundation
 import ZipArchive
 import AEXML
 
+#if os(iOS)
+
 extension NSAttributedString:DocX{
     
     @objc public func writeDocX(to url: URL) throws{
@@ -21,7 +23,7 @@ extension NSAttributedString:DocX{
         }
         
         let docURL=tempURL.appendingPathComponent(UUID().uuidString, isDirectory: true)
-        guard let blankURL=Bundle(for: DocumentRoot.self).url(forResource: "blank", withExtension: nil) else{throw DocXSavingErrors.noBlankDocument}
+        guard let blankURL=Bundle.module.url(forResource: "blank", withExtension: nil) else{throw DocXSavingErrors.noBlankDocument}
         try FileManager.default.copyItem(at: blankURL, to: docURL)
 
         let docPath=docURL.appendingPathComponent("word").appendingPathComponent("document").appendingPathExtension("xml")
@@ -48,3 +50,5 @@ extension NSAttributedString:DocX{
     }
     
 }
+
+#endif
