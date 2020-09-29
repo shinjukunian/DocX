@@ -15,6 +15,8 @@ Add
 ```
 
 to ```dependencies``` in your  ```Package.swift``` file. This requires Swift 5.3, which shipped with Xcode12.
+Alternatively, add  ```DocX``` in Xcode via ```File->Swift Packages->Add Package Dependency```, paste ```https://github.com/shinjukunian/DocX.git``` as URL and specify ```master``` as branch.
+
 ## Usage
 
 ```swift
