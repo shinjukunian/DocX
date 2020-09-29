@@ -9,13 +9,12 @@ This library is used in [SimpleFurigana for macOS](https://itunes.apple.com/de/a
 
 ## Installation
 
-Clone this repository ~~(and its submodules)~~ and add the DocX ~~and the ZipArchive~~ frameworks to 'Embeded Binaries'. 
+Add 
+```
+.package(name: "DocX", url: "https://github.com/shinjukunian/DocX.git", .branch("master"))
+```
 
-DocX now relies in the Swift package manager for its dependencies. Hence Xcode will take care of these steps for you, you only need to add the DocX framework to your app.
-
-Once SPM supports resources (likely in Swift 5.2), DocX will become a proper swift package.
-The framework provides an extension on NSAttributedString to export the string as a .docx file.
-
+to ```dependencies``` in your  ```Package.swift``` file. This requires Swift 5.3, which shipped with Xcode12.
 ## Usage
 
 ```swift
