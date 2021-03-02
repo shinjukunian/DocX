@@ -11,7 +11,7 @@ import DocX
 import QuickLook
 
 
-protocol DocXPreviewing:class,QLPreviewControllerDelegate,QLPreviewControllerDataSource{
+protocol DocXPreviewing:QLPreviewControllerDelegate,QLPreviewControllerDataSource{
     var documentURL:URL? {get set}
     var attributedText:NSAttributedString? {get}
 }

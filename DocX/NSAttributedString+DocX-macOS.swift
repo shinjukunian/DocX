@@ -15,11 +15,11 @@ import AEXML
 
 // this version is based on in initially using the TextKit docx Writer. Since it doesnt support furigana or links, we might go entirely with our own implementatuion
 extension NSAttributedString:DocX{
+    
     @objc public func writeDocX(to url: URL) throws {
         try self.writeDocX(to: url, useBuiltIn: true)
     }
     
-        
     @objc public func writeDocX(to url: URL, useBuiltIn:Bool = true) throws{
         
         let tempURL=try FileManager.default.url(for: .itemReplacementDirectory, in: .userDomainMask, appropriateFor: url, create: true)

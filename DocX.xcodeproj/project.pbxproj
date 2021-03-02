@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		5A9754D623606CD90002B521 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9754D523606CD90002B521 /* ZipArchive */; };
 		5A9754E523606ED80002B521 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9754E423606ED80002B521 /* ZipArchive */; };
-		5A9A862024A968BC00BAE53E /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9A861F24A968BC00BAE53E /* libiconv.tbd */; };
 		5A9F70AA223502D6008E967C /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70A0223502D6008E967C /* DocX.framework */; };
 		5A9F70AF223502D6008E967C /* DocXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70AE223502D6008E967C /* DocXTests.swift */; };
 		5A9F70B1223502D6008E967C /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -21,9 +20,10 @@
 		5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70F822350DDE008E967C /* AttributeElements.swift */; };
 		5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */; };
 		5A9F711D223607A8008E967C /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */; };
-		5AA95C7424A1C30A005D0645 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AA95C7224A1C04A005D0645 /* libiconv.tbd */; };
 		5AB10ECE232A451200F0B19F /* AEXML in Frameworks */ = {isa = PBXBuildFile; productRef = 5AB10ECD232A451200F0B19F /* AEXML */; };
 		5AB10ED0232A45BF00F0B19F /* AEXML in Frameworks */ = {isa = PBXBuildFile; productRef = 5AB10ECF232A45BF00F0B19F /* AEXML */; };
+		5AE5BE9B25EE283F009A152F /* NSAttributedString+DocX-macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BE22350300008E967C /* NSAttributedString+DocX-macOS.swift */; };
+		5AE5BEA025EE2847009A152F /* NSAttributedString+DocX-macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BE22350300008E967C /* NSAttributedString+DocX-macOS.swift */; };
 		5AE833CE2236831500E68343 /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5AE833D02236831500E68343 /* DocumentRoot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BF22350300008E967C /* DocumentRoot.swift */; };
 		5AE833D12236831500E68343 /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */; };
@@ -46,7 +46,6 @@
 		5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */; };
 		5AE83428223781F600E68343 /* NSAttributedString+DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */; };
 		5AE834292237822B00E68343 /* blank in Resources */ = {isa = PBXBuildFile; fileRef = 5AE833F2223688A400E68343 /* blank */; };
-		B754D9E024BA0F0900AF320A /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B754D9DF24BA0EFF00AF320A /* libiconv.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,8 +66,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5A9A861E24A968AD00BAE53E /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
-		5A9A861F24A968BC00BAE53E /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/usr/lib/libiconv.tbd; sourceTree = DEVELOPER_DIR; };
 		5A9F70A0223502D6008E967C /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A9F70A3223502D6008E967C /* DocX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocX.h; sourceTree = "<group>"; };
 		5A9F70A4223502D6008E967C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -84,7 +81,6 @@
 		5A9F70F822350DDE008E967C /* AttributeElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeElements.swift; sourceTree = "<group>"; };
 		5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyAnnotationElement.swift; sourceTree = "<group>"; };
 		5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
-		5AA95C7224A1C04A005D0645 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		5AA95C7524A1C342005D0645 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
 		5AE833E32236831500E68343 /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+DocX.swift"; sourceTree = "<group>"; };
@@ -97,7 +93,6 @@
 		5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSParagraphStyle+Elements.swift"; sourceTree = "<group>"; };
 		5AE834112237573F00E68343 /* FontElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontElements.swift; sourceTree = "<group>"; };
 		5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSUnderlineStyle+Elements.swift"; sourceTree = "<group>"; };
-		B754D9DF24BA0EFF00AF320A /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +100,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B754D9E024BA0F0900AF320A /* libiconv.tbd in Frameworks */,
 				5AB10ECE232A451200F0B19F /* AEXML in Frameworks */,
 				5A9754D623606CD90002B521 /* ZipArchive in Frameworks */,
 			);
@@ -123,7 +117,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A9A862024A968BC00BAE53E /* libiconv.tbd in Frameworks */,
 				5AB10ED0232A45BF00F0B19F /* AEXML in Frameworks */,
 				5A9754E523606ED80002B521 /* ZipArchive in Frameworks */,
 			);
@@ -148,7 +141,6 @@
 				5A9F70AD223502D6008E967C /* DocXTests */,
 				5AE833F922368A4500E68343 /* DocX-iOS-Tests */,
 				5A9F70A1223502D6008E967C /* Products */,
-				5A9F70D92235045A008E967C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -195,14 +187,6 @@
 				5A9F70B0223502D6008E967C /* Info.plist */,
 			);
 			path = DocXTests;
-			sourceTree = "<group>";
-		};
-		5A9F70D92235045A008E967C /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				B754D9DF24BA0EFF00AF320A /* libiconv.tbd */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		5AE833F922368A4500E68343 /* DocX-iOS-Tests */ = {
@@ -409,6 +393,7 @@
 				5A9F70C122350300008E967C /* DocXWriting.swift in Sources */,
 				5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */,
 				5AE8341B22375D9E00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
+				5AE5BE9B25EE283F009A152F /* NSAttributedString+DocX-macOS.swift in Sources */,
 				5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */,
 				5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5A9F70C222350300008E967C /* DocX.swift in Sources */,
@@ -436,6 +421,7 @@
 				5AE833D42236831500E68343 /* DocXWriting.swift in Sources */,
 				5AE833D52236831500E68343 /* AttributeElements.swift in Sources */,
 				5AE833DA2236831500E68343 /* RubyAnnotationElement.swift in Sources */,
+				5AE5BEA025EE2847009A152F /* NSAttributedString+DocX-macOS.swift in Sources */,
 				5AE833EC223683F000E68343 /* NSAttributedString+DocX.swift in Sources */,
 				5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
@@ -723,7 +709,7 @@
 				PRODUCT_NAME = DocX;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -759,7 +745,7 @@
 				PRODUCT_NAME = DocX;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

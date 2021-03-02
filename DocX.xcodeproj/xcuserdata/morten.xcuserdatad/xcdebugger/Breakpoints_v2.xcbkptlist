@@ -15,9 +15,9 @@
             timestampString = "574223050.881258"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
-            landmarkName = "testWriteDocX(attributedString:)"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "testWriteDocX(attributedString:useBuiltin:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -32,9 +32,9 @@
             timestampString = "574223050.881536"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "testWriteDocX(attributedString:)"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
+            landmarkName = "testWriteDocX(attributedString:useBuiltin:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -66,10 +66,10 @@
             timestampString = "574223050.881864"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
-            landmarkName = "tearDown()"
-            landmarkType = "7">
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "DocXTests"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -161,7 +161,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "E243BCA3-C90F-4898-922E-5CEC7EF46238"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DocX-iOS-Tests/DocX_iOS_Tests.swift"
@@ -219,8 +219,8 @@
             timestampString = "574223050.882223"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "191"
-            endingLineNumber = "191"
+            startingLineNumber = "190"
+            endingLineNumber = "190"
             landmarkName = "testLink()"
             landmarkType = "7">
          </BreakpointContent>
@@ -304,8 +304,8 @@
             timestampString = "574223050.882542"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
+            startingLineNumber = "193"
+            endingLineNumber = "193"
             landmarkName = "testLink()"
             landmarkType = "7">
          </BreakpointContent>
@@ -354,8 +354,8 @@
             filePath = "DocXTests/DocXTests.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
             landmarkName = "test&#x5c71;&#x7530;&#x96fb;&#x6c17;FuriganaAttributed_ParagraphStyle_strikethrough()"
             landmarkType = "7">
          </BreakpointContent>
@@ -370,8 +370,8 @@
             filePath = "DocXTests/DocXTests.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
+            startingLineNumber = "191"
+            endingLineNumber = "191"
             landmarkName = "testLink()"
             landmarkType = "7">
          </BreakpointContent>
