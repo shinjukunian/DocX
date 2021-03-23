@@ -9,12 +9,6 @@
 import Foundation
 import AEXML
 
-#if canImport(AppKit)
-import Cocoa
-#elseif canImport(UIKit)
-import UIKit
-#endif
-
 enum DocXSavingErrors:Error{
     case noBlankDocument
     case compressionFailed
@@ -28,12 +22,6 @@ protocol DocumentRelationship {
 struct LinkRelationship:DocumentRelationship{
     let relationshipID:String
     let linkURL:URL
-}
-
-struct ImageRelationship:DocumentRelationship{
-    let relationshipID:String
-    let linkURL:URL
-    let attachement:NSTextAttachment
 }
 
 protocol DocX{

@@ -115,7 +115,7 @@ extension DocX where Self : NSAttributedString{
         
         let imageRelationShips=attachements.enumerated().compactMap({(idx, attachement)->ImageRelationship? in
             let newID="rId\(lastIdIDX+1+idx)"
-            let destURL=mediaURL.appendingPathComponent(newID)
+            let destURL=mediaURL.appendingPathComponent(newID).appendingPathExtension("png")
             
             guard let data=attachement.imageData,
                   ((try? data.write(to: destURL, options: .atomic)) != nil) else{
@@ -142,9 +142,3 @@ extension LinkRelationship{
     
 }
 
-extension ImageRelationship{
-    var element:AEXMLElement{
-        let linkString=self.linkURL.pathComponents.suffix(2).joined(separator: "/")
-        return AEXMLElement(name: "Relationship", value: nil, attributes: ["Id":self.relationshipID, "Type":"http://schemas.openxmlformats.org/officeDocument/2006/relationships/image", "Target":linkString])
-    }
-}

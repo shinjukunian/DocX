@@ -7,8 +7,8 @@
 //
 
 import Foundation
-#if canImport(Cocoa)
-import Cocoa
+#if canImport(AppKit)
+import AppKit
 #elseif canImport(UIKit)
 import UIKit
 #endif
@@ -52,8 +52,8 @@ class ParagraphElement:AEXMLElement{
                     let relationship=self.linkRelations.first(where: {rel in
                 guard let rel=rel as? ImageRelationship else {return false}
                 return rel.attachement == imageAttachement
-            }){
-                fatalError("not implemented")
+            }) as? ImageRelationship{
+                elements.append(relationship.attributeElement)
             }
             else{
                 let runElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])
