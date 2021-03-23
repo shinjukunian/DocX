@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Bundle+Extensions.swift
 //  
 //
 //  Created by Morten Bertz on 2021/03/23.

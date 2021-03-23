@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A8406B52609DF1B002B8B34 /* NSAttributedString+Writing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406B42609DF1B002B8B34 /* NSAttributedString+Writing.swift */; };
+		5A8406B62609DF1B002B8B34 /* NSAttributedString+Writing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406B42609DF1B002B8B34 /* NSAttributedString+Writing.swift */; };
+		5A8406BC2609DF2B002B8B34 /* ImageRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406BB2609DF2B002B8B34 /* ImageRelationship.swift */; };
+		5A8406BD2609DF2B002B8B34 /* ImageRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406BB2609DF2B002B8B34 /* ImageRelationship.swift */; };
+		5A8406C22609DF38002B8B34 /* NSTextAttachement+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0AD5CE26099AA200C146D3 /* NSTextAttachement+Extensions.swift */; };
+		5A8406C72609DF39002B8B34 /* NSTextAttachement+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0AD5CE26099AA200C146D3 /* NSTextAttachement+Extensions.swift */; };
+		5A8406CD2609DF65002B8B34 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */; };
+		5A8406CE2609DF65002B8B34 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */; };
 		5A9754D623606CD90002B521 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9754D523606CD90002B521 /* ZipArchive */; };
 		5A9754E523606ED80002B521 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9754E423606ED80002B521 /* ZipArchive */; };
 		5A9F70AA223502D6008E967C /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70A0223502D6008E967C /* DocX.framework */; };
@@ -66,7 +74,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5A0AD5CE26099AA200C146D3 /* NSTextAttachement + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextAttachement + Extensions.swift"; sourceTree = "<group>"; };
+		5A0AD5CE26099AA200C146D3 /* NSTextAttachement+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextAttachement+Extensions.swift"; sourceTree = "<group>"; };
+		5A8406B42609DF1B002B8B34 /* NSAttributedString+Writing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Writing.swift"; sourceTree = "<group>"; };
+		5A8406BB2609DF2B002B8B34 /* ImageRelationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRelationship.swift; sourceTree = "<group>"; };
+		5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		5A9F70A0223502D6008E967C /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A9F70A3223502D6008E967C /* DocX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocX.h; sourceTree = "<group>"; };
 		5A9F70A4223502D6008E967C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -171,10 +182,13 @@
 				5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */,
 				5AE834112237573F00E68343 /* FontElements.swift */,
 				5AE833EE2236852500E68343 /* PlatformSpecific-iOS.swift */,
-				5A0AD5CE26099AA200C146D3 /* NSTextAttachement + Extensions.swift */,
+				5A0AD5CE26099AA200C146D3 /* NSTextAttachement+Extensions.swift */,
 				5AE833F02236861F00E68343 /* PlatformSpecific-macOS.swift */,
 				5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */,
 				5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */,
+				5A8406B42609DF1B002B8B34 /* NSAttributedString+Writing.swift */,
+				5A8406BB2609DF2B002B8B34 /* ImageRelationship.swift */,
+				5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */,
 				5A9F70A3223502D6008E967C /* DocX.h */,
 				5A9F70A4223502D6008E967C /* Info.plist */,
 			);
@@ -391,6 +405,7 @@
 				5A9F70C522350300008E967C /* DocumentRoot.swift in Sources */,
 				5AE834122237573F00E68343 /* FontElements.swift in Sources */,
 				5A9F711D223607A8008E967C /* NSAttributedString+Extensions.swift in Sources */,
+				5A8406CD2609DF65002B8B34 /* Bundle+Extensions.swift in Sources */,
 				5AE833F12236861F00E68343 /* PlatformSpecific-macOS.swift in Sources */,
 				5A9F70C122350300008E967C /* DocXWriting.swift in Sources */,
 				5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */,
@@ -400,6 +415,9 @@
 				5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5A9F70C222350300008E967C /* DocX.swift in Sources */,
 				5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */,
+				5A8406C22609DF38002B8B34 /* NSTextAttachement+Extensions.swift in Sources */,
+				5A8406B52609DF1B002B8B34 /* NSAttributedString+Writing.swift in Sources */,
+				5A8406BC2609DF2B002B8B34 /* ImageRelationship.swift in Sources */,
 				5AE83428223781F600E68343 /* NSAttributedString+DocX.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -419,6 +437,7 @@
 				5AE833D02236831500E68343 /* DocumentRoot.swift in Sources */,
 				5AE834132237573F00E68343 /* FontElements.swift in Sources */,
 				5AE833EF2236852500E68343 /* PlatformSpecific-iOS.swift in Sources */,
+				5A8406CE2609DF65002B8B34 /* Bundle+Extensions.swift in Sources */,
 				5AE833D12236831500E68343 /* NSAttributedString+Extensions.swift in Sources */,
 				5AE833D42236831500E68343 /* DocXWriting.swift in Sources */,
 				5AE833D52236831500E68343 /* AttributeElements.swift in Sources */,
@@ -428,6 +447,9 @@
 				5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
 				5AE833DB2236831500E68343 /* DocX.swift in Sources */,
+				5A8406C72609DF39002B8B34 /* NSTextAttachement+Extensions.swift in Sources */,
+				5A8406B62609DF1B002B8B34 /* NSAttributedString+Writing.swift in Sources */,
+				5A8406BD2609DF2B002B8B34 /* ImageRelationship.swift in Sources */,
 				5AE833DC2236831500E68343 /* ParagraphElement.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

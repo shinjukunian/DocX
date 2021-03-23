@@ -8,11 +8,14 @@
 
 import Foundation
 #if canImport(AppKit)
+fileprivate typealias UIImage = NSImage
 import Cocoa
 #elseif canImport(UIKit)
 import UIKit
 #endif
 import AEXML
+
+
 
 extension NSTextAttachment{
     
@@ -33,41 +36,31 @@ extension NSTextAttachment{
         if let imageData=self.image?.pngData{
             return imageData
         }
+        else if let contents=self.contents{
+            return contents
+        }
         else{
-            return self.contents
+            return self.fileWrapper?.regularFileContents
         }
     }
     
-    #if canImport(AppKit)
     var dataImageSize:CGSize{
-        guard let data=self.contents,
-              let image=NSImage(data: data)
-        else {return .zero}
-        return image.size
+        if let image=self.image{
+            return image.size
+        }
+        else{
+            guard let data=self.imageData,
+                  let image=UIImage(data: data)
+            else {return .zero}
+            return image.size
+        }
     }
-    #else
-    var dataImageSize:CGSize{
-        guard let data=self.contents,
-              let image=UIImage(data: data)
-        else {return .zero}
-        return image.size
-    }
-    
-    #endif
     
     var extentInEMU:Size{
-        let width:CGFloat
-        let height:CGFloat
-        if let image=image{
-            width=image.size.width
-            height=image.size.height
-        }
-        else{
-            let dataImageSize=dataImageSize
-            width=dataImageSize.width
-            height=dataImageSize.height
-        }
-        
+        let size=self.dataImageSize
+        let width=size.width
+        let height=size.height
+
         let emuPerInch=CGFloat(914400)
         let dpi=CGFloat(72)
         let emuWidth=width/dpi*emuPerInch
