@@ -51,7 +51,8 @@ let package = Package(
             name: "DocX-iOS-Tests",
             dependencies: ["DocX"],
             path: "DocX-iOS-Tests",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            resources: [.copy("Picture1.png")]
             )
 
     ]

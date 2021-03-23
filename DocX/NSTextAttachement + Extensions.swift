@@ -76,26 +76,6 @@ extension NSTextAttachment{
         
     }
     
-    /*
-     <w:drawing>
-     <wp:inline distT="0" distB="0" distL="0" distR="0">
-     <wp:extent cx="2438400" cy="1828800"/>
-     <wp:effectExtent l="19050" t="0" r="0" b="0"/>
-     <wp:docPr id="1" name="Picture 0" descr="Blue hills.jpg"/>
-     <wp:cNvGraphicFramePr>
-     <a:graphicFrameLocks xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" noChangeAspect="1"/>
-     </wp:cNvGraphicFramePr>
-     <a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
-     <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">
-     <pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">
-     . . .
-     </pic:pic>
-     </a:graphicData>
-     </a:graphic>
-     </wp:inline>
-     </w:drawing>
-     */
-    
     var extentAttributes:[AEXMLElement]{
         let size=self.extentInEMU
         let extent=size.extentAttribute
