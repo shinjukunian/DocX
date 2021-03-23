@@ -43,7 +43,6 @@ extension NSAttributedString{
     
     var containsRubyAnnotations:Bool{
         var hasRuby=false
-        
         self.enumerateAttribute(.ruby, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
             if attribute != nil{
                 hasRuby=true

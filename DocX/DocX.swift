@@ -33,4 +33,3 @@ protocol DocX{
 public let docXUTIType="org.openxmlformats.wordprocessingml.document"
 
 
-

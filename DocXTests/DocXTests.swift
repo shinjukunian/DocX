@@ -56,7 +56,7 @@ class DocXTests: XCTestCase {
         }
     }
     
-    func testWriteDocX(attributedString:NSAttributedString, useBuiltin:Bool = true){
+    func testWriteDocX(attributedString:NSAttributedString, useBuiltin:Bool = false){
         
         do{
             let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))").appendingPathExtension("docx")
@@ -218,7 +218,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         let font=NSFont(name: "Helvetica", size: 13) ?? NSFont.systemFont(ofSize: 13)
         
         let attributed=NSMutableAttributedString(string: string, attributes: [.paragraphStyle:style, .font:font])
-        testWriteDocX(attributedString: attributed)
+        testWriteDocX(attributedString: attributed, useBuiltin: false)
        
     }
     
