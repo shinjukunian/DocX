@@ -20,9 +20,9 @@ class ParagraphElement:AEXMLElement{
         fatalError()
     }
     
-    let linkRelations:[LinkRelationship]
+    let linkRelations:[DocumentRelationship]
     
-    init(string:NSAttributedString, range:Range<String.Index>, linkRelations:[LinkRelationship]) {
+    init(string:NSAttributedString, range:Range<String.Index>, linkRelations:[DocumentRelationship]) {
         self.linkRelations=linkRelations
         super.init(name: "w:p", value: nil, attributes: ["rsidR":"00045791", "w:rsidRDefault":"008111DF"])
         self.addChildren(self.buildRuns(string: string, range: range))
@@ -44,8 +44,16 @@ class ParagraphElement:AEXMLElement{
             
             let affectedSubstring=subString.attributedSubstring(from: effectiveRange)
             
-            if let link=attributes[.link] as? URL, let relationShip=self.linkRelations.first(where: {$0.linkURL == link}){
-                elements.append(attributes.linkProperties(relationship: relationShip, affectedString: affectedSubstring))
+            if let link=attributes[.link] as? URL,
+               let relationship=self.linkRelations.first(where: {$0.linkURL == link}) as? LinkRelationship{
+                elements.append(attributes.linkProperties(relationship: relationship, affectedString: affectedSubstring))
+            }
+            else if let imageAttachement=attributes[.attachment] as? NSTextAttachment,
+                    let relationship=self.linkRelations.first(where: {rel in
+                guard let rel=rel as? ImageRelationship else {return false}
+                return rel.attachement == imageAttachement
+            }){
+                fatalError("not implemented")
             }
             else{
                 let runElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])

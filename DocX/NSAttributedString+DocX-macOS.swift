@@ -36,12 +36,14 @@ extension NSAttributedString:DocX{
         if self.containsRubyAnnotations || useBuiltIn == false{ // this is the main attribute that is not conserved by the cocoa exporter. there might, potentially, be others
             let docPath=docURL.appendingPathComponent("word").appendingPathComponent("document").appendingPathExtension("xml")
             let linkURL=docURL.appendingPathComponent("word").appendingPathComponent("_rels").appendingPathComponent("document.xml.rels")
+            let mediaURL=docURL.appendingPathComponent("word").appendingPathComponent("media", isDirectory: true)
+            
             let linkData=try Data(contentsOf: linkURL)
             var options=AEXMLOptions()
             options.parserSettings.shouldTrimWhitespace=false
             options.documentHeader.standalone="yes"
             let linkDocument=try AEXMLDocument(xml: linkData, options: options)
-            let linkRelations=self.prepareLinks(linkXML: linkDocument)
+            let linkRelations=self.prepareLinks(linkXML: linkDocument, mediaURL: mediaURL)
             let updatedLinks=linkDocument.xmlCompact
             try updatedLinks.write(to: linkURL, atomically: true, encoding: .utf8)
             

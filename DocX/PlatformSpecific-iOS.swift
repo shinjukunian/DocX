@@ -117,4 +117,10 @@ public extension NSAttributedString{
     
 }
 
+extension UIImage{
+    var pngData: Data?{
+        return self.pngData()
+    }
+}
+
 #endif

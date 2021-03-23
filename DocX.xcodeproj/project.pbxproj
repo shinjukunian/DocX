@@ -66,6 +66,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5A0AD5CE26099AA200C146D3 /* NSTextAttachement + Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextAttachement + Extensions.swift"; sourceTree = "<group>"; };
 		5A9F70A0223502D6008E967C /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A9F70A3223502D6008E967C /* DocX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocX.h; sourceTree = "<group>"; };
 		5A9F70A4223502D6008E967C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -170,6 +171,7 @@
 				5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */,
 				5AE834112237573F00E68343 /* FontElements.swift */,
 				5AE833EE2236852500E68343 /* PlatformSpecific-iOS.swift */,
+				5A0AD5CE26099AA200C146D3 /* NSTextAttachement + Extensions.swift */,
 				5AE833F02236861F00E68343 /* PlatformSpecific-macOS.swift */,
 				5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */,
 				5AE8340B22373A5200E68343 /* NSParagraphStyle+Elements.swift */,

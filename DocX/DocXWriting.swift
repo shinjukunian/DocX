@@ -9,6 +9,13 @@
 import Foundation
 import AEXML
 
+#if canImport(AppKit)
+import Cocoa
+#elseif canImport(UIKit)
+import UIKit
+#endif
+
+@available(OSX 10.11, *)
 extension DocX where Self : NSAttributedString{
     
     var pageDef:AEXMLElement{
@@ -35,14 +42,14 @@ extension DocX where Self : NSAttributedString{
     }
     
     
-    func buildParagraphs(paragraphRanges:[Range<String.Index>], linkRelations:[LinkRelationship])->[AEXMLElement]{
+    func buildParagraphs(paragraphRanges:[Range<String.Index>], linkRelations:[DocumentRelationship])->[AEXMLElement]{
         return paragraphRanges.map({range in
             let paragraph=ParagraphElement(string: self, range: range, linkRelations: linkRelations)
             return paragraph
         })
     }
     
-    func docXDocument(linkRelations:[LinkRelationship] = [LinkRelationship]())throws ->String{
+    func docXDocument(linkRelations:[DocumentRelationship] = [DocumentRelationship]())throws ->String{
         var options=AEXMLOptions()
         options.documentHeader.standalone="yes"
         options.escape=false
@@ -56,19 +63,22 @@ extension DocX where Self : NSAttributedString{
         return document.xmlCompact
     }
    
-    func prepareLinks(linkXML: AEXMLDocument) -> [LinkRelationship] {
+    func prepareLinks(linkXML: AEXMLDocument, mediaURL:URL) -> [DocumentRelationship] {
         var linkURLS=[URL]()
+        
+        let imageRelationships = prepareImages(linkXML: linkXML, mediaURL:mediaURL)
+        
         self.enumerateAttribute(.link, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
             if let link=attribute as? URL{
                 linkURLS.append(link)
             }
         })
-        guard linkURLS.count > 0 else {return [LinkRelationship]()}
+        guard linkURLS.count > 0 else {return imageRelationships}
         let relationships=linkXML["Relationships"]
         let presentIds=relationships.children.map({$0.attributes}).compactMap({$0["Id"]}).sorted(by: {s1, s2 in
             return s1.compare(s2, options: [.numeric], range: nil, locale: nil) == .orderedAscending
         })
-        guard let lastID=presentIds.last?.trimmingCharacters(in: .letters), let lastIdIDX=Int(lastID) else{return [LinkRelationship]()}
+        guard let lastID=presentIds.last?.trimmingCharacters(in: .letters), let lastIdIDX=Int(lastID) else{return imageRelationships}
         
         let linkRelationShips=linkURLS.enumerated().map({(arg)->LinkRelationship in
             let (idx, url) = arg
@@ -79,7 +89,46 @@ extension DocX where Self : NSAttributedString{
         
         relationships.addChildren(linkRelationShips.map({$0.element}))
         
-        return linkRelationShips
+        return linkRelationShips + imageRelationships
+    }
+    
+    func prepareImages(linkXML: AEXMLDocument, mediaURL:URL) -> [DocumentRelationship]{
+        var attachements=[NSTextAttachment]()
+        self.enumerateAttribute(.attachment, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
+            if let link=attribute as? NSTextAttachment{
+                attachements.append(link)
+            }
+        })
+        guard attachements.count > 0 else {return [ImageRelationship]()}
+        
+        let relationships=linkXML["Relationships"]
+        let presentIds=relationships.children.map({$0.attributes}).compactMap({$0["Id"]}).sorted(by: {s1, s2 in
+            return s1.compare(s2, options: [.numeric], range: nil, locale: nil) == .orderedAscending
+        })
+        guard let lastID=presentIds.last?.trimmingCharacters(in: .letters),
+              let lastIdIDX=Int(lastID) else{
+            return [ImageRelationship]()}
+        
+        if ((try? mediaURL.checkResourceIsReachable()) ?? false) == false{
+            try? FileManager.default.createDirectory(at: mediaURL, withIntermediateDirectories: false, attributes: [:])
+        }
+        
+        let imageRelationShips=attachements.enumerated().compactMap({(idx, attachement)->ImageRelationship? in
+            let newID="rId\(lastIdIDX+1+idx)"
+            let destURL=mediaURL.appendingPathComponent(newID)
+            
+            guard let data=attachement.imageData,
+                  ((try? data.write(to: destURL, options: .atomic)) != nil) else{
+                return nil
+            }
+
+            let relationShip=ImageRelationship(relationshipID: newID, linkURL: destURL, attachement: attachement)
+            return relationShip
+        })
+        
+        relationships.addChildren(imageRelationShips.map({$0.element}))
+        
+        return imageRelationShips
     }
     
 }
@@ -91,5 +140,11 @@ extension LinkRelationship{
         return AEXMLElement(name: "Relationship", value: nil, attributes: ["Id":self.relationshipID, "Type":"http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink", "Target":self.linkURL.absoluteString, "TargetMode":"External"])
     }
     
-    
+}
+
+extension ImageRelationship{
+    var element:AEXMLElement{
+        let linkString=self.linkURL.pathComponents.suffix(2).joined(separator: "/")
+        return AEXMLElement(name: "Relationship", value: nil, attributes: ["Id":self.relationshipID, "Type":"http://schemas.openxmlformats.org/officeDocument/2006/relationships/image", "Target":linkString])
+    }
 }
