@@ -37,6 +37,7 @@ public extension NSAttributedString.Key{
     static let breakType = NSAttributedString.Key.init("com.telethon.docx.attributedstringkey.break")
 }
 
+/// Encapsulates different break types in a document.
 public enum BreakType: String, Equatable{
     case wrap
     case page

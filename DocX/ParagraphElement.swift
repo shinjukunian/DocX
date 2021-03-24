@@ -22,8 +22,7 @@ class ParagraphElement:AEXMLElement{
     
     let linkRelations:[DocumentRelationship]
     
-    init(string:NSAttributedString, range:Range<String.Index>, linkRelations:[DocumentRelationship]) {
-    init(string:NSAttributedString, range:NSAttributedString.ParagraphRange, linkRelations:[LinkRelationship]) {
+    init(string:NSAttributedString, range:NSAttributedString.ParagraphRange, linkRelations:[DocumentRelationship]) {
         self.linkRelations=linkRelations
         super.init(name: "w:p", value: nil, attributes: ["rsidR":"00045791", "w:rsidRDefault":"008111DF"])
         self.addChildren(self.buildRuns(string: string, range: range))
