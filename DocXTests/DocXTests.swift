@@ -6,11 +6,9 @@
 //  Copyright © 2019 telethon k.k. All rights reserved.
 //
 
-import XCTest
-
-@testable import DocX
-
 #if os(macOS)
+import XCTest
+@testable import DocX
 import AppKit
 
 class DocXTests: XCTestCase {

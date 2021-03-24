@@ -403,7 +403,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "63"
             endingLineNumber = "63"
-            landmarkName = "extentInEMU"
+            landmarkName = "dataImageSize"
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
@@ -483,7 +483,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "38"
             endingLineNumber = "38"
-            landmarkName = "imageData"
+            landmarkName = "extentAttribute"
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
@@ -515,7 +515,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "50"
             endingLineNumber = "50"
-            landmarkName = "dataImageSize"
+            landmarkName = "imageData"
             landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>

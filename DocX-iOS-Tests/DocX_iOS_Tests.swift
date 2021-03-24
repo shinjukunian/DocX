@@ -6,11 +6,10 @@
 //  Copyright © 2019 telethon k.k. All rights reserved.
 //
 
-import XCTest
-@testable import DocX
-
 #if os(iOS)
 import MobileCoreServices
+import XCTest
+@testable import DocX
 
 @available(iOS 10.0, *)
 class DocX_iOS_Tests: XCTestCase {
