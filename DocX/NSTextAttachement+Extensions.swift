@@ -7,12 +7,14 @@
 //
 
 import Foundation
-#if canImport(AppKit)
+
+#if canImport(UIKit)
+import UIKit
+#else
 fileprivate typealias UIImage = NSImage
 import Cocoa
-#elseif canImport(UIKit)
-import UIKit
 #endif
+
 import AEXML
 
 
