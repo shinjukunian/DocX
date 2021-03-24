@@ -42,6 +42,7 @@ extension DocX where Self : NSAttributedString{
     }
     
     
+    func buildParagraphs(paragraphRanges:[ParagraphRange], linkRelations:[LinkRelationship]) -> [AEXMLElement]{
     func buildParagraphs(paragraphRanges:[Range<String.Index>], linkRelations:[DocumentRelationship])->[AEXMLElement]{
         return paragraphRanges.map({range in
             let paragraph=ParagraphElement(string: self, range: range, linkRelations: linkRelations)

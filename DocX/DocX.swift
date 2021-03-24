@@ -33,3 +33,12 @@ protocol DocX{
 public let docXUTIType="org.openxmlformats.wordprocessingml.document"
 
 
+public extension NSAttributedString.Key{
+    static let breakType = NSAttributedString.Key.init("com.telethon.docx.attributedstringkey.break")
+}
+
+public enum BreakType: String, Equatable{
+    case wrap
+    case page
+    case column
+}

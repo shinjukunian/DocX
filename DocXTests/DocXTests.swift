@@ -41,22 +41,7 @@ class DocXTests: XCTestCase {
     
     
     
-    
-    func testWriteXML(){
-        let string=""
-        let attributedString=NSAttributedString(string: string)
-        do{
-            let xml=try attributedString.docXDocument()
-            let url=self.tempURL.appendingPathComponent("testXML").appendingPathExtension("xml")
-            try xml.write(to: url, atomically: true, encoding: .utf8)
-
-        }
-        catch let error{
-            XCTFail(error.localizedDescription)
-        }
-    }
-    
-    func testWriteDocX(attributedString:NSAttributedString, useBuiltin:Bool = false){
+    func testWriteDocX(attributedString:NSAttributedString, useBuiltin:Bool = true){
         
         do{
             let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))").appendingPathExtension("docx")
@@ -309,6 +294,58 @@ Specifies the border displayed above a set of paragraphs which have the same set
         result.append(imageString)
         result.append(attributed)
         testWriteDocX(attributedString: result, useBuiltin: false)
+    }
+    
+    func testMultiPage() {
+        let string =
+        """
+This property contains the space (measured in points) added at the end of the paragraph to separate it from the following paragraph. This value is always nonnegative. The space between paragraphs is determined by adding the previous paragraph’s paragraphSpacing and the current paragraph’s paragraphSpacingBefore.
+Specifies the border displayed above a set of paragraphs which have the same set of paragraph border settings. Note that if the adjoining paragraph has identical border settings and a between border is specified, a single between border will be used instead of the bottom border for the first and a top border for the second.
+"""
+        
+       
+        let font=NSFont(name: "Helvetica", size: 13) ?? NSFont.systemFont(ofSize: 13)
+        
+        let attributed=NSMutableAttributedString(string: string, attributes: [.font:font])
+        let attr_break=NSAttributedString(string: "\r", attributes: [.breakType:BreakType.page])
+        
+        let result=NSMutableAttributedString()
+        result.append(attributed)
+        result.append(attr_break)
+        result.append(attributed)
+        
+        testWriteDocX(attributedString: result, useBuiltin: false)
+       
+    }
+    
+    func testMultiPageWriter() {
+        
+        let string =
+        """
+This property contains the space (measured in points) added at the end of the paragraph to separate it from the following paragraph. This value is always nonnegative. The space between paragraphs is determined by adding the previous paragraph’s paragraphSpacing and the current paragraph’s paragraphSpacingBefore.
+Specifies the border displayed above a set of paragraphs which have the same set of paragraph border settings. Note that if the adjoining paragraph has identical border settings and a between border is specified, a single between border will be used instead of the bottom border for the first and a top border for the second.
+"""
+        
+       
+        let font=NSFont(name: "Helvetica", size: 13) ?? NSFont.systemFont(ofSize: 13)
+        
+        let attributed=NSMutableAttributedString(string: string, attributes: [.font:font])
+        
+        let numPages=10
+        
+        let pages=Array(repeating: attributed, count: numPages)
+        
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributed.string.prefix(10))").appendingPathExtension("docx")
+        
+        do{
+            try DocXWriter.write(pages: pages, to: url)
+            
+        }
+        catch let error{
+            XCTFail(error.localizedDescription)
+        }
+        
+       
     }
     
 

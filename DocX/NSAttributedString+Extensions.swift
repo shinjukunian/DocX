@@ -14,10 +14,32 @@ import UIKit
 #endif
 
 extension NSAttributedString{
-    var paragraphRanges:[Range<String.Index>]{
-        var ranges=[Range<String.Index>]()
+    struct ParagraphRange{
+        let range: Range<String.Index>
+        let seperator:String
+        let breakType:BreakType
+    }
+    
+    
+    var paragraphRanges:[ParagraphRange]{
+        var ranges=[ParagraphRange]()
         self.string.enumerateSubstrings(in: self.string.startIndex..<self.string.endIndex, options: [.byParagraphs, .substringNotRequired], {_, range, rangeIncludingSeperators, _ in
-            ranges.append(range)
+            
+            let separatorRange=range.upperBound..<rangeIncludingSeperators.upperBound
+            let seperator=self.string[separatorRange]
+            let nsRange=NSRange(separatorRange, in: self.string)
+            
+            let paragraphRange:ParagraphRange
+            
+            if nsRange.length > 0,
+               let breakAttribute=self.attribute(.breakType, at: nsRange.location, effectiveRange: nil) as? BreakType{
+                paragraphRange=ParagraphRange(range: range, seperator: String(seperator), breakType: breakAttribute)
+            }
+            else{
+                paragraphRange=ParagraphRange(range: range, seperator: String(seperator), breakType: .wrap)
+            }
+            ranges.append(paragraphRange)
+            
         })
         return ranges
     }
