@@ -35,14 +35,14 @@ extension DocX where Self : NSAttributedString{
     }
     
     
-    func buildParagraphs(paragraphRanges:[Range<String.Index>], linkRelations:[LinkRelationship])->[AEXMLElement]{
+    func buildParagraphs(paragraphRanges:[ParagraphRange], linkRelations:[LinkRelationship]) -> [AEXMLElement]{
         return paragraphRanges.map({range in
             let paragraph=ParagraphElement(string: self, range: range, linkRelations: linkRelations)
             return paragraph
         })
     }
     
-    func docXDocument(linkRelations:[LinkRelationship] = [LinkRelationship]())throws ->String{
+    func docXDocument(linkRelations:[LinkRelationship] = [LinkRelationship]())throws -> String{
         var options=AEXMLOptions()
         options.documentHeader.standalone="yes"
         options.escape=false

@@ -22,17 +22,17 @@ class ParagraphElement:AEXMLElement{
     
     let linkRelations:[LinkRelationship]
     
-    init(string:NSAttributedString, range:Range<String.Index>, linkRelations:[LinkRelationship]) {
+    init(string:NSAttributedString, range:NSAttributedString.ParagraphRange, linkRelations:[LinkRelationship]) {
         self.linkRelations=linkRelations
         super.init(name: "w:p", value: nil, attributes: ["rsidR":"00045791", "w:rsidRDefault":"008111DF"])
         self.addChildren(self.buildRuns(string: string, range: range))
     }
     
     
-    fileprivate func buildRuns(string:NSAttributedString, range:Range<String.Index>)->[AEXMLElement]{
+    fileprivate func buildRuns(string:NSAttributedString, range:NSAttributedString.ParagraphRange)->[AEXMLElement]{
         
         var elements=[AEXMLElement]()
-        let subString=string.attributedSubstring(from: NSRange(range, in: string.string))
+        let subString=string.attributedSubstring(from: NSRange(range.range, in: string.string))
         
         guard subString.length>0 else{return [AEXMLElement]()}
         
@@ -69,6 +69,37 @@ class ParagraphElement:AEXMLElement{
             }
         })
         
+        if let breakElement=range.breakType.breakElement{
+            elements.append(breakElement)
+        }
+        
         return elements
     }
+}
+
+
+
+extension BreakType{
+    var breakElement:AEXMLElement?{
+        switch self {
+        case .wrap:
+            return nil
+        case .page, .column:
+            let runElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])
+            runElement.addChild(AEXMLElement(name: "w:br", value: nil, attributes: self.breakElementAttributes))
+            return runElement
+        }
+    }
+    
+    var breakElementAttributes:[String:String]{
+        switch self {
+        case .wrap:
+            return [:]
+        case .column:
+            return ["w:type":"column"]
+        case .page:
+            return ["w:type":"page"]
+        }
+    }
+    
 }
