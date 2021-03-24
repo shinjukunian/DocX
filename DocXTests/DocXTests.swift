@@ -8,7 +8,7 @@
 
 import XCTest
 
-@testable import DocX
+import DocX
 
 #if os(macOS)
 class DocXTests: XCTestCase {
@@ -40,21 +40,6 @@ class DocXTests: XCTestCase {
     }
     
     
-    
-    
-    func testWriteXML(){
-        let string=""
-        let attributedString=NSAttributedString(string: string)
-        do{
-            let xml=try attributedString.docXDocument()
-            let url=self.tempURL.appendingPathComponent("testXML").appendingPathExtension("xml")
-            try xml.write(to: url, atomically: true, encoding: .utf8)
-
-        }
-        catch let error{
-            XCTFail(error.localizedDescription)
-        }
-    }
     
     func testWriteDocX(attributedString:NSAttributedString, useBuiltin:Bool = true){
         

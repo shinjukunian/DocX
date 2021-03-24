@@ -18,6 +18,6 @@ public class DocXWriter{
             result.append(page)
         }
         
-        try result.writeDocX(to: url, useBuiltIn: false)
+        try result.writeDocX(to: url)
     }
 }

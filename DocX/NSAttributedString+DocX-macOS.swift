@@ -17,7 +17,7 @@ import AEXML
 extension NSAttributedString:DocX{
     
     @objc public func writeDocX(to url: URL) throws {
-        try self.writeDocX(to: url, useBuiltIn: true)
+        try self.writeDocX(to: url, useBuiltIn: false)
     }
     
     @objc public func writeDocX(to url: URL, useBuiltIn:Bool = true) throws{
