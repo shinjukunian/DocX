@@ -17,6 +17,11 @@ import AEXML
 extension NSAttributedString{
     
     
+    /// TextKit on macOS comes with its own, limited .docx exporter. This function allows you to select the _builtin_ or the _DocX_ exporter. The builtin exporter lacks support for some attributes (furigana, links, images).
+    /// - Parameters:
+    ///   - url: the destination url, e.g. ```myfolder/mydocument.docx```.
+    ///   - useBuiltIn: if _true_, the TextKit exporter will be used. If _false_ *DocX* will be used. For some attributes (furigana, links), *DocX* will fall back to the custom exporter.
+    /// - Throws: Throws for I/O errors.
     @objc public func writeDocX(to url: URL, useBuiltIn:Bool = true) throws{
         
         if useBuiltIn == false{

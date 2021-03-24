@@ -433,8 +433,8 @@
             filePath = "DocX/NSAttributedString+DocX-macOS.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "22"
-            endingLineNumber = "22"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
             landmarkName = "writeDocX(to:useBuiltIn:)"
             landmarkType = "7">
          </BreakpointContent>

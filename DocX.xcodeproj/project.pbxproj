@@ -30,6 +30,8 @@
 		5A9F711D223607A8008E967C /* NSAttributedString+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */; };
 		5AB10ECE232A451200F0B19F /* AEXML in Frameworks */ = {isa = PBXBuildFile; productRef = 5AB10ECD232A451200F0B19F /* AEXML */; };
 		5AB10ED0232A45BF00F0B19F /* AEXML in Frameworks */ = {isa = PBXBuildFile; productRef = 5AB10ECF232A45BF00F0B19F /* AEXML */; };
+		5AC6C9B5260ACCEB0059F7B0 /* DocXWriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC6C9B4260ACCEB0059F7B0 /* DocXWriting.swift */; };
+		5AC6C9B6260ACCEB0059F7B0 /* DocXWriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC6C9B4260ACCEB0059F7B0 /* DocXWriting.swift */; };
 		5AE5BE9B25EE283F009A152F /* NSAttributedString+DocX-macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BE22350300008E967C /* NSAttributedString+DocX-macOS.swift */; };
 		5AE5BEA025EE2847009A152F /* NSAttributedString+DocX-macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70BE22350300008E967C /* NSAttributedString+DocX-macOS.swift */; };
 		5AE833CE2236831500E68343 /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -94,6 +96,7 @@
 		5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyAnnotationElement.swift; sourceTree = "<group>"; };
 		5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
 		5AA95C7524A1C342005D0645 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
+		5AC6C9B4260ACCEB0059F7B0 /* DocXWriting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXWriting.swift; sourceTree = "<group>"; };
 		5AE833E32236831500E68343 /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+DocX.swift"; sourceTree = "<group>"; };
 		5AE833EE2236852500E68343 /* PlatformSpecific-iOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlatformSpecific-iOS.swift"; sourceTree = "<group>"; };
@@ -173,6 +176,7 @@
 				5AE833F2223688A400E68343 /* blank */,
 				5A9F70BF22350300008E967C /* DocumentRoot.swift */,
 				5A9F70BC22350300008E967C /* DocX.swift */,
+				5AC6C9B4260ACCEB0059F7B0 /* DocXWriting.swift */,
 				5A9F70BE22350300008E967C /* NSAttributedString+DocX-macOS.swift */,
 				5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */,
 				5A9F70BB22350300008E967C /* DocXWriting.swift */,
@@ -412,6 +416,7 @@
 				5AE8341B22375D9E00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
 				5AE5BE9B25EE283F009A152F /* NSAttributedString+DocX-macOS.swift in Sources */,
 				5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */,
+				5AC6C9B5260ACCEB0059F7B0 /* DocXWriting.swift in Sources */,
 				5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5A9F70C222350300008E967C /* DocX.swift in Sources */,
 				5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */,
@@ -444,6 +449,7 @@
 				5AE833DA2236831500E68343 /* RubyAnnotationElement.swift in Sources */,
 				5AE5BEA025EE2847009A152F /* NSAttributedString+DocX-macOS.swift in Sources */,
 				5AE833EC223683F000E68343 /* NSAttributedString+DocX.swift in Sources */,
+				5AC6C9B6260ACCEB0059F7B0 /* DocXWriting.swift in Sources */,
 				5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
 				5AE833DB2236831500E68343 /* DocX.swift in Sources */,
