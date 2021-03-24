@@ -9,10 +9,10 @@
 import Foundation
 import AEXML
 
-#if canImport(Cocoa)
-import Cocoa
-#elseif canImport(UIKit)
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
 #endif
 
 extension NSFont{
@@ -27,9 +27,9 @@ class FontElement:AEXMLElement{
     }
     
     init(font:NSFont) {
-        #if os(iOS)
+        #if canImport(UIKit)
         let name=font.familyName
-        #elseif os(macOS)
+        #elseif canImport(AppKit)
         let name=font.familyName ?? font.fontName
         #endif
         let attributes=["w:ascii":name, "w:eastAsia":name, "w:hAnsi":name, "w:cs":name]

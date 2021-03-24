@@ -17,7 +17,17 @@ import Cocoa
 
 import AEXML
 
-
+// a hackish overlay for watchOS to make the symbol available
+#if os(watchOS)
+struct NSTextAttachment: Equatable {
+    var image:UIImage?
+    var contents:Data?
+    var fileWrapper:FileWrapper?
+    init() {
+        fatalError()
+    }
+}
+#endif
 
 extension NSTextAttachment{
     

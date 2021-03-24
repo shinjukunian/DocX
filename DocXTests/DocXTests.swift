@@ -7,10 +7,12 @@
 //
 
 import XCTest
-import AppKit
+
 @testable import DocX
 
 #if os(macOS)
+import AppKit
+
 class DocXTests: XCTestCase {
 
     var tempURL:URL=URL(fileURLWithPath: "")

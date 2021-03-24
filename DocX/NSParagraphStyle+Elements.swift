@@ -9,10 +9,10 @@
 import Foundation
 import AEXML
 
-#if canImport(Cocoa)
-import Cocoa
-#elseif canImport(UIKit)
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
 #endif
 
 extension NSParagraphStyle{

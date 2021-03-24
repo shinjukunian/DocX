@@ -9,10 +9,10 @@
 import Foundation
 import AEXML
 
-#if canImport(AppKit)
-import Cocoa
-#elseif canImport(UIKit)
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
 #endif
 
 @available(OSX 10.11, *)

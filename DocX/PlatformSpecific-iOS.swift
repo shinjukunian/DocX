@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if os(iOS)
+#if canImport(UIKit)
 import UIKit
 
 typealias NSColor = UIColor
@@ -47,6 +47,50 @@ extension UIColor{
     }
 }
 
+extension UIImage{
+    var pngData: Data?{
+        return self.pngData()
+    }
+}
+
+#if !os(watchOS)
+@available(tvOS 13.0, *)
+@available(iOSApplicationExtension 12.0, *)
+public extension NSAttributedString{
+    
+    @available(iOS 13.0, *)
+    @objc func attributedString(for userInterfaceStyle:UIUserInterfaceStyle)->NSAttributedString{
+        let traitCollection=UITraitCollection(userInterfaceStyle: userInterfaceStyle)
+        
+        if traitCollection.hasDifferentColorAppearance(comparedTo: UITraitCollection.current){
+            let mutableSelf=NSMutableAttributedString(attributedString: self)
+            
+            traitCollection.performAsCurrent {
+                mutableSelf.enumerateAttributes(in: NSRange(location: 0, length: mutableSelf.length), options: [], using: {attribute, range, _ in
+                    if let foregroundColor=attribute[.foregroundColor] as? UIColor{
+                        let fixedColor=UIColor(cgColor: foregroundColor.cgColor)
+                        mutableSelf.addAttribute(.foregroundColor, value: fixedColor, range: range)
+                    }
+                    else if let backgroundColor=attribute[.backgroundColor] as? UIColor{
+                        let fixedColor=UIColor(cgColor: backgroundColor.cgColor)
+                        mutableSelf.addAttribute(.backgroundColor, value: fixedColor, range: range)
+                    }
+                })
+            }
+            
+            return mutableSelf
+        }
+        else{
+            return self
+        }
+    }
+    
+}
+#endif
+
+#endif
+
+#if os(iOS)
 
 @objc public class DocXActivityItemProvider:UIActivityItemProvider{
     
@@ -84,43 +128,6 @@ extension UIColor{
         }
     }
 }
-
-@available(iOSApplicationExtension 12.0, *)
-public extension NSAttributedString{
-    
-    @available(iOS 13.0, *)
-    @objc func attributedString(for userInterfaceStyle:UIUserInterfaceStyle)->NSAttributedString{
-        let traitCollection=UITraitCollection(userInterfaceStyle: userInterfaceStyle)
-        
-        if traitCollection.hasDifferentColorAppearance(comparedTo: UITraitCollection.current){
-            let mutableSelf=NSMutableAttributedString(attributedString: self)
-            
-            traitCollection.performAsCurrent {
-                mutableSelf.enumerateAttributes(in: NSRange(location: 0, length: mutableSelf.length), options: [], using: {attribute, range, _ in
-                    if let foregroundColor=attribute[.foregroundColor] as? UIColor{
-                        let fixedColor=UIColor(cgColor: foregroundColor.cgColor)
-                        mutableSelf.addAttribute(.foregroundColor, value: fixedColor, range: range)
-                    }
-                    else if let backgroundColor=attribute[.backgroundColor] as? UIColor{
-                        let fixedColor=UIColor(cgColor: backgroundColor.cgColor)
-                        mutableSelf.addAttribute(.backgroundColor, value: fixedColor, range: range)
-                    }
-                })
-            }
-            
-            return mutableSelf
-        }
-        else{
-            return self
-        }
-    }
-    
-}
-
-extension UIImage{
-    var pngData: Data?{
-        return self.pngData()
-    }
-}
-
 #endif
+
+

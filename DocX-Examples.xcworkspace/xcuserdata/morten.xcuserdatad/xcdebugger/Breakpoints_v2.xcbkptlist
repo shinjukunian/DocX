@@ -401,8 +401,8 @@
             filePath = "DocX/NSTextAttachement+Extensions.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
             landmarkName = "extentInEMU"
             landmarkType = "24">
          </BreakpointContent>
@@ -481,8 +481,8 @@
             filePath = "DocX/NSTextAttachement+Extensions.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
+            startingLineNumber = "38"
+            endingLineNumber = "38"
             landmarkName = "imageData"
             landmarkType = "24">
          </BreakpointContent>
@@ -513,8 +513,8 @@
             filePath = "DocX/NSTextAttachement+Extensions.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "48"
-            endingLineNumber = "48"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
             landmarkName = "dataImageSize"
             landmarkType = "24">
          </BreakpointContent>
