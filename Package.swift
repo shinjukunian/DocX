@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "DocX",
     platforms: [
-        .macOS(.v10_10),
+        .macOS(.v10_11),
         .iOS(.v10),
         .tvOS(.v9),
         .watchOS(.v3)
@@ -44,14 +44,15 @@ let package = Package(
             dependencies: ["DocX"],
             path: "DocXTests",
             exclude: ["Info.plist"],
-            resources: [.copy("blank.docx")]
+            resources: [.copy("blank.docx"), .copy("Picture1.png")]
         ),
         
         .testTarget(
             name: "DocX-iOS-Tests",
             dependencies: ["DocX"],
             path: "DocX-iOS-Tests",
-            exclude: ["Info.plist"]
+            exclude: ["Info.plist"],
+            resources: [.copy("Picture1.png")]
             )
 
     ]

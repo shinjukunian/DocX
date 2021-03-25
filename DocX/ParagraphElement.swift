@@ -7,10 +7,10 @@
 //
 
 import Foundation
-#if canImport(Cocoa)
-import Cocoa
-#elseif canImport(UIKit)
+#if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
 #endif
 import AEXML
 
@@ -20,19 +20,19 @@ class ParagraphElement:AEXMLElement{
         fatalError()
     }
     
-    let linkRelations:[LinkRelationship]
+    let linkRelations:[DocumentRelationship]
     
-    init(string:NSAttributedString, range:Range<String.Index>, linkRelations:[LinkRelationship]) {
+    init(string:NSAttributedString, range:NSAttributedString.ParagraphRange, linkRelations:[DocumentRelationship]) {
         self.linkRelations=linkRelations
         super.init(name: "w:p", value: nil, attributes: ["rsidR":"00045791", "w:rsidRDefault":"008111DF"])
         self.addChildren(self.buildRuns(string: string, range: range))
     }
     
     
-    fileprivate func buildRuns(string:NSAttributedString, range:Range<String.Index>)->[AEXMLElement]{
+    fileprivate func buildRuns(string:NSAttributedString, range:NSAttributedString.ParagraphRange)->[AEXMLElement]{
         
         var elements=[AEXMLElement]()
-        let subString=string.attributedSubstring(from: NSRange(range, in: string.string))
+        let subString=string.attributedSubstring(from: NSRange(range.range, in: string.string))
         
         guard subString.length>0 else{return [AEXMLElement]()}
         
@@ -44,8 +44,16 @@ class ParagraphElement:AEXMLElement{
             
             let affectedSubstring=subString.attributedSubstring(from: effectiveRange)
             
-            if let link=attributes[.link] as? URL, let relationShip=self.linkRelations.first(where: {$0.linkURL == link}){
-                elements.append(attributes.linkProperties(relationship: relationShip, affectedString: affectedSubstring))
+            if let link=attributes[.link] as? URL,
+               let relationship=self.linkRelations.first(where: {$0.linkURL == link}) as? LinkRelationship{
+                elements.append(attributes.linkProperties(relationship: relationship, affectedString: affectedSubstring))
+            }
+            else if let imageAttachement=attributes[.attachment] as? NSTextAttachment,
+                    let relationship=self.linkRelations.first(where: {rel in
+                guard let rel=rel as? ImageRelationship else {return false}
+                return rel.attachement == imageAttachement
+            }) as? ImageRelationship{
+                elements.append(relationship.attributeElement)
             }
             else{
                 let runElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])
@@ -69,6 +77,37 @@ class ParagraphElement:AEXMLElement{
             }
         })
         
+        if let breakElement=range.breakType.breakElement{
+            elements.append(breakElement)
+        }
+        
         return elements
     }
+}
+
+
+
+extension BreakType{
+    var breakElement:AEXMLElement?{
+        switch self {
+        case .wrap:
+            return nil
+        case .page, .column:
+            let runElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])
+            runElement.addChild(AEXMLElement(name: "w:br", value: nil, attributes: self.breakElementAttributes))
+            return runElement
+        }
+    }
+    
+    var breakElementAttributes:[String:String]{
+        switch self {
+        case .wrap:
+            return [:]
+        case .column:
+            return ["w:type":"column"]
+        case .page:
+            return ["w:type":"page"]
+        }
+    }
+    
 }

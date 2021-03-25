@@ -25,4 +25,13 @@ extension NSColor{
         
     }
 }
+
+extension NSImage{
+    var pngData: Data?{
+        if let tiff=self.tiffRepresentation, let bitmap=NSBitmapImageRep(data: tiff){
+            return bitmap.representation(using: .png, properties: [:])
+        }
+        return nil
+    }
+}
 #endif

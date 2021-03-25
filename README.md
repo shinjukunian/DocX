@@ -28,9 +28,20 @@ try? string.writeDocX(to: url)
 See the attached sample projects (for iOS and macOS) for usage and limitations.
 On iOS, DocX also includes a `UIActivityItemProvider` subclass (`DocXActivityItemProvider`) for exporting .docx files through `UIActivityViewController`.
 
+`NSAttributedString` has no concept of pagination. For manual pagination, use 
+
+```swift
+try DocXWriter.write(pages:[NSAttributedString], to url:URL)
+```
+to render each `NSAttributedString` as a separate page.
+
 ![Screenshot macOS](/images/screenshot_mac.jpg)
 
 A sample output on macOS opened in Word365.
+
+![Screenshot Lenna](/images/lenna.jpg)
+
+A sample output on macOS with an embedded image (via ```NSTextAttachment```). in the macOS sample application (which is a simple ```NSTextView```), this can be achieved using drag&drop. Note that there is little control over the placement of the image, the image will be inline with text. 
 
 ![Screenshot iOS](/images/screenshot_iOS.png)
 
@@ -39,7 +50,7 @@ Please note that Quicklook (on both platforms) only supports a limited number of
 
 ## Supported Attributes
 
-- most things in `NSAttributedString.Key` except
+- most things in `NSAttributedString.Key` (fonts, colors, underline, indents etc.) except
   - `NSAttributedString.Key.expansion`
   - `NSAttributedString.Key.kern`
   - `NSAttributedString.Key.ligature`
@@ -47,6 +58,7 @@ Please note that Quicklook (on both platforms) only supports a limited number of
   - `NSAttributedString.Key.superscript` (macOS only, doesnt really work for most fonts anyway)
   - `NSAttributedString.Key.textEffect`
 - `CTRubyAnnotation` for furigana (ruby) annotations in CoreText
+- `NSTextAttachment` embedded images (inline with text)
 
 Some attributes don't have a direct correspondence. For example `NSAttributedString` does (typically) not have the concept of a page size.  
 
