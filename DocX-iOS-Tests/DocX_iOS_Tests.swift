@@ -140,7 +140,7 @@ class DocX_iOS_Tests: XCTestCase {
         testWriteDocX(attributedString: attributed)
     }
     
-    func test山田電気FuriganaAttributed_ParagraphStyle_bold() {
+    func test山田電気FuriganaAttributed_ParagraphStyle_italic() {
         let attributed=yamadaDenkiString
         let style=NSParagraphStyle.default
         attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))

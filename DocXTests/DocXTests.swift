@@ -41,7 +41,7 @@ class DocXTests: XCTestCase {
     
     
     
-    func testWriteDocX(attributedString:NSAttributedString, useBuiltin:Bool = true){
+    func testWriteDocX(attributedString:NSAttributedString, useBuiltin:Bool = false){
         
         do{
             let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))").appendingPathExtension("docx")
