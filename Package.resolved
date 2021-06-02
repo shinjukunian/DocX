@@ -12,11 +12,11 @@
       },
       {
         "package": "ZipArchive",
-        "repositoryURL": "https://github.com/ZipArchive/ZipArchive.git",
+        "repositoryURL": "https://github.com/victor-pavlychko/ZipArchive.git",
         "state": {
-          "branch": null,
-          "revision": "23dc1a69b240420528de86a8720e85fb178b24da",
-          "version": "2.4.1"
+          "branch": "master",
+          "revision": "a025c677a8359c888736c195a0bb6b2ad414c31f",
+          "version": null
         }
       }
     ]

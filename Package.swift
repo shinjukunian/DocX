@@ -19,7 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "AEXML", url: "https://github.com/shinjukunian/AEXML.git", .branch("master")),
-        .package(url: "https://github.com/ZipArchive/ZipArchive.git", from: "2.3.0")
+        .package(name: "ZipArchive", url: "https://github.com/victor-pavlychko/ZipArchive.git", .branch("master")),
         
     ],
     targets: [
