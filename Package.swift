@@ -18,8 +18,11 @@ let package = Package(
             targets: ["DocX"]),
     ],
     dependencies: [
-        .package(name: "AEXML", url: "https://github.com/shinjukunian/AEXML.git", .branch("master")),
-        .package(name: "ZipArchive", url: "https://github.com/victor-pavlychko/ZipArchive.git", .revision("57b6c4814fa8608c10bfb059df651e1cba320524")),
+        .package(url: "https://github.com/shinjukunian/AEXML.git", .branch("master")),
+//        .package(name: "AEXML", url: "https://github.com/shinjukunian/AEXML.git", .branch("master")),
+        .package(url: "https://github.com/weichsel/ZIPFoundation.git", .upToNextMajor(from: "0.9.0")),
+
+//        .package(name: "ZipArchive", url: "https://github.com/victor-pavlychko/ZipArchive.git", .revision("57b6c4814fa8608c10bfb059df651e1cba320524")),
         
     ],
     targets: [
@@ -27,7 +30,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
 
         .target(name: "DocX",
-                dependencies: ["AEXML", "ZipArchive"],
+                dependencies: ["AEXML", "ZIPFoundation"],
                 path: "DocX",
                 exclude: ["Info.plist"],
                 sources: nil,

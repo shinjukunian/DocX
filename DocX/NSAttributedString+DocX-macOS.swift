@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ZipArchive
+import ZIPFoundation
 import AEXML
 
 
@@ -61,8 +61,8 @@ extension NSAttributedString{
         }
 
         let zipURL=tempURL.appendingPathComponent(UUID().uuidString).appendingPathExtension("zip")
-        let success=SSZipArchive.createZipFile(atPath: zipURL.path, withContentsOfDirectory: docURL.path, keepParentDirectory: false)
-        guard success == true else{throw DocXSavingErrors.compressionFailed}
+
+        try FileManager.default.zipItem(at: docURL, to: zipURL, shouldKeepParent: false, compressionMethod: .deflate, progress: nil)
     
         do{
             try FileManager.default.copyItem(at: zipURL, to: url)
