@@ -10,7 +10,7 @@ This library is used in [SimpleFurigana for macOS](https://itunes.apple.com/de/a
 ## Installation
 
 Add 
-```
+```swift
 .package(name: "DocX", url: "https://github.com/shinjukunian/DocX.git", .branch("master"))
 ```
 
@@ -65,7 +65,7 @@ Some attributes don't have a direct correspondence. For example `NSAttributedStr
 ## Dependencies
 
 - my fork of [AEXML](https://github.com/shinjukunian/AEXML), many thanks to the original author [tadija](https://github.com/tadija/AEXML)
-- [ZipArchive](https://github.com/ZipArchive/ZipArchive). I could not get any of the native Swift Zip libraries to work with the .docx folder structure.
+- [ZipFoundation](https://github.com/weichsel/ZIPFoundation)
 
 ## Alternatives
 
