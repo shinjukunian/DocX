@@ -228,6 +228,26 @@ class DocX_iOS_Tests: XCTestCase {
         result.append(imageString)
         testWriteDocX(attributedString: result)
     }
+    
+    @available(iOS 15, *)
+    func testAttributed(){
+        var att=AttributedString("Lorem ipsum dolor sit amet")
+        att.strokeColor = .green
+        att.strokeWidth = -2
+        att.font = UIFont(name: "Helvetica", size: 12)
+        att.foregroundColor = .gray
+        let title=String(att.characters.prefix(10))
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(title)").appendingPathExtension("docx")
+        print(url.absoluteString)
+        do{
+            try att.writeDocX(to: url)
+        }
+        catch let error{
+            XCTFail(error.localizedDescription)
+        }
+        
+    }
+    
 }
 
 #endif
