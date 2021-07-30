@@ -13,8 +13,9 @@ public class DocXWriter{
     /// - Parameters:
     ///   - pages: an array of NSAttributedStrings. A page break fill be inserted after each page.
     ///   - url: The destination of the resulting .docx, e.g. ```myfile.docx```
+    ///   - options: an optional instance of `DocXOptions`. This allows you to specify metadata for the document.
     /// - Throws: Throws errors for I/O.
-    public class func write(pages:[NSAttributedString], to url:URL) throws{
+    public class func write(pages:[NSAttributedString], to url:URL, options:DocXOptions = DocXOptions()) throws{
         guard let first=pages.first else {return}
         let result=NSMutableAttributedString(attributedString: first)
         let pageSeperator=NSAttributedString(string: "\r", attributes: [.breakType:BreakType.page])
@@ -24,6 +25,6 @@ public class DocXWriter{
             result.append(page)
         }
         
-        try result.writeDocX(to: url)
+        try result.writeDocX(to: url, options: options)
     }
 }

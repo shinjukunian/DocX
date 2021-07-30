@@ -78,7 +78,14 @@ extension DocX where Self : NSAttributedString{
         let presentIds=relationships.children.map({$0.attributes}).compactMap({$0["Id"]}).sorted(by: {s1, s2 in
             return s1.compare(s2, options: [.numeric], range: nil, locale: nil) == .orderedAscending
         })
-        guard let lastID=presentIds.last?.trimmingCharacters(in: .letters), let lastIdIDX=Int(lastID) else{return imageRelationships}
+        
+        let lastIdIDX:Int
+        if let lastID=presentIds.last?.trimmingCharacters(in: .letters){
+            lastIdIDX=Int(lastID) ?? 0
+        }
+        else{
+            lastIdIDX=0
+        }
         
         let linkRelationShips=linkURLS.enumerated().map({(arg)->LinkRelationship in
             let (idx, url) = arg
@@ -105,9 +112,15 @@ extension DocX where Self : NSAttributedString{
         let presentIds=relationships.children.map({$0.attributes}).compactMap({$0["Id"]}).sorted(by: {s1, s2 in
             return s1.compare(s2, options: [.numeric], range: nil, locale: nil) == .orderedAscending
         })
-        guard let lastID=presentIds.last?.trimmingCharacters(in: .letters),
-              let lastIdIDX=Int(lastID) else{
-            return [ImageRelationship]()}
+        
+        let lastIdIDX:Int
+        
+        if let lastID=presentIds.last?.trimmingCharacters(in: .letters){
+            lastIdIDX=Int(lastID) ?? 0
+        }
+        else{
+            lastIdIDX=0
+        }
         
         if ((try? mediaURL.checkResourceIsReachable()) ?? false) == false{
             try? FileManager.default.createDirectory(at: mediaURL, withIntermediateDirectories: false, attributes: [:])

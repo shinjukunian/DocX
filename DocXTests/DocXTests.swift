@@ -344,29 +344,79 @@ Specifies the border displayed above a set of paragraphs which have the same set
         catch let error{
             XCTFail(error.localizedDescription)
         }
-        
-       
     }
     
+    func testImageAndLinkMetaData() throws{
+        let longString = """
+        1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        let imageURL=URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
+        let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
+        let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
+        let attributed=NSMutableAttributedString(string: longString, attributes: [:])
+        attributed.addAttributes([.link:URL(string: "http://officeopenxml.com/index.php")!], range: NSRange(location: 2, length: 6))
+        let imageString=NSAttributedString(attachment: attachement)
+        let result=NSMutableAttributedString()
+        result.append(attributed)
+        result.append(imageString)
+        
+        var options=DocXOptions()
+        options.author="Barack Obama"
+        options.createdDate = .init(timeIntervalSinceNow: -100000)
+        options.keywords=["Lorem", "Ipsum", "a longer keyword"]
+        options.description="Take a bike out for a spin"
+        options.title="Lorem Ipsum String + Image"
+        options.subject="Test Metadata"
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(longString.prefix(10))").appendingPathExtension("docx")
+        try result.writeDocX(to: url, options: options)
+        var readAttributes:NSDictionary?=nil
+        let docXString=try NSAttributedString(url: url, options: [:], documentAttributes: &readAttributes)
+        guard let attributes=readAttributes as? [String:Any] else{
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(attributes[NSAttributedString.DocumentAttributeKey.documentType.rawValue] as! String, NSAttributedString.DocumentType.officeOpenXML.rawValue)
+        XCTAssertEqual(docXString.string.prefix(10), result.string.prefix(10))
+    }
     
-    @available(macOS 12, *)
-    func testAttributed(){
-        var att=AttributedString("Lorem ipsum dolor sit amet")
-        att.strokeColor = .green
-        att.strokeWidth = -2
-        att.font = NSFont(name: "Helvetica", size: 12)
-        att.foregroundColor = .gray
-        let title=String(att.characters.prefix(10))
-        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(title)").appendingPathExtension("docx")
-        print(url.absoluteString)
+    func testMichaelKnight(){
+        let font = NSFont(name: "Helvetica", size: 13)!
+        let string = NSAttributedString(string: "The Foundation For Law and Government favours Helvetica.", attributes: [.font: font])
+
+        var options = DocXOptions()
+        options.author = "Michael Knight"
+        options.title = "Helvetica Document"
+
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(string.string.prefix(10))").appendingPathExtension("docx")
         do{
-            try att.writeDocX(to: url)
+            try string.writeDocX(to: url, options:options)
         }
         catch let error{
             XCTFail(error.localizedDescription)
         }
         
     }
+    
+    
+    
+//    @available(macOS 12, *)
+//    func testAttributed(){
+//        var att=AttributedString("Lorem ipsum dolor sit amet")
+//        att.strokeColor = .green
+//        att.strokeWidth = -2
+//        att.font = NSFont(name: "Helvetica", size: 12)
+//        att.foregroundColor = .gray
+//        let title=String(att.characters.prefix(10))
+//        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(title)").appendingPathExtension("docx")
+//        print(url.absoluteString)
+//        do{
+//            try att.writeDocX(to: url)
+//        }
+//        catch let error{
+//            XCTFail(error.localizedDescription)
+//        }
+//        
+//    }
     
 
 }

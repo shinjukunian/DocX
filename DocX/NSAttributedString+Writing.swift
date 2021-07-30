@@ -11,7 +11,7 @@ import AEXML
 
 
 extension NSAttributedString{
-    func writeDocX_builtin(to url: URL) throws{
+    func writeDocX_builtin(to url: URL, options:DocXOptions = DocXOptions()) throws{
         let tempURL=try FileManager.default.url(for: .itemReplacementDirectory, in: .userDomainMask, appropriateFor: url, create: true)
         
         defer{
@@ -26,11 +26,14 @@ extension NSAttributedString{
         
         let linkURL=docURL.appendingPathComponent("word").appendingPathComponent("_rels").appendingPathComponent("document.xml.rels")
         let mediaURL=docURL.appendingPathComponent("word").appendingPathComponent("media", isDirectory: true)
+        let propsURL=docURL.appendingPathComponent("docProps").appendingPathComponent("core").appendingPathExtension("xml")
+        
+        
         let linkData=try Data(contentsOf: linkURL)
-        var options=AEXMLOptions()
-        options.parserSettings.shouldTrimWhitespace=false
-        options.documentHeader.standalone="yes"
-        let linkDocument=try AEXMLDocument(xml: linkData, options: options)
+        var docOptions=AEXMLOptions()
+        docOptions.parserSettings.shouldTrimWhitespace=false
+        docOptions.documentHeader.standalone="yes"
+        let linkDocument=try AEXMLDocument(xml: linkData, options: docOptions)
         let linkRelations=self.prepareLinks(linkXML: linkDocument, mediaURL: mediaURL)
         let updatedLinks=linkDocument.xmlCompact
         try updatedLinks.write(to: linkURL, atomically: true, encoding: .utf8)
@@ -38,6 +41,9 @@ extension NSAttributedString{
         let xmlData = try self.docXDocument(linkRelations: linkRelations)
         
         try xmlData.write(to: docPath, atomically: true, encoding: .utf8)
+        
+        let metaData=options.xml.xmlCompact
+        try metaData.write(to: propsURL, atomically: true, encoding: .utf8)
 
         let zipURL=tempURL.appendingPathComponent(UUID().uuidString).appendingPathExtension("zip")
         try FileManager.default.zipItem(at: docURL, to: zipURL, shouldKeepParent: false, compressionMethod: .deflate, progress: nil)
