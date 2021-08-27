@@ -321,8 +321,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "19"
             endingLineNumber = "19"
-            landmarkName = "runProperties"
-            landmarkType = "24">
+            landmarkName = "Dictionary"
+            landmarkType = "21">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -467,7 +467,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "98"
             endingLineNumber = "98"
-            landmarkName = "prepareImages(linkXML:mediaURL:)"
+            landmarkName = "prepareLinks(linkXML:mediaURL:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

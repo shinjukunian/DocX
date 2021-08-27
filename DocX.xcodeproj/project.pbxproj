@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A6B3DBA26D86CB1009F6859 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6B3DB926D86CB1009F6859 /* ZIPFoundation */; };
+		5A6B3DBD26D86CC0009F6859 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6B3DBC26D86CC0009F6859 /* ZIPFoundation */; };
+		5A6B3DBF26D86D33009F6859 /* DocXOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6B3DBE26D86D33009F6859 /* DocXOptions.swift */; };
+		5A6B3DC026D86D33009F6859 /* DocXOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6B3DBE26D86D33009F6859 /* DocXOptions.swift */; };
 		5A8406B52609DF1B002B8B34 /* NSAttributedString+Writing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406B42609DF1B002B8B34 /* NSAttributedString+Writing.swift */; };
 		5A8406B62609DF1B002B8B34 /* NSAttributedString+Writing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406B42609DF1B002B8B34 /* NSAttributedString+Writing.swift */; };
 		5A8406BC2609DF2B002B8B34 /* ImageRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406BB2609DF2B002B8B34 /* ImageRelationship.swift */; };
@@ -15,8 +19,6 @@
 		5A8406C72609DF39002B8B34 /* NSTextAttachement+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0AD5CE26099AA200C146D3 /* NSTextAttachement+Extensions.swift */; };
 		5A8406CD2609DF65002B8B34 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */; };
 		5A8406CE2609DF65002B8B34 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */; };
-		5A9754D623606CD90002B521 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9754D523606CD90002B521 /* ZipArchive */; };
-		5A9754E523606ED80002B521 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 5A9754E423606ED80002B521 /* ZipArchive */; };
 		5A9F70AA223502D6008E967C /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70A0223502D6008E967C /* DocX.framework */; };
 		5A9F70AF223502D6008E967C /* DocXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70AE223502D6008E967C /* DocXTests.swift */; };
 		5A9F70B1223502D6008E967C /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -77,6 +79,7 @@
 
 /* Begin PBXFileReference section */
 		5A0AD5CE26099AA200C146D3 /* NSTextAttachement+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextAttachement+Extensions.swift"; sourceTree = "<group>"; };
+		5A6B3DBE26D86D33009F6859 /* DocXOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXOptions.swift; sourceTree = "<group>"; };
 		5A8406B42609DF1B002B8B34 /* NSAttributedString+Writing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Writing.swift"; sourceTree = "<group>"; };
 		5A8406BB2609DF2B002B8B34 /* ImageRelationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRelationship.swift; sourceTree = "<group>"; };
 		5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
@@ -116,7 +119,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AB10ECE232A451200F0B19F /* AEXML in Frameworks */,
-				5A9754D623606CD90002B521 /* ZipArchive in Frameworks */,
+				5A6B3DBA26D86CB1009F6859 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,7 +136,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AB10ED0232A45BF00F0B19F /* AEXML in Frameworks */,
-				5A9754E523606ED80002B521 /* ZipArchive in Frameworks */,
+				5A6B3DBD26D86CC0009F6859 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -148,6 +151,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5A6B3DBB26D86CC0009F6859 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		5A9F7096223502D6008E967C = {
 			isa = PBXGroup;
 			children = (
@@ -156,6 +166,7 @@
 				5A9F70AD223502D6008E967C /* DocXTests */,
 				5AE833F922368A4500E68343 /* DocX-iOS-Tests */,
 				5A9F70A1223502D6008E967C /* Products */,
+				5A6B3DBB26D86CC0009F6859 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -177,6 +188,7 @@
 				5A9F70BF22350300008E967C /* DocumentRoot.swift */,
 				5A9F70BC22350300008E967C /* DocX.swift */,
 				5AC6C9B4260ACCEB0059F7B0 /* DocXWriting.swift */,
+				5A6B3DBE26D86D33009F6859 /* DocXOptions.swift */,
 				5AC6C9B7260AD4CF0059F7B0 /* DocXWriter.swift */,
 				5A9F70BE22350300008E967C /* NSAttributedString+DocX-macOS.swift */,
 				5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */,
@@ -256,7 +268,7 @@
 			name = DocX;
 			packageProductDependencies = (
 				5AB10ECD232A451200F0B19F /* AEXML */,
-				5A9754D523606CD90002B521 /* ZipArchive */,
+				5A6B3DB926D86CB1009F6859 /* ZIPFoundation */,
 			);
 			productName = DocX;
 			productReference = 5A9F70A0223502D6008E967C /* DocX.framework */;
@@ -296,7 +308,7 @@
 			name = "DocX-iOS";
 			packageProductDependencies = (
 				5AB10ECF232A45BF00F0B19F /* AEXML */,
-				5A9754E423606ED80002B521 /* ZipArchive */,
+				5A6B3DBC26D86CC0009F6859 /* ZIPFoundation */,
 			);
 			productName = DocX;
 			productReference = 5AE833E32236831500E68343 /* DocX.framework */;
@@ -353,7 +365,7 @@
 			mainGroup = 5A9F7096223502D6008E967C;
 			packageReferences = (
 				5AB10ECC232A451200F0B19F /* XCRemoteSwiftPackageReference "AEXML" */,
-				5A9754D423606CD90002B521 /* XCRemoteSwiftPackageReference "ZipArchive" */,
+				5A6B3DB826D86CB1009F6859 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			productRefGroup = 5A9F70A1223502D6008E967C /* Products */;
 			projectDirPath = "";
@@ -418,6 +430,7 @@
 				5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */,
 				5AC6C9B5260ACCEB0059F7B0 /* DocXWriting.swift in Sources */,
 				5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
+				5A6B3DBF26D86D33009F6859 /* DocXOptions.swift in Sources */,
 				5A9F70C222350300008E967C /* DocX.swift in Sources */,
 				5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */,
 				5A8406C22609DF38002B8B34 /* NSTextAttachement+Extensions.swift in Sources */,
@@ -451,6 +464,7 @@
 				5AE833EC223683F000E68343 /* NSAttributedString+DocX.swift in Sources */,
 				5AC6C9B6260ACCEB0059F7B0 /* DocXWriting.swift in Sources */,
 				5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
+				5A6B3DC026D86D33009F6859 /* DocXOptions.swift in Sources */,
 				5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
 				5AE833DB2236831500E68343 /* DocX.swift in Sources */,
 				5A8406C72609DF39002B8B34 /* NSTextAttachement+Extensions.swift in Sources */,
@@ -879,12 +893,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		5A9754D423606CD90002B521 /* XCRemoteSwiftPackageReference "ZipArchive" */ = {
+		5A6B3DB826D86CB1009F6859 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/victor-pavlychko/ZipArchive.git";
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation.git";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.0;
 			};
 		};
 		5AB10ECC232A451200F0B19F /* XCRemoteSwiftPackageReference "AEXML" */ = {
@@ -898,15 +912,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5A9754D523606CD90002B521 /* ZipArchive */ = {
+		5A6B3DB926D86CB1009F6859 /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5A9754D423606CD90002B521 /* XCRemoteSwiftPackageReference "ZipArchive" */;
-			productName = ZipArchive;
+			package = 5A6B3DB826D86CB1009F6859 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
 		};
-		5A9754E423606ED80002B521 /* ZipArchive */ = {
+		5A6B3DBC26D86CC0009F6859 /* ZIPFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 5A9754D423606CD90002B521 /* XCRemoteSwiftPackageReference "ZipArchive" */;
-			productName = ZipArchive;
+			package = 5A6B3DB826D86CB1009F6859 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
 		};
 		5AB10ECD232A451200F0B19F /* AEXML */ = {
 			isa = XCSwiftPackageProductDependency;
