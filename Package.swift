@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "DocX",
     platforms: [
-        .macOS(.v10_11),
+        .macOS(.v10_12),
         .iOS(.v10),
         .tvOS(.v9),
         .watchOS(.v3)

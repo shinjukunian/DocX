@@ -25,6 +25,22 @@ let url = URL(fileURLWithPath:"myPath")
 try? string.writeDocX(to: url)
 ```
 
+You can optionally specify MetaData using `DocXOptions`:
+
+```swift
+let font = NSFont(name: "Helvetica", size: 13)! //on macOS
+let string = NSAttributedString(string: "The Foundation For Law and Government favours Helvetica.", attributes: [.font: font])
+
+var options = DocXOptions()
+options.author = "Michael Knight"
+options.title = "Helvetica Document"
+
+let url = URL(fileURLWithPath:"myPath")
+
+try string.writeDocX(to: url, options:options)
+```
+
+
 See the attached sample projects (for iOS and macOS) for usage and limitations.
 On iOS, DocX also includes a `UIActivityItemProvider` subclass (`DocXActivityItemProvider`) for exporting .docx files through `UIActivityViewController`.
 
