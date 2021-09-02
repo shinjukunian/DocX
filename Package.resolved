@@ -5,9 +5,9 @@
         "package": "AEXML",
         "repositoryURL": "https://github.com/shinjukunian/AEXML.git",
         "state": {
-          "branch": "master",
-          "revision": "5ce38c72cb10c013145a72137ed8e98ca7e7127f",
-          "version": null
+          "branch": null,
+          "revision": "a2d80d39cfd126422bebd8d0a5201bf844432c4c",
+          "version": "4.6.1"
         }
       },
       {
