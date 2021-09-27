@@ -45,7 +45,7 @@ let package = Package(
             dependencies: ["DocX"],
             path: "DocXTests",
             exclude: ["Info.plist"],
-            resources: [.copy("blank.docx"), .copy("Picture1.png")]
+            resources: [.copy("blank.docx"), .copy("Picture1.png"), .copy("lenna.png")]
         ),
         
         .testTarget(
