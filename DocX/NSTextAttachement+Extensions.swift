@@ -69,7 +69,14 @@ extension NSTextAttachment{
     }
     
     var extentInEMU:Size{
-        let size=self.dataImageSize
+        let size:CGSize
+        if self.bounds != .zero{
+            size=self.bounds.size
+        }
+        else{
+            size=self.dataImageSize
+        }
+        
         let width=size.width
         let height=size.height
 
