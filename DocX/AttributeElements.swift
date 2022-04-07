@@ -33,7 +33,8 @@ extension Dictionary where Key == NSAttributedString.Key{
             else{
                 attributesElement.addChild(color.colorElement)
             }
-        }else if let strokeWidth=self[.strokeWidth] as? CGFloat, //stroke only without any fill color
+        }
+        else if let strokeWidth=self[.strokeWidth] as? CGFloat, //stroke only without any fill color
             strokeWidth != 0,
             let font=self[.font] as? NSFont{
             attributesElement.addChildren(self.outlineProperties(strokeWidth: strokeWidth, font:font))
@@ -52,11 +53,18 @@ extension Dictionary where Key == NSAttributedString.Key{
             let strikeThrough=NSUnderlineStyle(rawValue: style)
             attributesElement.addChild(strikeThrough.strikeThroughElement)
         }
+        if #available(macOS 12, iOS 15, *),
+           let markdown=self[AttributeScopes.FoundationAttributes.InlinePresentationIntentAttribute.key] as? NSNumber,
+           let intent=try? AttributeScopes.FoundationAttributes.InlinePresentationIntentAttribute.value(for: markdown),
+           let element=intent.element{
+            attributesElement.addChild(element)
+        }
         
-        
+
         return attributesElement
     }
-    
+
+
     func rubyAnnotationRunProperties(scaleFactor:CGFloat)->AEXMLElement{
         let element=self.runProperties
         if let font=self[.font] as? NSFont{

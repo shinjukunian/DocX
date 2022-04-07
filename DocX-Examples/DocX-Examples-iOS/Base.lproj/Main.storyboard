@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qEe-D2-w3S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qEe-D2-w3S">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -74,6 +74,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mWU-3W-fbA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="756.69642857142856"/>
+        </scene>
+        <!--Editor-->
+        <scene sceneID="4Uq-2Z-Dqk">
+            <objects>
+                <hostingController id="ENh-7o-XNh" customClass="MarkupEditingViewHosting" customModule="DocX_Examples_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Editor" id="JmK-8J-gVV"/>
+                </hostingController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1HU-et-4Lj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-512" y="1480"/>
         </scene>
         <!--Complex Text-->
         <scene sceneID="2b5-DW-wJX">
@@ -149,6 +159,7 @@
                     <connections>
                         <segue destination="SUp-9K-Z6i" kind="relationship" relationship="viewControllers" id="4aE-yx-yhl"/>
                         <segue destination="BGo-p8-0B3" kind="relationship" relationship="viewControllers" id="IKX-vS-w9A"/>
+                        <segue destination="ENh-7o-XNh" kind="relationship" relationship="viewControllers" id="PQV-ug-y5G"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eKi-6C-J25" userLabel="First Responder" sceneMemberID="firstResponder"/>

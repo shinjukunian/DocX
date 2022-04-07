@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A4FC7E927FEF5630063F796 /* AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FC7E827FEF5630063F796 /* AttributedString.swift */; };
+		5A4FC7EA27FEF5630063F796 /* AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FC7E827FEF5630063F796 /* AttributedString.swift */; };
 		5A6B3DBA26D86CB1009F6859 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6B3DB926D86CB1009F6859 /* ZIPFoundation */; };
 		5A6B3DBD26D86CC0009F6859 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6B3DBC26D86CC0009F6859 /* ZIPFoundation */; };
 		5A6B3DBF26D86D33009F6859 /* DocXOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6B3DBE26D86D33009F6859 /* DocXOptions.swift */; };
@@ -79,6 +81,7 @@
 
 /* Begin PBXFileReference section */
 		5A0AD5CE26099AA200C146D3 /* NSTextAttachement+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextAttachement+Extensions.swift"; sourceTree = "<group>"; };
+		5A4FC7E827FEF5630063F796 /* AttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedString.swift; sourceTree = "<group>"; };
 		5A6B3DBE26D86D33009F6859 /* DocXOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXOptions.swift; sourceTree = "<group>"; };
 		5A8406B42609DF1B002B8B34 /* NSAttributedString+Writing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Writing.swift"; sourceTree = "<group>"; };
 		5A8406BB2609DF2B002B8B34 /* ImageRelationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRelationship.swift; sourceTree = "<group>"; };
@@ -97,7 +100,6 @@
 		5A9F70F822350DDE008E967C /* AttributeElements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributeElements.swift; sourceTree = "<group>"; };
 		5A9F70FA22354F1C008E967C /* RubyAnnotationElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RubyAnnotationElement.swift; sourceTree = "<group>"; };
 		5A9F711C223607A8008E967C /* NSAttributedString+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Extensions.swift"; sourceTree = "<group>"; };
-		5AA95C7524A1C342005D0645 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = SOURCE_ROOT; };
 		5AC6C9B4260ACCEB0059F7B0 /* DocXWriting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXWriting.swift; sourceTree = "<group>"; };
 		5AC6C9B7260AD4CF0059F7B0 /* DocXWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXWriter.swift; sourceTree = "<group>"; };
 		5AE833E32236831500E68343 /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,7 +163,6 @@
 		5A9F7096223502D6008E967C = {
 			isa = PBXGroup;
 			children = (
-				5AA95C7524A1C342005D0645 /* Package.swift */,
 				5A9F70A2223502D6008E967C /* DocX */,
 				5A9F70AD223502D6008E967C /* DocXTests */,
 				5AE833F922368A4500E68343 /* DocX-iOS-Tests */,
@@ -205,6 +206,7 @@
 				5A8406B42609DF1B002B8B34 /* NSAttributedString+Writing.swift */,
 				5A8406BB2609DF2B002B8B34 /* ImageRelationship.swift */,
 				5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */,
+				5A4FC7E827FEF5630063F796 /* AttributedString.swift */,
 				5A9F70A3223502D6008E967C /* DocX.h */,
 				5A9F70A4223502D6008E967C /* Info.plist */,
 			);
@@ -430,6 +432,7 @@
 				5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */,
 				5AC6C9B5260ACCEB0059F7B0 /* DocXWriting.swift in Sources */,
 				5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
+				5A4FC7E927FEF5630063F796 /* AttributedString.swift in Sources */,
 				5A6B3DBF26D86D33009F6859 /* DocXOptions.swift in Sources */,
 				5A9F70C222350300008E967C /* DocX.swift in Sources */,
 				5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */,
@@ -464,6 +467,7 @@
 				5AE833EC223683F000E68343 /* NSAttributedString+DocX.swift in Sources */,
 				5AC6C9B6260ACCEB0059F7B0 /* DocXWriting.swift in Sources */,
 				5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
+				5A4FC7EA27FEF5630063F796 /* AttributedString.swift in Sources */,
 				5A6B3DC026D86D33009F6859 /* DocXOptions.swift in Sources */,
 				5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
 				5AE833DB2236831500E68343 /* DocX.swift in Sources */,

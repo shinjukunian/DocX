@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5A33580923A1455000C63CFC /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A33580823A1455000C63CFC /* DocX.framework */; };
 		5A33580A23A1455000C63CFC /* DocX.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5A33580823A1455000C63CFC /* DocX.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5A4FC7E727FEF4200063F796 /* MarkupEditingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FC7E627FEF4200063F796 /* MarkupEditingViewController.swift */; };
 		5AE8343F2237AF2600E68343 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8343E2237AF2600E68343 /* AppDelegate.swift */; };
 		5AE834412237AF2600E68343 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE834402237AF2600E68343 /* ViewController.swift */; };
 		5AE834432237AF2900E68343 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AE834422237AF2900E68343 /* Assets.xcassets */; };
@@ -53,6 +54,7 @@
 
 /* Begin PBXFileReference section */
 		5A33580823A1455000C63CFC /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A4FC7E627FEF4200063F796 /* MarkupEditingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkupEditingViewController.swift; sourceTree = "<group>"; };
 		5AE8343B2237AF2600E68343 /* DocX-Examples-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DocX-Examples-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AE8343E2237AF2600E68343 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5AE834402237AF2600E68343 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				5AE834A22237BF9800E68343 /* Assets.xcassets */,
 				5AE834A42237BF9800E68343 /* LaunchScreen.storyboard */,
 				5AE834A72237BF9800E68343 /* Info.plist */,
+				5A4FC7E627FEF4200063F796 /* MarkupEditingViewController.swift */,
 			);
 			path = "DocX-Examples-iOS";
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AE834B42237DCF900E68343 /* ComplexTextViewController.swift in Sources */,
+				5A4FC7E727FEF4200063F796 /* MarkupEditingViewController.swift in Sources */,
 				5AE8349E2237BF9700E68343 /* TextViewViewController.swift in Sources */,
 				5AE8349C2237BF9700E68343 /* AppDelegate.swift in Sources */,
 			);

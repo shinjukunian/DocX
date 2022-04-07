@@ -214,6 +214,8 @@ class DocX_iOS_Tests: XCTestCase {
         
     }
     
+#if SWIFT_PACKAGE
+
     func testImage() throws{
         let longString = """
             1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -228,6 +230,7 @@ class DocX_iOS_Tests: XCTestCase {
         result.append(imageString)
         testWriteDocX(attributedString: result)
     }
+#endif
     
     @available(iOS 15, *)
     func testAttributed(){
@@ -246,6 +249,27 @@ class DocX_iOS_Tests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
         
+    }
+    
+    @available(iOS 15, *)
+    func testMarkdown()throws{
+        let mD="~~This~~ is a **Markdown** *string*."
+        let att=try AttributedString(markdown: mD)
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Markdown")").appendingPathExtension("docx")
+        try att.writeDocX(to: url)
+    }
+    
+    @available(iOS 15, *)
+    func testMarkdown_link()throws{
+        let mD =
+"""
+~~This~~ is a **Markdown** *string*.\\
+And this is a [link](http://www.example.com).
+"""
+                             
+        let att=try AttributedString(markdown: mD)
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Markdown")").appendingPathExtension("docx")
+        try att.writeDocX(to: url)
     }
     
 }

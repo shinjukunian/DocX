@@ -421,24 +421,46 @@ Specifies the border displayed above a set of paragraphs which have the same set
     
     
     
-//    @available(macOS 12, *)
-//    func testAttributed(){
-//        var att=AttributedString("Lorem ipsum dolor sit amet")
-//        att.strokeColor = .green
-//        att.strokeWidth = -2
-//        att.font = NSFont(name: "Helvetica", size: 12)
-//        att.foregroundColor = .gray
-//        let title=String(att.characters.prefix(10))
-//        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(title)").appendingPathExtension("docx")
-//        print(url.absoluteString)
-//        do{
-//            try att.writeDocX(to: url)
-//        }
-//        catch let error{
-//            XCTFail(error.localizedDescription)
-//        }
-//        
-//    }
+    @available(macOS 12, *)
+    func testAttributed(){
+        var att=AttributedString("Lorem ipsum dolor sit amet")
+        att.strokeColor = .green
+        att.strokeWidth = -2
+        att.font = NSFont(name: "Helvetica", size: 12)
+        att.foregroundColor = .gray
+        let title=String(att.characters.prefix(10))
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(title)").appendingPathExtension("docx")
+        print(url.absoluteString)
+        do{
+            try att.writeDocX(to: url)
+        }
+        catch let error{
+            XCTFail(error.localizedDescription)
+        }
+        
+    }
+    
+    @available(macOS 12, *)
+    
+    func testMarkdown()throws{
+        let mD="~~This~~ is a **Markdown** *string*."
+        let att=try AttributedString(markdown: mD)
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Markdown")").appendingPathExtension("docx")
+        try att.writeDocX(to: url)
+    }
+    
+    @available(macOS 12, *)
+    func testMarkdown_linkNewline()throws{
+        let mD =
+"""
+~~This~~ is a **Markdown** *string*.\\
+And this is a [link](http://www.example.com).
+"""
+                             
+        let att=try AttributedString(markdown: mD)
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Markdown")").appendingPathExtension("docx")
+        try att.writeDocX(to: url)
+    }
     
 
 }
