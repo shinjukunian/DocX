@@ -26,6 +26,23 @@ let string = NSAttributedString(string: "This is a string", attributes: [.font: 
 let url = URL(fileURLWithPath:"myPath")
 try? string.writeDocX(to: url)
 ```
+Starting from iOS 15 / macOS 12, you can use the new `AttributedString`.
+
+```swift
+var att=AttributedString("Lorem ipsum dolor sit amet")
+att.font = NSFont(name: "Helvetica", size: 12)
+att[att.range(of: "Lorem")!].backgroundColor = .blue
+let url = URL(fileURLWithPath:"myPath")
+try att.writeDocX(to: url)
+```
+
+Naturally, this works for Markdown as well:
+
+```swift
+let mD="~~This~~ is a **Markdown** *string*."
+let att=try AttributedString(markdown: mD)
+try att.writeDocX(to: url)
+```
 
 You can optionally specify MetaData using `DocXOptions`:
 
@@ -38,10 +55,8 @@ options.author = "Michael Knight"
 options.title = "Helvetica Document"
 
 let url = URL(fileURLWithPath:"myPath")
-
 try string.writeDocX(to: url, options:options)
 ```
-
 
 See the attached sample projects (for iOS and macOS) for usage and limitations.
 On iOS, DocX also includes a `UIActivityItemProvider` subclass (`DocXActivityItemProvider`) for exporting .docx files through `UIActivityViewController`.
@@ -77,6 +92,8 @@ Please note that Quicklook (on both platforms) only supports a limited number of
   - `NSAttributedString.Key.textEffect`
 - `CTRubyAnnotation` for furigana (ruby) annotations in CoreText
 - `NSTextAttachment` embedded images (inline with text)
+
+For `AttributedString`, `DocX` supports the attributes present in `NSAttributedString`, i.e. most attributes in `AttributeScopes.AppKitAttributes` or `AttributeScopes.UIKitAttributes` (see above for omissions). For `AttributedStrings` initialized from Markdown (`AttributeScopes.FoundationAttributes`), `DocX` supports links (`AttributeScopes.FoundationAttributes.LinkAttribute`), **bold**, *italic*, and ~~strikethrough~~ (`AttributeScopes.FoundationAttributes.InlinePresentationIntentAttribute`), and inline images (`AttributeScopes.FoundationAttributes.ImageURLAttribute`). Please note that images are not rendered by `SwiftUI`'s `Text`.
 
 Some attributes don't have a direct correspondence. For example `NSAttributedString` does (typically) not have the concept of a page size.  
 
