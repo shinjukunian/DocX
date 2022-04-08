@@ -462,6 +462,41 @@ And this is a [link](http://www.example.com).
         try att.writeDocX(to: url)
     }
     
+   
+    
+    @available(macOS 12, *)
+    func testMarkdown_Image()throws{
+        
+#if SWIFT_PACKAGE
+        let bundle=Bundle.module
+#else
+        let bundle=Bundle(for: DocXTests.self)
+#endif
+        
+        let url=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension: "md"))
+
+        let att=try AttributedString(contentsOf: url, baseURL: url.deletingLastPathComponent())
+        let imageRange=try XCTUnwrap(att.range(of: "This is an image"))
+        let imageURL=try XCTUnwrap(att[imageRange].imageURL)
+        let imageURLInBundle=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension:"png"))
+        XCTAssertEqual(imageURL.absoluteString, imageURLInBundle.absoluteString)
+        let temp=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Markdown_image")").appendingPathExtension("docx")
+        try att.writeDocX(to: temp)
+    }
+    
+    @available(macOS 12, *)
+    func testMarkdown_mixed()throws{
+        let mD =
+"""
+~~This~~ is a **Markdown** *string*.\\
+And this is a [link](http://www.example.com).
+"""
+                             
+        var att=try AttributedString(markdown: mD)
+        att[att.range(of: "This")!].foregroundColor = .red
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Markdown")").appendingPathExtension("docx")
+        try att.writeDocX(to: url)
+    }
 
 }
 

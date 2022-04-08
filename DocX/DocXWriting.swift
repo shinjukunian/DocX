@@ -106,6 +106,19 @@ extension DocX where Self : NSAttributedString{
                 attachements.append(link)
             }
         })
+        
+        if #available(macOS 12.0, iOS 15.0, *) {
+            self.enumerateAttribute(.imageURL, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
+                if let link=attribute as? URL,
+                   let wrapper=try? FileWrapper(url: link){
+                    let attachement=NSTextAttachment(fileWrapper: wrapper)
+                    attachements.append(attachement)
+                }
+            })
+        }
+            
+        
+        
         guard attachements.count > 0 else {return [ImageRelationship]()}
         
         let relationships=linkXML["Relationships"]

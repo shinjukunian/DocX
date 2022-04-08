@@ -6,6 +6,7 @@
 //  Copyright © 2022 telethon k.k. All rights reserved.
 //
 
+import Foundation
 import SwiftUI
 import DocX
 
@@ -19,9 +20,10 @@ struct DocumentItem:Equatable,Identifiable,Hashable{
 @available(iOS 15, *)
 struct MarkupEditingView: View {
     
-    @State private var text:String = "This is a **Markdown** _string_."
+    @State var text:String = "This is a **Markdown** _string_."
     @State private var showPreview = false
     @State private var attributedText:AttributedString?
+    
     @State private var item:DocumentItem?
     
     var body: some View {

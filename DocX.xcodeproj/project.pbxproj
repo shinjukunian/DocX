@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		5A4FC7E927FEF5630063F796 /* AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FC7E827FEF5630063F796 /* AttributedString.swift */; };
 		5A4FC7EA27FEF5630063F796 /* AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FC7E827FEF5630063F796 /* AttributedString.swift */; };
+		5A4FC7F827FFB4630063F796 /* lenna.md in Resources */ = {isa = PBXBuildFile; fileRef = 5A4FC7F727FFB4630063F796 /* lenna.md */; };
+		5A4FC7FA27FFB46C0063F796 /* lenna.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A4FC7F927FFB46C0063F796 /* lenna.png */; };
+		5A4FC7FC27FFB6240063F796 /* Picture1.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A4FC7FB27FFB6240063F796 /* Picture1.png */; };
+		5A4FC7FD27FFB6430063F796 /* lenna.md in Resources */ = {isa = PBXBuildFile; fileRef = 5A4FC7F727FFB4630063F796 /* lenna.md */; };
+		5A4FC7FE27FFB6460063F796 /* lenna.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A4FC7F927FFB46C0063F796 /* lenna.png */; };
 		5A6B3DBA26D86CB1009F6859 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6B3DB926D86CB1009F6859 /* ZIPFoundation */; };
 		5A6B3DBD26D86CC0009F6859 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 5A6B3DBC26D86CC0009F6859 /* ZIPFoundation */; };
 		5A6B3DBF26D86D33009F6859 /* DocXOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6B3DBE26D86D33009F6859 /* DocXOptions.swift */; };
@@ -82,6 +87,9 @@
 /* Begin PBXFileReference section */
 		5A0AD5CE26099AA200C146D3 /* NSTextAttachement+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextAttachement+Extensions.swift"; sourceTree = "<group>"; };
 		5A4FC7E827FEF5630063F796 /* AttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedString.swift; sourceTree = "<group>"; };
+		5A4FC7F727FFB4630063F796 /* lenna.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = lenna.md; sourceTree = "<group>"; };
+		5A4FC7F927FFB46C0063F796 /* lenna.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lenna.png; sourceTree = "<group>"; };
+		5A4FC7FB27FFB6240063F796 /* Picture1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Picture1.png; path = DocXTests/Picture1.png; sourceTree = SOURCE_ROOT; };
 		5A6B3DBE26D86D33009F6859 /* DocXOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXOptions.swift; sourceTree = "<group>"; };
 		5A8406B42609DF1B002B8B34 /* NSAttributedString+Writing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Writing.swift"; sourceTree = "<group>"; };
 		5A8406BB2609DF2B002B8B34 /* ImageRelationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRelationship.swift; sourceTree = "<group>"; };
@@ -216,6 +224,8 @@
 		5A9F70AD223502D6008E967C /* DocXTests */ = {
 			isa = PBXGroup;
 			children = (
+				5A4FC7F727FFB4630063F796 /* lenna.md */,
+				5A4FC7F927FFB46C0063F796 /* lenna.png */,
 				5A9F70C62235031B008E967C /* blank.docx */,
 				5A9F70AE223502D6008E967C /* DocXTests.swift */,
 				5A9F70B0223502D6008E967C /* Info.plist */,
@@ -226,6 +236,7 @@
 		5AE833F922368A4500E68343 /* DocX-iOS-Tests */ = {
 			isa = PBXGroup;
 			children = (
+				5A4FC7FB27FFB6240063F796 /* Picture1.png */,
 				5AE833FA22368A4500E68343 /* DocX_iOS_Tests.swift */,
 				5AE833FC22368A4500E68343 /* Info.plist */,
 			);
@@ -395,6 +406,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A9F70C72235031B008E967C /* blank.docx in Resources */,
+				5A4FC7F827FFB4630063F796 /* lenna.md in Resources */,
+				5A4FC7FA27FFB46C0063F796 /* lenna.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +423,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A4FC7FC27FFB6240063F796 /* Picture1.png in Resources */,
+				5A4FC7FD27FFB6430063F796 /* lenna.md in Resources */,
+				5A4FC7FE27FFB6460063F796 /* lenna.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

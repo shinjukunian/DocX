@@ -53,6 +53,13 @@ extension UIImage{
     }
 }
 
+extension NSTextAttachment{
+    convenience init(fileWrapper:FileWrapper){
+        self.init()
+        self.fileWrapper=fileWrapper
+    }
+}
+
 #if !os(watchOS)
 @available(tvOS 13.0, *)
 @available(iOSApplicationExtension 12.0, *)

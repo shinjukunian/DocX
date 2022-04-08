@@ -8,8 +8,7 @@
 import Foundation
 import AEXML
 
-@available(macOS 12, *)
-@available(iOS 15, *)
+@available(macOS 12, iOS 15, *)
 extension AttributedString{
     
     public func writeDocX(to url: URL) throws{
@@ -28,16 +27,18 @@ extension AttributedString{
 }
 
 
-@available(macOS 12, *)
-@available(iOS 15, *)
-@available(iOSApplicationExtension 15, *)
+@available(macOS 12,iOS 15, *)
 extension AttributeScopes.FoundationAttributes.InlinePresentationIntentAttribute{
     static let key:NSAttributedString.Key = NSAttributedString.Key(rawValue: AttributeScopes.FoundationAttributes.InlinePresentationIntentAttribute.name)
 }
 
-@available(macOS 12.0, *)
-@available(iOS 15.0, *)
-@available(iOSApplicationExtension 15.0, *)
+@available(macOS 12, iOS 15, *)
+extension AttributeScopes.FoundationAttributes.ImageURLAttribute{
+    static let key:NSAttributedString.Key = NSAttributedString.Key(rawValue: AttributeScopes.FoundationAttributes.ImageURLAttribute.name)
+}
+
+
+@available(macOS 12, iOS 15, *)
 extension InlinePresentationIntent{
     var element:AEXMLElement?{
         switch self{
