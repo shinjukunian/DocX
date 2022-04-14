@@ -214,11 +214,17 @@ class DocX_iOS_Tests: XCTestCase {
         
     }
     
+
+
     func testImage() throws{
         let longString = """
             1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         """
+#if SWIFT_PACKAGE
         let imageURL=try XCTUnwrap(Bundle.module.url(forResource: "Picture1", withExtension: "png"))
+#else
+        let imageURL=try XCTUnwrap(Bundle(for: DocX_iOS_Tests.self).url(forResource: "Picture1", withExtension: "png"))
+#endif
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
         let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
         let attributed=NSAttributedString(string: longString, attributes: [.foregroundColor: NSColor.green])
@@ -228,6 +234,7 @@ class DocX_iOS_Tests: XCTestCase {
         result.append(imageString)
         testWriteDocX(attributedString: result)
     }
+
     
     @available(iOS 15, *)
     func testAttributed(){
@@ -246,6 +253,47 @@ class DocX_iOS_Tests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
         
+    }
+    
+    @available(iOS 15, *)
+    func testMarkdown()throws{
+        let mD="~~This~~ is a **Markdown** *string*."
+        let att=try AttributedString(markdown: mD)
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Markdown")").appendingPathExtension("docx")
+        try att.writeDocX(to: url)
+    }
+    
+    @available(iOS 15, *)
+    func testMarkdown_link()throws{
+        let mD =
+"""
+~~This~~ is a **Markdown** *string*.\\
+And this is a [link](http://www.example.com).
+"""
+                             
+        let att=try AttributedString(markdown: mD)
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Markdown")").appendingPathExtension("docx")
+        try att.writeDocX(to: url)
+    }
+    
+    @available(iOS 15, *)
+    func testMarkdown_Image()throws{
+        
+#if SWIFT_PACKAGE
+        let bundle=Bundle.module
+#else
+        let bundle=Bundle(for: DocX_iOS_Tests.self)
+#endif
+        
+        let url=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension: "md"))
+
+        let att=try AttributedString(contentsOf: url, baseURL: url.deletingLastPathComponent())
+        let imageRange=try XCTUnwrap(att.range(of: "This is an image"))
+        let imageURL=try XCTUnwrap(att[imageRange].imageURL)
+        let imageURLInBundle=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension:"png"))
+        XCTAssertEqual(imageURL.absoluteString, imageURLInBundle.absoluteString)
+        let temp=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Markdown_image")").appendingPathExtension("docx")
+        try att.writeDocX(to: temp)
     }
     
 }

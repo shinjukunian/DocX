@@ -55,6 +55,15 @@ class ParagraphElement:AEXMLElement{
             }) as? ImageRelationship{
                 elements.append(relationship.attributeElement)
             }
+            else if #available(macOS 12.0,iOS 15.0, *) ,
+                    let imageURLAttachement=attributes[.imageURL] as? URL,
+                    let relationship=self.linkRelations.first(where: {rel in
+                        guard let rel=rel as? ImageRelationship else {return false}
+                        return rel.attachement.fileWrapper?.matchesContents(of: imageURLAttachement) ?? false
+                    }) as? ImageRelationship{
+                elements.append(relationship.attributeElement)
+            }
+            
             else{
                 let runElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])
                 

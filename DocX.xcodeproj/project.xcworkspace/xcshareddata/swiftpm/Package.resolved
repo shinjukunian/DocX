@@ -1,25 +1,23 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "AEXML",
-        "repositoryURL": "https://github.com/shinjukunian/AEXML.git",
-        "state": {
-          "branch": "master",
-          "revision": "5ce38c72cb10c013145a72137ed8e98ca7e7127f",
-          "version": null
-        }
-      },
-      {
-        "package": "ZipArchive",
-        "repositoryURL": "https://github.com/victor-pavlychko/ZipArchive.git",
-        "state": {
-          "branch": "master",
-          "revision": "57b6c4814fa8608c10bfb059df651e1cba320524",
-          "version": null
-        }
+  "pins" : [
+    {
+      "identity" : "aexml",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/shinjukunian/AEXML.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "5ce38c72cb10c013145a72137ed8e98ca7e7127f"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "zipfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/weichsel/ZIPFoundation.git",
+      "state" : {
+        "revision" : "7254c74b49cec2cb81520523ba993c671f71b066",
+        "version" : "0.9.14"
+      }
+    }
+  ],
+  "version" : 2
 }
