@@ -440,8 +440,25 @@ Specifies the border displayed above a set of paragraphs which have the same set
         
     }
     
-    @available(macOS 12, *)
     
+    @available(macOS 12, *)
+    func testAttributed2(){
+        var att=AttributedString("Lorem ipsum dolor sit amet")
+        att.font = NSFont(name: "Helvetica", size: 12)
+        att[att.range(of: "Lorem")!].backgroundColor = .blue
+        let title=String(att.characters.prefix(10))
+        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(title)").appendingPathExtension("docx")
+        print(url.absoluteString)
+        do{
+            try att.writeDocX(to: url)
+        }
+        catch let error{
+            XCTFail(error.localizedDescription)
+        }
+        
+    }
+    
+    @available(macOS 12, *)
     func testMarkdown()throws{
         let mD="~~This~~ is a **Markdown** *string*."
         let att=try AttributedString(markdown: mD)
