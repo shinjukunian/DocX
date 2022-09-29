@@ -319,11 +319,14 @@ Specifies the border displayed above a set of paragraphs which have the same set
     }
     
     func testMultiPageWriter() {
-        
+        // added parahraph breaks at the end to catch a bug reported by andalman
+        //https://github.com/shinjukunian/DocX/issues/14
         let string =
         """
 This property contains the space (measured in points) added at the end of the paragraph to separate it from the following paragraph. This value is always nonnegative. The space between paragraphs is determined by adding the previous paragraph’s paragraphSpacing and the current paragraph’s paragraphSpacingBefore.
 Specifies the border displayed above a set of paragraphs which have the same set of paragraph border settings. Note that if the adjoining paragraph has identical border settings and a between border is specified, a single between border will be used instead of the bottom border for the first and a top border for the second.
+
+
 """
         
        
