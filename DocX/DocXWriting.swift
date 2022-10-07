@@ -52,7 +52,12 @@ extension DocX where Self : NSAttributedString{
     func docXDocument(linkRelations:[DocumentRelationship] = [DocumentRelationship]())throws ->String{
         var options=AEXMLOptions()
         options.documentHeader.standalone="yes"
-        options.escape=false
+        
+        // Enable escaping so that reserved characters, like < & >, don't
+        // result in an invalid docx file
+        // See: https://github.com/shinjukunian/DocX/issues/18
+        options.escape = true
+        
         options.lineSeparator="\n"
         let root=DocumentRoot()
         let document=AEXMLDocument(root: root, options: options)

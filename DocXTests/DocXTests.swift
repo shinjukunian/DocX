@@ -39,47 +39,82 @@ class DocXTests: XCTestCase {
         }
     }
     
-    
-    
-    func testWriteDocX(attributedString:NSAttributedString, useBuiltin:Bool = false){
-        
-        do{
-            let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))").appendingPathExtension("docx")
-            try attributedString.writeDocX(to: url, useBuiltIn: useBuiltin)
-            var readAttributes:NSDictionary?=nil
-            let docXString=try NSAttributedString(url: url, options: [:], documentAttributes: &readAttributes)
-            guard let attributes=readAttributes as? [String:Any] else{
-                XCTFail()
-                return
-            }
-            XCTAssertEqual(attributes[NSAttributedString.DocumentAttributeKey.documentType.rawValue] as! String, NSAttributedString.DocumentType.officeOpenXML.rawValue)
-            let string=docXString.string
-            print(string)
-            XCTAssertEqual(docXString.string, string)
+    /// This function tests writing a docx file using the *DocX* exporter
+    /// Optionally, options may be passed
+    func writeAndValidateDocX(attributedString: NSAttributedString,
+                              options: DocXOptions = DocXOptions()) {
+        do {
+            let url = self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))").appendingPathExtension("docx")
+            try attributedString.writeDocX(to: url, options: options)
             
+            // Validate that writing was successful
+            try validateDocX(url: url)
         }
-        catch let error{
+        catch let error {
             XCTFail(error.localizedDescription)
         }
     }
     
+    /// This function tests writing a docx file using the macOS builtin exporter
+    func writeAndValidateDocXUsingBuiltIn(attributedString: NSAttributedString) {
+        do {
+            let url = self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))").appendingPathExtension("docx")
+            try attributedString.writeDocX(to: url, useBuiltIn: true)
+            
+            // Validate that writing was successful
+            try validateDocX(url: url)
+        }
+        catch let error {
+            XCTFail(error.localizedDescription)
+        }
+    }
+    
+    func validateDocX(url: URL) throws {
+        // Read the string from the URL
+        var readAttributes:NSDictionary?
+        let _ = try NSAttributedString(url: url, options: [:], documentAttributes: &readAttributes)
+        
+        // Make sure we read the document attributes
+        guard let attributes = readAttributes as? [String:Any] else {
+            XCTFail()
+            return
+        }
+        
+        // The document type should be OOXML
+        XCTAssertEqual(attributes[NSAttributedString.DocumentAttributeKey.documentType.rawValue] as! String,
+                       NSAttributedString.DocumentType.officeOpenXML.rawValue)
+    }
+    
+    func testEscapedCharacters() {
+        let string="\"You done messed up A'Aron!\" <Key & Peele>"
+        let attributedString=NSAttributedString(string: string)
+        
+        // Though we set the author and title here, we don't actually
+        // test that they are properly escaped in the docx file.
+        // It might be nice to do that.
+        var docxOptions = DocXOptions()
+        docxOptions.author = "<Key & Peele>"
+        docxOptions.title = "\"Key & Peele's Show\""
+        
+        writeAndValidateDocX(attributedString: attributedString, options: docxOptions)
+    }
     
     func testBlank(){
         let string=""
         let attributedString=NSAttributedString(string: string)
 
-        testWriteDocX(attributedString: attributedString)
+        writeAndValidateDocX(attributedString: attributedString)
     }
 
     func test山田Plain() {
         let string="山田"
-        testWriteDocX(attributedString: NSAttributedString(string: string))
+        writeAndValidateDocX(attributedString: NSAttributedString(string: string))
     }
 
     func test山田Attributed() {
         let string="山田"
         let attributed=NSAttributedString(string: string, attributes: [.font:NSFont.systemFont(ofSize: NSFont.systemFontSize)])
-        testWriteDocX(attributedString: attributed)
+        writeAndValidateDocX(attributedString: attributed)
     }
 
     func test山田FuriganaAttributed() {
@@ -88,7 +123,7 @@ class DocXTests: XCTestCase {
         let ruby=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, furigana as CFString, [kCTRubyAnnotationSizeFactorAttributeName:0.5] as CFDictionary)
         let rubyKey=NSAttributedString.Key(kCTRubyAnnotationAttributeName as String)
         let attributed=NSAttributedString(string: string, attributes: [.font:NSFont.systemFont(ofSize: NSFont.systemFontSize), rubyKey:ruby])
-        testWriteDocX(attributedString: attributed)
+        writeAndValidateDocX(attributedString: attributed)
     }
 
 
@@ -107,14 +142,14 @@ class DocXTests: XCTestCase {
     }
 
     func test山田電気FuriganaAttributed() {
-        testWriteDocX(attributedString: yamadaDenkiString)
+        writeAndValidateDocX(attributedString: yamadaDenkiString)
     }
 
     func test山田電気FuriganaAttributed_ParagraphStyle() {
         let attributed=yamadaDenkiString
         let style=NSParagraphStyle.default
         attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
-        testWriteDocX(attributedString: attributed)
+        writeAndValidateDocX(attributedString: attributed)
 
     }
 
@@ -123,7 +158,7 @@ class DocXTests: XCTestCase {
         let style=NSParagraphStyle.default
         attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         attributed.addAttribute(.verticalForms, value: true, range:NSRange(location: 0, length: attributed.length))
-        testWriteDocX(attributedString: attributed)
+        writeAndValidateDocX(attributedString: attributed)
     }
 
     func test山田電気FuriganaAttributed_ParagraphStyle_bold() {
@@ -132,7 +167,7 @@ class DocXTests: XCTestCase {
         attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         let boldFont=NSFont.boldSystemFont(ofSize: NSFont.systemFontSize)
         attributed.addAttribute(.font, value: boldFont, range: NSRange(location: 0, length: 2))
-        testWriteDocX(attributedString: attributed)
+        writeAndValidateDocX(attributedString: attributed)
 
     }
 
@@ -143,7 +178,7 @@ class DocXTests: XCTestCase {
 //        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         let underlineStyle:NSUnderlineStyle = .single
         attributed.addAttribute(.underlineStyle, value: underlineStyle.rawValue, range:NSRange(location: 0, length: attributed.length))
-        testWriteDocX(attributedString: attributed)
+        writeAndValidateDocX(attributedString: attributed)
     }
 
     func test山田電気FuriganaAttributed_ParagraphStyle_backgroundColor() {
@@ -154,7 +189,7 @@ class DocXTests: XCTestCase {
         attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
 
         attributed.addAttribute(.backgroundColor, value: NSColor.blue, range:NSRange(location: 0, length: attributed.length))
-        testWriteDocX(attributedString: attributed)
+        writeAndValidateDocX(attributedString: attributed)
 
     }
     func test山田電気FuriganaAttributed_ParagraphStyle_strikethrough() {
@@ -163,7 +198,7 @@ class DocXTests: XCTestCase {
         //        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         let underlineStyle:NSUnderlineStyle = [.single]
         attributed.addAttribute(.strikethroughStyle, value: underlineStyle.rawValue, range:NSRange(location: 0, length: attributed.length))
-        testWriteDocX(attributedString: attributed)
+        writeAndValidateDocX(attributedString: attributed)
         
         sleep(1)
     }
@@ -176,7 +211,7 @@ class DocXTests: XCTestCase {
         let furiganaAnnotation=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, furigana as CFString, [kCTRubyAnnotationSizeFactorAttributeName:0.5] as CFDictionary)
         attributed.addAttribute(.ruby, value: furiganaAnnotation, range: NSRange(location: 0, length: 2))
         attributed.addAttribute(.link, value: URL(string: "https://www.rakuten-sec.co.jp/")!, range: NSRange(location: 3, length: 30))
-        testWriteDocX(attributedString: attributed, useBuiltin: false)
+        writeAndValidateDocX(attributedString: attributed)
         
         sleep(1)
     }
@@ -203,7 +238,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         let font=NSFont(name: "Helvetica", size: 13) ?? NSFont.systemFont(ofSize: 13)
         
         let attributed=NSMutableAttributedString(string: string, attributes: [.paragraphStyle:style, .font:font])
-        testWriteDocX(attributedString: attributed, useBuiltin: false)
+        writeAndValidateDocX(attributedString: attributed)
        
     }
     
@@ -216,7 +251,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         noBG.append(outlinedAndStroked)
         noBG.append(outlineString)
         
-        testWriteDocX(attributedString: noBG)
+        writeAndValidateDocX(attributedString: noBG)
     
     }
     
@@ -226,7 +261,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         rootAttributedString.append(NSAttributedString(string: "blah blah blah 1 ... but more text"))
         rootAttributedString.append(NSAttributedString(string: "blah blah blah 2 ... more text here also"))
         
-        testWriteDocX(attributedString: rootAttributedString, useBuiltin: true)
+        writeAndValidateDocXUsingBuiltIn(attributedString: rootAttributedString)
         
     }
     
@@ -242,7 +277,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
             5. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             """
         let attributed=NSAttributedString(string: longString, attributes: [.font:NSFont.systemFont(ofSize: 20)])
-        testWriteDocX(attributedString: attributed, useBuiltin: true)
+        writeAndValidateDocXUsingBuiltIn(attributedString: attributed)
         
     }
     
@@ -258,7 +293,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         let result=NSMutableAttributedString()
         result.append(attributed)
         result.append(imageString)
-        testWriteDocX(attributedString: result, useBuiltin: false)
+        writeAndValidateDocX(attributedString: result)
     }
     
     func testImageAndLink() throws{
@@ -274,7 +309,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         let result=NSMutableAttributedString()
         result.append(attributed)
         result.append(imageString)
-        testWriteDocX(attributedString: result, useBuiltin: false)
+        writeAndValidateDocX(attributedString: result)
     }
     
     func test2Images() throws{
@@ -293,7 +328,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         result.append(attributed)
         result.append(imageString)
         result.append(attributed)
-        testWriteDocX(attributedString: result, useBuiltin: false)
+        writeAndValidateDocX(attributedString: result)
     }
     
     func testMultiPage() {
@@ -314,7 +349,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         result.append(attr_break)
         result.append(attributed)
         
-        testWriteDocX(attributedString: result, useBuiltin: false)
+        writeAndValidateDocX(attributedString: result)
        
     }
     
@@ -416,7 +451,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         result.append(imageString)
         result.append(attributed)
 //        result.append(attributed)
-        testWriteDocX(attributedString: result, useBuiltin: false)
+        writeAndValidateDocX(attributedString: result)
     }
     
     
