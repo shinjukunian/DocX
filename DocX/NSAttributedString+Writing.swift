@@ -47,7 +47,17 @@ extension NSAttributedString{
 
         let zipURL=tempURL.appendingPathComponent(UUID().uuidString).appendingPathExtension("zip")
         try FileManager.default.zipItem(at: docURL, to: zipURL, shouldKeepParent: false, compressionMethod: .deflate, progress: nil)
-
-        try FileManager.default.copyItem(at: zipURL, to: url)
+        
+        // Attempt to copy the docx file to its final destination
+        // We expect this will fail if a file already exists there
+        do {
+            try FileManager.default.copyItem(at: zipURL, to: url)
+        } catch {
+            // If the copy failed, attempt to replace the file
+            let _ = try FileManager.default.replaceItemAt(url,
+                                                          withItemAt: zipURL,
+                                                          backupItemName: nil,
+                                                          options: .usingNewMetadataOnly)
+        }
     }
 }
