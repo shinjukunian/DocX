@@ -34,7 +34,13 @@ class ParagraphElement:AEXMLElement{
         var elements=[AEXMLElement]()
         let subString=string.attributedSubstring(from: NSRange(range.range, in: string.string))
         
-        guard subString.length>0 else{return [AEXMLElement]()}
+        guard subString.length > 0 else {
+            if let breakElement=range.breakType.breakElement{
+                elements.append(breakElement)
+            }
+            return elements
+
+        }
         
         if let paragraphStyle=subString.attribute(.paragraphStyle, at: 0, effectiveRange: nil) as? NSParagraphStyle{
             elements.append(paragraphStyle.paragraphElements)
