@@ -47,10 +47,14 @@ public struct DocXOptions{
         var options=AEXMLOptions()
         options.documentHeader.standalone="yes"
         options.documentHeader.encoding="UTF-8"
-        options.escape=false
+        
+        // Enable escaping so that reserved characters, like < & >, don't
+        // result in an invalid docx file
+        // See: https://github.com/shinjukunian/DocX/issues/18
+        options.escape = true
+        
         options.lineSeparator="\n"
-        
-        
+
         let root=AEXMLElement(name: "cp:coreProperties", value: nil, attributes: attributes)
         let doc=AEXMLDocument(root: root, options: options)
         
