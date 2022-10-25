@@ -12,6 +12,17 @@ import XCTest
 import AppKit
 
 class DocXTests: XCTestCase {
+    
+    // XXX This currently only lists a small subset of possible errors
+    //     It would be nice to list all possible errors here
+    enum TestError: Error {
+        // Error thrown when the expected link text isn't found in the given string
+        case couldNotFindLinkTitle
+        
+        // Error thrown when validating the docx fails
+        case validationFailed
+    }
+
 
     var tempURL:URL=URL(fileURLWithPath: "")
     
@@ -73,8 +84,7 @@ class DocXTests: XCTestCase {
         
         // Make sure we read the document attributes
         guard let attributes = readAttributes as? [String:Any] else {
-            XCTFail()
-            return
+            throw TestError.validationFailed
         }
         
         // The document type should be OOXML
@@ -200,17 +210,87 @@ class DocXTests: XCTestCase {
         sleep(1)
     }
     
-    func testLink() throws {
-        let string="楽天 https://www.rakuten-sec.co.jp/"
+    /// Helper method for creating links in an attributed string
+    private func createLinkInAttributedString(_ attributedString: NSAttributedString,
+                                              linkTitle: String,
+                                              url: URL) throws -> NSAttributedString {
+        // Search for `linkTitle` in the attributed string
+        guard let linkRange = attributedString.string.range(of: linkTitle) else {
+            throw TestError.couldNotFindLinkTitle
+        }
+        
+        // Apply the .link attribute to the link range
+        let newString = NSMutableAttributedString(attributedString: attributedString)
+        let range = NSRange(linkRange, in:attributedString.string)
+        newString.addAttribute(.link, value: url, range: range)
+        
+        return newString
+    }
+    
+    func testLinkFuriganaAttributed() throws {
+        let rakutenLinkText = "https://www.rakuten-sec.co.jp/"
+        let string="楽天 \(rakutenLinkText)"
         let attributed=NSMutableAttributedString(string: string)
         attributed.addAttributes([.font:NSFont.systemFont(ofSize: NSFont.systemFontSize)], range: NSRange(location: 0, length: attributed.length))
         let furigana="らくてん"
         let furiganaAnnotation=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, furigana as CFString, [kCTRubyAnnotationSizeFactorAttributeName:0.5] as CFDictionary)
         attributed.addAttribute(.ruby, value: furiganaAnnotation, range: NSRange(location: 0, length: 2))
-        attributed.addAttribute(.link, value: URL(string: "https://www.rakuten-sec.co.jp/")!, range: NSRange(location: 3, length: 30))
-        try writeAndValidateDocX(attributedString: attributed)
         
-        sleep(1)
+        // Format the link in the string
+        let linkString = try createLinkInAttributedString(attributed,
+                                                          linkTitle: rakutenLinkText,
+                                                          url: URL(string:rakutenLinkText)!)
+        
+        try writeAndValidateDocX(attributedString: linkString)
+    }
+        
+    func testLinks() throws {
+        // Helper struct that contains all of the information necessary
+        // to apply a `url` to the `linkTitle` in an `attributedString`
+        struct LinkStringInfo {
+            let attributedString: NSAttributedString
+            let linkTitle: String
+            let url: URL
+            
+            init(string: String, linkTitle: String, urlString: String) {
+                self.attributedString = NSAttributedString(string: string)
+                self.linkTitle = linkTitle
+                self.url = URL(string: urlString)!
+            }
+        }
+        
+        // Build up a list of URLs to test
+        let infoList = [LinkStringInfo(string: "This is a simple [link]",
+                                       linkTitle: "[link]",
+                                       urlString:"https://example.com"),
+                        
+                        LinkStringInfo(string: "This is a [link] with a fragment",
+                                       linkTitle: "[link]",
+                                       urlString: "https://example.com/#fragment"),
+                        
+                        LinkStringInfo(string: "This [link] has one kwparam",
+                                       linkTitle: "[link]",
+                                       urlString: "https://example.com/?fc=us"),
+                        
+                        LinkStringInfo(string: "This [link] has multiple kwparams",
+                                       linkTitle: "[link]",
+                                       urlString: "https://example.com/?fc=us&ds=1"),
+        ]
+        
+        let newline = NSAttributedString(string:"\n")
+
+        // Iterate over the info list, construct a properly formatted link string,
+        // and then append that link string to the output string
+        let outputString = NSMutableAttributedString()
+        for info in infoList {
+            let linkString = try createLinkInAttributedString(info.attributedString,
+                                                              linkTitle: info.linkTitle,
+                                                              url: info.url)
+            outputString.append(linkString)
+            outputString.append(newline)
+        }
+        
+        try writeAndValidateDocX(attributedString: outputString)
     }
     
     func test_ParagraphStyle() throws {

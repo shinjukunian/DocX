@@ -49,6 +49,12 @@ extension NSAttributedString{
             var options=AEXMLOptions()
             options.parserSettings.shouldTrimWhitespace=false
             options.documentHeader.standalone="yes"
+            
+            // Enable escaping so that reserved characters, like < & >, don't
+            // result in an invalid docx file
+            // See: https://github.com/shinjukunian/DocX/issues/24
+            options.escape = true
+
             let linkDocument=try AEXMLDocument(xml: linkData, options: options)
             let linkRelations=self.prepareLinks(linkXML: linkDocument, mediaURL: mediaURL)
             let updatedLinks=linkDocument.xmlCompact
