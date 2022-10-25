@@ -496,6 +496,48 @@ And this is a [link](http://www.example.com).
         att[att.range(of: "This")!].foregroundColor = .red
         try writeAndValidateDocX(attributedString: NSAttributedString(att))
     }
+    
+    // MARK: Performance Tests
+    
+    func testPerformanceLongBook() {
+        // Two paragraphs / 100 words
+        let twoParagraphs =
+"""
+This property contains the space (measured in points) added at the end of the paragraph to separate it from the following paragraph. This value is always nonnegative. The space between paragraphs is determined by adding the previous paragraph’s paragraphSpacing and the current paragraph’s paragraphSpacingBefore.
+Specifies the border displayed above a set of paragraphs which have the same set of paragraph border settings. Note that if the adjoining paragraph has identical border settings and a between border is specified, a single between border will be used instead of the bottom border for the first and a top border for the second.
+"""
+        // Create a "book" that consists of 400 chapters each with 5,000 words
+        // (2 million words total)
+        let chapterString = String(repeating: twoParagraphs, count: 50)
+        let chapterAttributedString = NSAttributedString(string: chapterString)
+        let chapters = Array(repeating: chapterAttributedString, count: 400)
+        
+        let basename = docxBasename(attributedString:chapterAttributedString)
+        let url = self.tempURL.appendingPathComponent(basename).appendingPathExtension("docx")
+        
+        measure {
+            try? DocXWriter.write(pages: chapters, to: url)
+        }
+    }
+    
+    func testPerformanceLongString() throws {
+        // Two paragraphs / 100 words
+        let twoParagraphs =
+"""
+This property contains the space (measured in points) added at the end of the paragraph to separate it from the following paragraph. This value is always nonnegative. The space between paragraphs is determined by adding the previous paragraph’s paragraphSpacing and the current paragraph’s paragraphSpacingBefore.
+Specifies the border displayed above a set of paragraphs which have the same set of paragraph border settings. Note that if the adjoining paragraph has identical border settings and a between border is specified, a single between border will be used instead of the bottom border for the first and a top border for the second.
+"""
+        // Create a string that consists of 40,000 paragraphs
+        // (2 million words total)
+        let longString = String(repeating: twoParagraphs, count: 20_000)
+        let longAttributedString = NSAttributedString(string: longString)
+        
+        let basename = docxBasename(attributedString:longAttributedString)
+        let url = self.tempURL.appendingPathComponent(basename).appendingPathExtension("docx")
+        measure {
+            try? longAttributedString.writeDocX(to: url)
+        }
+    }
 }
 
 #endif
