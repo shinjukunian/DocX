@@ -15,32 +15,46 @@ import UIKit
 
 extension NSAttributedString{
     struct ParagraphRange{
-        let range: Range<String.Index>
-        let seperator:String
-        let breakType:BreakType
+        let range: NSRange
+        let breakType: BreakType
     }
     
     
-    var paragraphRanges:[ParagraphRange]{
-        var ranges=[ParagraphRange]()
-        self.string.enumerateSubstrings(in: self.string.startIndex..<self.string.endIndex, options: [.byParagraphs, .substringNotRequired], {_, range, rangeIncludingSeperators, _ in
+    var paragraphRanges:[ParagraphRange] {
+        var ranges = [ParagraphRange]()
+        
+        // Make sure we are operating on an NSString, and not a String, to
+        // prevent unnecessary bridging. That bridging, and resulting String
+        // allocation, can significantly affect speed for long strings that
+        // contain separators
+        let string = self.string as NSString
+        let fullRange = NSMakeRange(0, string.length)
+                
+        string.enumerateSubstrings(in: fullRange, options: [.byParagraphs, .substringNotRequired])
+        { _, substringRange, enclosingRange, _ in
+            // Determine the range of the paragraph separator
+            let substringRangeMax = NSMaxRange(substringRange)
+            let enclosingRangeMax = NSMaxRange(enclosingRange)
+            let separatorRange = NSMakeRange(substringRangeMax,
+                                             enclosingRangeMax - substringRangeMax)
             
-            let separatorRange=range.upperBound..<rangeIncludingSeperators.upperBound
-            let seperator=self.string[separatorRange]
-            let nsRange=NSRange(separatorRange, in: self.string)
-            
-            let paragraphRange:ParagraphRange
-            
-            if nsRange.length > 0,
-               let breakAttribute=self.attribute(.breakType, at: nsRange.location, effectiveRange: nil) as? BreakType{
-                paragraphRange=ParagraphRange(range: range, seperator: String(seperator), breakType: breakAttribute)
+            // If the paragraph ends with a separator that has a valid BreakType
+            // attribute, remember it for later
+            let breakType: BreakType
+            if separatorRange.length > 0,
+               let breakAttribute = self.attribute(.breakType,
+                                                   at: separatorRange.location,
+                                                   effectiveRange: nil) as? BreakType {
+                breakType = breakAttribute
+            } else {
+                // Otherwise, use the default break type of Wrap
+                breakType = .wrap
             }
-            else{
-                paragraphRange=ParagraphRange(range: range, seperator: String(seperator), breakType: .wrap)
-            }
+            
+            // Create a ParagraphRange and add it to our list
+            let paragraphRange = ParagraphRange(range: substringRange, breakType: breakType)
             ranges.append(paragraphRange)
-            
-        })
+        }
         return ranges
     }
     
