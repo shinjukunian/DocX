@@ -577,6 +577,38 @@ And this is a [link](http://www.example.com).
         try writeAndValidateDocX(attributedString: NSAttributedString(att))
     }
     
+    @available(macOS 12, *)
+    func testMarkdown_Emoji() throws {
+        let mD =
+"""
+~~This~~ is a **Markdown** *string*.\\
+And this is a [link](http://www.example.com).\\
+These are flag **emoji** 🏳️‍🌈🇨🇦🇹🇩🇨🇳🇪🇹.
+These are ~~emoji~~ faces 👶🏼👩🏾‍🦰👱🏻‍♀️👷🏿‍♀️💂🏼‍♀️👩🏽‍🚀.
+"""
+                             
+        var att=try AttributedString(markdown: mD)
+        att[att.range(of: "This")!].foregroundColor = .red
+        try writeAndValidateDocX(attributedString: NSAttributedString(att))
+    }
+    
+    func testComposedHiragana() throws{
+       // this string has some of the hiragana composed of two characters instead of one
+let string = """
+"From: 研究サービス noreply@qemailserver.com Subject: テクノロジーに関するご意見をお聞かせください\nDate: May 28, 2020 8:38\nTo:test\n   簡単なアンケート回答いただいた方に5ドル進 呈いたします。\n私たちはこの異例の困難な状況にあり、アンケートに回答していただくこと は、あなたにとって優先事項でないかもしれないことを理解しております。し かしながら、弊社にとってお客様の声は大変貴重であり、あなたのご意見をぜ\nひお聞かせいただきたいと考えております。\nこのアンケートにお答えいただきますと、 5ドルのAmazonギフトカード を進呈 いたします。ギフトカードは参加条件を満たし、アンケートすべてを完了して\nいただいたご参加者様にのみ贈らせていただきますのでご了承ください。\nこの機密扱いの調査はテクノロジー業界の大手企業であるクライアントに代わ り、Qualtricsアンケートプラットフォーム上で実施されます。この企業のサー ビスについてお伺いするものです。アンケートの所要時間は20~25分ほどで\nす。\n下記をクリックするか、ウェブブラウザにリンクをコピー・アンド・ペースト して回答を始めてください。\nクリック\nありがとうございます。ご協力に感謝いたします。\n本アンケートは任意でご参加いただくものです。条件を満たし、本アンケートを完了された ご参加者様へ、この招待状が送信されたメールアドレス宛にギフトカードが送信されます。\n処理には2~3週間を要しますのでご了承ください。当社は調査を実施することのみを目的 としてご連絡させていただきました。民族性など、基本的な人口統計情報をお尋ねする場合 があります。ご参加者様のデータは機密情報として保持され、テクノロジー業界の大手企業 である当社のクライアントと集計データとしてのみ共有されます。クライアントはこの情報 をサービスの調査の実施およびサービスの向上を目的として使用します。本アンケートを完\n "
+"""
+        
+        let font = NSFont(name: "Hiragino Sans", size: 13)!
+        let att = NSAttributedString(string: string, attributes: [.font: font])
+
+        var options = DocXOptions()
+        options.author = "Michael Knight"
+        options.title = "Japanese Document"
+
+        try writeAndValidateDocX(attributedString: att, options: options)
+        
+    }
+    
     // MARK: Performance Tests
     
     func testPerformanceLongBook() {
