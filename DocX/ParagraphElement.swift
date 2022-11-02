@@ -32,7 +32,7 @@ class ParagraphElement:AEXMLElement{
     fileprivate func buildRuns(string:NSAttributedString, range:NSAttributedString.ParagraphRange)->[AEXMLElement]{
         
         var elements=[AEXMLElement]()
-        let subString=string.attributedSubstring(from: NSRange(range.range, in: string.string))
+        let subString=string.attributedSubstring(from: range.range)
         
         guard subString.length > 0 else {
             if let breakElement=range.breakType.breakElement{
