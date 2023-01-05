@@ -58,10 +58,10 @@ class DocXTests: XCTestCase {
     /// This function tests writing a docx file using the *DocX* exporter
     /// Optionally, options may be passed
     func writeAndValidateDocX(attributedString: NSAttributedString,
-                              options: DocXOptions = DocXOptions()) throws {
+                              options: DocXOptions = DocXOptions(),
+                              configuration: DocXConfiguration = DocXConfiguration()) throws {
         let url = self.tempURL.appendingPathComponent(docxBasename(attributedString: attributedString)).appendingPathExtension("docx")
-        try attributedString.writeDocX(to: url, options: options)
-        
+        try attributedString.writeDocX(to: url, options: options, configuration: configuration)
         // Validate that writing was successful
         try validateDocX(url: url)
     }
@@ -607,6 +607,26 @@ let string = """
 
         try writeAndValidateDocX(attributedString: att, options: options)
         
+    }
+    
+    func testStyles() throws {
+        // Create a title
+        let text = NSMutableAttributedString(string: "Title", attributes:[.paragraphStyleId: "Title"])
+        
+        // Append a few new lines
+        text.append(NSAttributedString(string: "\n\n\n"))
+        
+        // Append some interesting text
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        text.append(NSAttributedString(string: loremIpsum))
+
+        // Use the test styles.xml file
+        let stylesURL = URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("styles.xml")
+        let config = DocXConfiguration(stylesURL: stylesURL, outputFontFamily: false)
+
+        try writeAndValidateDocX(attributedString: text, configuration: config)
     }
     
     // MARK: Performance Tests

@@ -17,20 +17,17 @@ import AppKit
 
 extension NSParagraphStyle{
     
-    var paragraphElements:AEXMLElement{
-        let paragraphStyleElement=AEXMLElement(name: "w:pPr")
-        paragraphStyleElement.addChildren([self.alignmentElement,
-                                           self.spacingElement,
-                                           self.indentationElement].compactMap({$0}))
-        
-        return paragraphStyleElement
+    var paragraphElements: [AEXMLElement] {
+        return [self.alignmentElement,
+                self.spacingElement,
+                self.indentationElement].compactMap({$0})
     }
     
     var alignmentElement:AEXMLElement?{
         let element=AEXMLElement(name: "w:jc", value: nil, attributes: ["w:val":self.alignment.attributeValue])
         return element
     }
-    
+        
     //http://officeopenxml.com/WPspacing.php
     var spacingElement:AEXMLElement?{
         var attributes=[String:String]()
@@ -83,7 +80,6 @@ extension NSParagraphStyle{
         guard attributes.isEmpty == false else {return nil}
         return AEXMLElement(name: "w:ind", value: nil, attributes: attributes)
     }
-    
 }
 
 extension NSTextAlignment{

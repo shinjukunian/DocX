@@ -42,14 +42,20 @@ extension DocX where Self : NSAttributedString{
     }
     
     
-    func buildParagraphs(paragraphRanges:[ParagraphRange], linkRelations:[DocumentRelationship])->[AEXMLElement]{
+    func buildParagraphs(paragraphRanges:[ParagraphRange],
+                         linkRelations:[DocumentRelationship],
+                         configuration:DocXConfiguration) -> [AEXMLElement]{
         return paragraphRanges.map({range in
-            let paragraph=ParagraphElement(string: self, range: range, linkRelations: linkRelations)
+            let paragraph=ParagraphElement(string: self,
+                                           range: range,
+                                           linkRelations: linkRelations,
+                                           configuration: configuration)
             return paragraph
         })
     }
     
-    func docXDocument(linkRelations:[DocumentRelationship] = [DocumentRelationship]())throws ->String{
+    func docXDocument(linkRelations:[DocumentRelationship] = [DocumentRelationship](),
+                      configuration:DocXConfiguration = DocXConfiguration())throws ->String{
         var options=AEXMLOptions()
         options.documentHeader.standalone="yes"
         
@@ -63,22 +69,14 @@ extension DocX where Self : NSAttributedString{
         let document=AEXMLDocument(root: root, options: options)
         let body=AEXMLElement(name: "w:body")
         root.addChild(body)
-        body.addChildren(self.buildParagraphs(paragraphRanges: self.paragraphRanges, linkRelations: linkRelations))
+        body.addChildren(self.buildParagraphs(paragraphRanges: self.paragraphRanges,
+                                              linkRelations: linkRelations,
+                                              configuration: configuration))
         body.addChild(pageDef)
         return document.xmlCompact
     }
-   
-    func prepareLinks(linkXML: AEXMLDocument, mediaURL:URL) -> [DocumentRelationship] {
-        var linkURLS=[URL]()
-        
-        let imageRelationships = prepareImages(linkXML: linkXML, mediaURL:mediaURL)
-        
-        self.enumerateAttribute(.link, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
-            if let link=attribute as? URL{
-                linkURLS.append(link)
-            }
-        })
-        guard linkURLS.count > 0 else {return imageRelationships}
+    
+    func lastRelationshipIdIndex(linkXML: AEXMLDocument) -> Int {
         let relationships=linkXML["Relationships"]
         let presentIds=relationships.children.map({$0.attributes}).compactMap({$0["Id"]}).sorted(by: {s1, s2 in
             return s1.compare(s2, options: [.numeric], range: nil, locale: nil) == .orderedAscending
@@ -92,6 +90,23 @@ extension DocX where Self : NSAttributedString{
             lastIdIDX=0
         }
         
+        return lastIdIDX
+    }
+   
+    func prepareLinks(linkXML: AEXMLDocument, mediaURL:URL) -> [DocumentRelationship] {
+        var linkURLS=[URL]()
+        
+        let imageRelationships = prepareImages(linkXML: linkXML, mediaURL:mediaURL)
+        
+        self.enumerateAttribute(.link, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
+            if let link=attribute as? URL{
+                linkURLS.append(link)
+            }
+        })
+        guard linkURLS.count > 0 else {return imageRelationships}
+        
+        let lastIdIDX = lastRelationshipIdIndex(linkXML: linkXML)
+        
         let linkRelationShips=linkURLS.enumerated().map({(arg)->LinkRelationship in
             let (idx, url) = arg
             let newID="rId\(lastIdIDX+1+idx)"
@@ -99,6 +114,7 @@ extension DocX where Self : NSAttributedString{
             return relationShip
         })
         
+        let relationships=linkXML["Relationships"]
         relationships.addChildren(linkRelationShips.map({$0.element}))
         
         return linkRelationShips + imageRelationships

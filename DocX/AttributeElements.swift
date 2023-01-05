@@ -60,6 +60,10 @@ extension Dictionary where Key == NSAttributedString.Key{
             attributesElement.addChild(element)
         }
         
+        // Character styles
+        if let characterStyleId = self[.characterStyleId] as? String {
+            attributesElement.addChild(characterStyleElement(styleId: characterStyleId))
+        }
 
         return attributesElement
     }
@@ -121,9 +125,13 @@ extension Dictionary where Key == NSAttributedString.Key{
         outlineElement.addChild(lineCapElement)
         
         return [colorElement,outlineElement]
-        
     }
     
+    func characterStyleElement(styleId: String) -> AEXMLElement {
+        return AEXMLElement(name: "w:rStyle",
+                            value: nil,
+                            attributes: ["w:val": styleId])
+    }
 }
 
 

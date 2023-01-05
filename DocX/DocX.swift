@@ -25,12 +25,11 @@ struct LinkRelationship:DocumentRelationship{
 }
 
 protocol DocX{
-    func docXDocument(linkRelations:[DocumentRelationship])throws ->String
+    func docXDocument(linkRelations:[DocumentRelationship],
+                      configuration:DocXConfiguration)throws ->String
     func writeDocX(to url:URL)throws
-    func writeDocX(to url:URL, options:DocXOptions)throws
+    func writeDocX(to url:URL, options:DocXOptions, configuration:DocXConfiguration)throws
     func prepareLinks(linkXML:AEXMLDocument, mediaURL:URL)->[DocumentRelationship]
-    
-    
 }
 
 public let docXUTIType="org.openxmlformats.wordprocessingml.document"
@@ -48,7 +47,13 @@ public extension NSAttributedString.Key{
      ```
      will result in a page break after *some string*
     */
-    static let breakType = NSAttributedString.Key.init("com.telethon.docx.attributedstringkey.break")
+    static let breakType = NSAttributedString.Key("com.telethon.docx.attributedstringkey.break")
+    
+    /// A custom attribute that specifies the styleId to use for an entire paragraph
+    static let paragraphStyleId = NSAttributedString.Key("com.telethon.docx.attributedstringkey.paragraphStyleId")
+    
+    /// A custom attribute that specifies the styleId to use for characters
+    static let characterStyleId = NSAttributedString.Key("com.telethon.docx.attributedstringkey.characterStyleId")
 }
 
 /// Encapsulates different break types in a document.
