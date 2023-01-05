@@ -51,30 +51,52 @@ extension NSParagraphStyle{
         return AEXMLElement(name: "w:spacing", value: nil, attributes: attributes)
     }
     
+    // A value of 0 is often used to indicate that no attributes should be
+    // output. See, for instance, `spacingElement` above.
+    //
+    // For indentation, though, setting values to zero can be valid.
+    // We don't want to break existing clients, so we've introduced a
+    // variable, `zeroIndent`, which can be used to force indentation to
+    // zero, when desired.
+    //
+    public static var zeroIndent: CGFloat {
+        // Using a value of 0.01 for allows us to continue using the >0 checks.
+        // It's small enough (.2 twips) that even if someone specified an
+        // indent of 0.01 explicitly, setting the indent to 0 would be equivalent.
+        return 0.01
+    }
+
     var indentationElement:AEXMLElement?{ // this is conceptually very different and this complicated
         var attributes=[String:String]()
-        if self.headIndent > 0 || self.firstLineHeadIndent > 0{
-            let delta=self.headIndent-self.firstLineHeadIndent
-            switch delta{
-            case _ where delta == 0:
-                attributes["w:start"]=String(Int(self.headIndent * 20))
-            case _ where delta > 0: //hanging, 2nd line further indented than first
-                attributes["w:start"]=String(Int(self.headIndent * 20))
-                attributes["w:hanging"]=String(Int(delta * 20))
-            case _ where delta < 0:
-                attributes["w:start"]=String(Int(self.headIndent * 20))
-                attributes["w:firstLine"]=String(Int(-delta * 20))
-            default:
-                break
+        
+        // indentation in Word is stored in twips (a twentieth of a point)
+        let twipsPerPoint = CGFloat(20)
+        
+        if self.headIndent > 0 || self.firstLineHeadIndent > 0 {
+            let headIndent = self.headIndent == NSParagraphStyle.zeroIndent ? 0 : self.headIndent
+            let firstLineHeadIndent = self.firstLineHeadIndent == NSParagraphStyle.zeroIndent ? 0 : self.firstLineHeadIndent
+            
+            // Determine whether this paragraph uses hanging indentation (i.e.
+            // the first line isn't indented, but the following lines are)
+            let delta = headIndent - firstLineHeadIndent
+            if (delta > 0) {
+                // Hanging indentation
+                attributes["w:start"]=String(Int(headIndent * twipsPerPoint))
+                attributes["w:hanging"]=String(Int(delta * twipsPerPoint))
+            } else {
+                // "Normal" indentation
+                attributes["w:start"]=String(Int(headIndent * twipsPerPoint))
+                attributes["w:firstLine"]=String(Int(-delta * twipsPerPoint))
             }
         }
+        
         /* this isnt really compatible with how cocoa is handling tail indents, in the NSTextView, the indent is from the leading margin
          word, howver, want the distance from the trailing margin, we don't know that, unless we know the page size
          the tailindent could alo be negative, which means it is from the trailing margin. wehn using the standar ruler views to manipulate the indents, however, the value appears to be positive throughout
          the Cocoa TextKit exporter ignores these attributes entirely
          */
         if self.tailIndent < 0{
-            attributes["w:end"]=String(Int(abs(self.tailIndent) * 20))
+            attributes["w:end"]=String(Int(abs(self.tailIndent) * twipsPerPoint))
         }
 
         guard attributes.isEmpty == false else {return nil}
