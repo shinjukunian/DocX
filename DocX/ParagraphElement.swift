@@ -25,16 +25,16 @@ class ParagraphElement:AEXMLElement{
     init(string:NSAttributedString,
          range:NSAttributedString.ParagraphRange,
          linkRelations:[DocumentRelationship],
-         configuration:DocXConfiguration) {
+         options:DocXOptions) {
         self.linkRelations=linkRelations
         super.init(name: "w:p", value: nil, attributes: ["rsidR":"00045791", "w:rsidRDefault":"008111DF"])
-        self.addChildren(self.buildRuns(string: string, range: range, configuration: configuration))
+        self.addChildren(self.buildRuns(string: string, range: range, options: options))
     }
     
     
     fileprivate func buildRuns(string:NSAttributedString,
                                range:NSAttributedString.ParagraphRange,
-                               configuration:DocXConfiguration) -> [AEXMLElement]{
+                               options:DocXOptions) -> [AEXMLElement]{
         
         var elements=[AEXMLElement]()
         let subString=string.attributedSubstring(from: range.range)
@@ -100,15 +100,17 @@ class ParagraphElement:AEXMLElement{
                 
                 let attributesElement=attributes.runProperties
                 
-                // If the font family shouldn't be output, remove it from the run properties.
-                // We do this here – rather than ignore the NSFont when runProperties are
-                // generated – since the font is used to determine other font properties
-                // that we want to keep (e.g. bold, italics, size, etc.).
-                //
-                // So, if requested, remove the FontElement that specifies the family
-                if !configuration.outputFontFamily,
-                   let fontElement = attributesElement.children.first(where: { $0 is FontElement }) {
-                    fontElement.removeFromParent()
+                if let styleConfiguration = options.styleConfiguration {
+                    // If the font family shouldn't be output, remove it from the run properties.
+                    // We do this here – rather than ignore the NSFont when runProperties are
+                    // generated – since the font is used to determine other font properties
+                    // that we want to keep (e.g. bold, italics, size, etc.).
+                    //
+                    // So, if requested, remove the FontElement that specifies the family
+                    if !styleConfiguration.outputFontFamily,
+                       let fontElement = attributesElement.children.first(where: { $0 is FontElement }) {
+                        fontElement.removeFromParent()
+                    }
                 }
                 
                 if let ruby=attributes[.ruby]{

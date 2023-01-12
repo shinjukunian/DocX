@@ -26,9 +26,9 @@ struct LinkRelationship:DocumentRelationship{
 
 protocol DocX{
     func docXDocument(linkRelations:[DocumentRelationship],
-                      configuration:DocXConfiguration)throws ->String
+                      options:DocXOptions) throws ->String
     func writeDocX(to url:URL)throws
-    func writeDocX(to url:URL, options:DocXOptions, configuration:DocXConfiguration)throws
+    func writeDocX(to url:URL, options:DocXOptions) throws
     func prepareLinks(linkXML:AEXMLDocument, mediaURL:URL)->[DocumentRelationship]
 }
 

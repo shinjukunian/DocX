@@ -11,9 +11,7 @@ import AEXML
 
 
 extension NSAttributedString{
-    func writeDocX_builtin(to url: URL,
-                           options: DocXOptions = DocXOptions(),
-                           configuration: DocXConfiguration = DocXConfiguration()) throws{
+    func writeDocX_builtin(to url: URL, options: DocXOptions = DocXOptions()) throws{
         let tempURL=try FileManager.default.url(for: .itemReplacementDirectory, in: .userDomainMask, appropriateFor: url, create: true)
         
         defer{
@@ -30,8 +28,10 @@ extension NSAttributedString{
         let mediaURL = wordSubdirURL.appendingPathComponent("media", isDirectory: true)
         let propsURL=docURL.appendingPathComponent("docProps").appendingPathComponent("core").appendingPathExtension("xml")
         
-        // If DocXConfiguration contains a valid stylesURL, then copy that into the docx
-        if let srcStylesURL = configuration.stylesURL {
+        // If the DocXOptions contains a styles configuration with a valid styles URL,
+        // then copy that into the docx
+        let configStylesURL = options.styleConfiguration?.stylesURL
+        if let srcStylesURL = configStylesURL {
             let destStylesURL = wordSubdirURL.appendingPathComponent("styles").appendingPathExtension("xml")
             try FileManager.default.copyItem(at: srcStylesURL, to: destStylesURL)
         }
@@ -49,7 +49,7 @@ extension NSAttributedString{
         let linkDocument=try AEXMLDocument(xml: linkData, options: docOptions)
         
         // The `document.xml.rels` files should include a link to styles.xml
-        if configuration.stylesURL != nil {
+        if configStylesURL != nil {
             // Construct the attributes for the Relationship to the styles filename
             // This Relationship needs a unique id (one greater than the last "rId{#}")
             // and always points to "styles.xml"
@@ -68,7 +68,7 @@ extension NSAttributedString{
         try updatedLinks.write(to: linkURL, atomically: true, encoding: .utf8)
         
         let xmlData = try self.docXDocument(linkRelations: linkRelations,
-                                            configuration: configuration)
+                                            options: options)
         
         try xmlData.write(to: docPath, atomically: true, encoding: .utf8)
         

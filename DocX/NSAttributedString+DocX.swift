@@ -25,11 +25,8 @@ extension NSAttributedString:DocX{
     ///     - configuration: an optional instance of `DocXConfiguration` that allows you to control the docx output.
     /// - Throws: Throws for I/O related errors
     public func writeDocX(to url: URL,
-                          options: DocXOptions = DocXOptions(),
-                          configuration: DocXConfiguration = DocXConfiguration()) throws{
-        try self.writeDocX_builtin(to: url,
-                                   options: options,
-                                   configuration: configuration)
+                          options: DocXOptions = DocXOptions()) throws{
+        try self.writeDocX_builtin(to: url, options: options)
     }
 }
 

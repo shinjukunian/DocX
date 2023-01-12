@@ -9,8 +9,11 @@ import Foundation
 import AEXML
 
 
-/// Options to specify metadata to be saved with the document
+/// Metadata and output settings for docx creation
 public struct DocXOptions{
+    
+    // Metadata
+    //
     
     /// The author of the document. Defaults to 'DocX'. This value is also used to set the `lastModifiedBy` value.
     public var author: String="DocX"
@@ -32,6 +35,12 @@ public struct DocXOptions{
     
     /// The modification date of the document. Defaults to now.
     public var modifiedDate: Date = Date()
+    
+    // Output settings
+    //
+    
+    /// An optional configuration object for style output
+    public var styleConfiguration: DocXStyleConfiguration?
     
     
     public init(){}

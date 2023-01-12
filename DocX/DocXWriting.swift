@@ -44,34 +44,34 @@ extension DocX where Self : NSAttributedString{
     
     func buildParagraphs(paragraphRanges:[ParagraphRange],
                          linkRelations:[DocumentRelationship],
-                         configuration:DocXConfiguration) -> [AEXMLElement]{
+                         options:DocXOptions) -> [AEXMLElement]{
         return paragraphRanges.map({range in
             let paragraph=ParagraphElement(string: self,
                                            range: range,
                                            linkRelations: linkRelations,
-                                           configuration: configuration)
+                                           options: options)
             return paragraph
         })
     }
     
     func docXDocument(linkRelations:[DocumentRelationship] = [DocumentRelationship](),
-                      configuration:DocXConfiguration = DocXConfiguration())throws ->String{
-        var options=AEXMLOptions()
-        options.documentHeader.standalone="yes"
+                      options:DocXOptions = DocXOptions())throws ->String{
+        var xmlOptions=AEXMLOptions()
+        xmlOptions.documentHeader.standalone="yes"
         
         // Enable escaping so that reserved characters, like < & >, don't
         // result in an invalid docx file
         // See: https://github.com/shinjukunian/DocX/issues/18
-        options.escape = true
+        xmlOptions.escape = true
         
-        options.lineSeparator="\n"
+        xmlOptions.lineSeparator="\n"
         let root=DocumentRoot()
-        let document=AEXMLDocument(root: root, options: options)
+        let document=AEXMLDocument(root: root, options: xmlOptions)
         let body=AEXMLElement(name: "w:body")
         root.addChild(body)
         body.addChildren(self.buildParagraphs(paragraphRanges: self.paragraphRanges,
                                               linkRelations: linkRelations,
-                                              configuration: configuration))
+                                              options: options))
         body.addChild(pageDef)
         return document.xmlCompact
     }
