@@ -650,6 +650,22 @@ Specifies the border displayed above a set of paragraphs which have the same set
             try? longAttributedString.writeDocX(to: url)
         }
     }
+    
+    
+    
+    func testSubscript_Superscript() throws {
+        let string=NSMutableAttributedString(attributedString: NSAttributedString(string: "H"))
+        string.append(NSAttributedString(string: "2", attributes: [.baselineOffset:-1, .foregroundColor:NSColor.blue]))
+        string.append(NSAttributedString(string: "O", attributes: [.baselineOffset:0]))
+        string.append(NSAttributedString(string: "2", attributes: [.baselineOffset:-1]))
+        string.append(NSAttributedString(string: "\r\r"))
+        let font=NSFont(name: "Courier", size: 15)!
+        string.append(NSAttributedString(string: "E=m•c", attributes: [.font:font]))
+        string.append(NSAttributedString(string: "2", attributes: [.font:font, .baselineOffset:1]))
+        
+        try writeAndValidateDocX(attributedString: string)
+
+    }
 }
 
 #endif

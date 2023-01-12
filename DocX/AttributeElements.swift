@@ -60,6 +60,11 @@ extension Dictionary where Key == NSAttributedString.Key{
             attributesElement.addChild(element)
         }
         
+        // Superscript / Subscript
+        if let baselineOffset = self[.baselineOffset] as? CGFloat,
+           let vertAlignElement = vertAlignElement(baselineOffset: baselineOffset) {
+            attributesElement.addChild(vertAlignElement)
+        }
 
         return attributesElement
     }
@@ -124,6 +129,24 @@ extension Dictionary where Key == NSAttributedString.Key{
         
     }
     
+    func vertAlignElement(baselineOffset: CGFloat) -> AEXMLElement? {
+        // If `baselineOffset` is below zero, we'll assume subscript.
+        // If it's above zero, we'll assume superscript.
+        var vertAlignValue: String?
+        if baselineOffset > 0 {
+            vertAlignValue = "superscript"
+        } else if baselineOffset < 0 {
+            vertAlignValue = "subscript"
+        }
+        
+        if let vertAlignValue = vertAlignValue {
+            return AEXMLElement(name: "w:vertAlign",
+                                value: nil,
+                                attributes: ["w:val": vertAlignValue])
+        } else {
+            return nil
+        }
+    }
 }
 
 
