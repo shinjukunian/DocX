@@ -28,12 +28,16 @@ extension NSAttributedString{
         let mediaURL = wordSubdirURL.appendingPathComponent("media", isDirectory: true)
         let propsURL=docURL.appendingPathComponent("docProps").appendingPathComponent("core").appendingPathExtension("xml")
         
-        // If the DocXOptions contains a styles configuration with a valid styles URL,
-        // then copy that into the docx
-        let configStylesURL = options.styleConfiguration?.stylesURL
-        if let srcStylesURL = configStylesURL {
-            let destStylesURL = wordSubdirURL.appendingPathComponent("styles").appendingPathExtension("xml")
-            try FileManager.default.copyItem(at: srcStylesURL, to: destStylesURL)
+        // If the DocXOptions contains a styles configuration with a valid styles XML document,
+        // then write that into the docx
+        let configStylesXMLDocument = options.styleConfiguration?.stylesXMLDocument
+        if let configStylesXMLDocument = configStylesXMLDocument {
+            // Construct the path for the `styles.xml` file
+            let stylesURL = wordSubdirURL.appendingPathComponent("styles").appendingPathExtension("xml")
+            
+            // Compact the styles XML and write it
+            let compactStylesXML = configStylesXMLDocument.xmlCompact
+            try compactStylesXML.write(to: stylesURL, atomically: true, encoding: .utf8)
         }
         
         let linkData=try Data(contentsOf: linkURL)
@@ -49,7 +53,7 @@ extension NSAttributedString{
         let linkDocument=try AEXMLDocument(xml: linkData, options: docOptions)
         
         // The `document.xml.rels` files should include a link to styles.xml
-        if configStylesURL != nil {
+        if configStylesXMLDocument != nil {
             // Construct the attributes for the Relationship to the styles filename
             // This Relationship needs a unique id (one greater than the last "rId{#}")
             // and always points to "styles.xml"

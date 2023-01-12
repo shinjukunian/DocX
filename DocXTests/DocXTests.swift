@@ -623,7 +623,7 @@ let string = """
         
         // Create a DocXStyleConfiguration that uses the test styles.xml file
         let stylesURL = URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("styles.xml")
-        let config = DocXStyleConfiguration(stylesURL: stylesURL, outputFontFamily: false)
+        let config = try DocXStyleConfiguration(stylesXMLURL: stylesURL, outputFontFamily: false)
         
         // Create DocXOptions and add the style configuration
         var options = DocXOptions()
