@@ -60,12 +60,6 @@ extension Dictionary where Key == NSAttributedString.Key{
             attributesElement.addChild(element)
         }
         
-        // Superscript / Subscript
-        if let baselineOffset = self[.baselineOffset] as? CGFloat,
-           let vertAlignElement = vertAlignElement(baselineOffset: baselineOffset) {
-            attributesElement.addChild(vertAlignElement)
-        }
-        
         // Character styles
         if let characterStyleId = self[.characterStyleId] as? String {
             attributesElement.addChild(characterStyleElement(styleId: characterStyleId))
@@ -131,25 +125,6 @@ extension Dictionary where Key == NSAttributedString.Key{
         outlineElement.addChild(lineCapElement)
         
         return [colorElement,outlineElement]
-    }
-    
-    func vertAlignElement(baselineOffset: CGFloat) -> AEXMLElement? {
-        // If `baselineOffset` is below zero, we'll assume subscript.
-        // If it's above zero, we'll assume superscript.
-        var vertAlignValue: String?
-        if baselineOffset > 0 {
-            vertAlignValue = "superscript"
-        } else if baselineOffset < 0 {
-            vertAlignValue = "subscript"
-        }
-        
-        if let vertAlignValue = vertAlignValue {
-            return AEXMLElement(name: "w:vertAlign",
-                                value: nil,
-                                attributes: ["w:val": vertAlignValue])
-        } else {
-            return nil
-        }
     }
     
     func characterStyleElement(styleId: String) -> AEXMLElement {
