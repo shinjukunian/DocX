@@ -88,7 +88,7 @@ Please note that Quicklook (on both platforms) only supports a limited number of
   - `NSAttributedString.Key.kern`
   - `NSAttributedString.Key.ligature`
   - `NSAttributedString.Key.obliqueness`
-  - `NSAttributedString.Key.superscript` (macOS only, doesnt really work for most fonts anyway)
+  - `NSAttributedString.Key.superscript` (macOS only, doesnt really work for most fonts anyway). Use `NSAttributedString.Key.baselineOffset` with a positive value for superscript and a negative value for subscript instead
   - `NSAttributedString.Key.textEffect`
 - `CTRubyAnnotation` for furigana (ruby) annotations in CoreText
 - `NSTextAttachment` embedded images (inline with text)
