@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import AEXML
+
 #if canImport(Cocoa)
 import Cocoa
 #elseif canImport(UIKit)
@@ -17,6 +19,17 @@ extension NSAttributedString{
     struct ParagraphRange{
         let range: NSRange
         let breakType: BreakType
+        let styleId: String?
+        
+        var styleElement: AEXMLElement? {
+            if let styleId = styleId {
+                return AEXMLElement(name: "w:pStyle",
+                                    value: nil,
+                                    attributes: ["w:val": styleId])
+            } else {
+                return nil
+            }
+        }
     }
     
     
@@ -51,8 +64,32 @@ extension NSAttributedString{
                 breakType = .wrap
             }
             
+            // Determine whether a `paragraphStyleId` is specified for the *entire*
+            // paragraph. If it isn't, then we won't apply the style at all.
+            //
+            let paragraphStyleId: String?
+            var longestEffectiveRange = NSRange()
+            // If the paragraph doesn't have any text (i.e. it's a blank line),
+            // we still may want to apply a paragraph style. If that's the case,
+            // our range will be the `enclosingRange` (the paragraph break);
+            // otherwise, just use the substring range.
+            let paragraphStyleRange = (substringRange.length == 0) ? enclosingRange : substringRange
+            if let styleId = self.attribute(.paragraphStyleId,
+                                            at: paragraphStyleRange.location,
+                                            longestEffectiveRange: &longestEffectiveRange,
+                                            in: paragraphStyleRange) as? String,
+               longestEffectiveRange == paragraphStyleRange {
+                paragraphStyleId = styleId
+            } else {
+                // Either no `paragraphStyleId` was set, or it doesn't apply
+                // to an entire paragraph
+                paragraphStyleId = nil
+            }
+            
             // Create a ParagraphRange and add it to our list
-            let paragraphRange = ParagraphRange(range: substringRange, breakType: breakType)
+            let paragraphRange = ParagraphRange(range: substringRange,
+                                                breakType: breakType,
+                                                styleId: paragraphStyleId)
             ranges.append(paragraphRange)
         }
         return ranges
