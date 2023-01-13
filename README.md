@@ -44,7 +44,9 @@ let att=try AttributedString(markdown: mD)
 try att.writeDocX(to: url)
 ```
 
-You can optionally specify MetaData using `DocXOptions`:
+`DocXOptions` allow the customization of DocX output.
+
+- you can optionally specify metadata using `DocXOptions`:
 
 ```swift
 let font = NSFont(name: "Helvetica", size: 13)! //on macOS
@@ -57,6 +59,9 @@ options.title = "Helvetica Document"
 let url = URL(fileURLWithPath:"myPath")
 try string.writeDocX(to: url, options:options)
 ```
+- you can specify character and paragraph styling based on a style document using the `NSAttributedString.Key.characterStyleId` and `NSAttributedString.Key.paragraphStyleId` attributes. Use `DocXStyleConfiguration` to specify the style document.
+
+- you can use `DocXStyleConfiguration` to specify that Word should use standard fonts instead of explicitly specified font names. This is useful for cross-platform compatibility when using Apple system fonts. Other font attributes (size, bold / italic) will be preserved if possible.
 
 See the attached sample projects (for iOS and macOS) for usage and limitations.
 On iOS, DocX also includes a `UIActivityItemProvider` subclass (`DocXActivityItemProvider`) for exporting .docx files through `UIActivityViewController`.

@@ -8,7 +8,7 @@
 import Foundation
 import AEXML
 
-/// Configuration parameters that control docx output
+/// Configuration parameters that control docx styling.
 public struct DocXStyleConfiguration {
     /// The styles XML document to include
     public let stylesXMLDocument: AEXMLDocument?
@@ -49,6 +49,20 @@ public struct DocXStyleConfiguration {
         }
         
         self.init(stylesXMLDocument: xmlDocument, outputFontFamily: outputFontFamily)
+    }
+    
+    /// The paragraph styles that were found in the `styles.xml` file during initialization. Use with `NSAttributedString.Key.paragraphId`.
+    public var availableParagraphStyles:[String]?{
+        return self.stylesXMLDocument?.root.children.filter({element in
+            element.name == "w:style" && element.attributes["w:type"] == "paragraph"
+        }).compactMap({$0.attributes["w:styleId"]})
+    }
+    
+    /// The character styles that were found in the `styles.xml` file during initialization. Use with `NSAttributedString.Key.characterId`.
+    public var availableCharacterStyles:[String]?{
+        return self.stylesXMLDocument?.root.children.filter({element in
+            element.name == "w:style" && element.attributes["w:type"] == "character"
+        }).compactMap({$0.attributes["w:styleId"]})
     }
     
     /// Returns the AEXML options used to create an AEXMLDocument
