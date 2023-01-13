@@ -11,7 +11,7 @@ import AEXML
 
 
 extension NSAttributedString{
-    func writeDocX_builtin(to url: URL, options:DocXOptions = DocXOptions()) throws{
+    func writeDocX_builtin(to url: URL, options: DocXOptions = DocXOptions()) throws{
         let tempURL=try FileManager.default.url(for: .itemReplacementDirectory, in: .userDomainMask, appropriateFor: url, create: true)
         
         defer{
@@ -22,12 +22,23 @@ extension NSAttributedString{
         guard let blankURL=Bundle.blankDocumentURL else{throw DocXSavingErrors.noBlankDocument}
         try FileManager.default.copyItem(at: blankURL, to: docURL)
 
-        let docPath=docURL.appendingPathComponent("word").appendingPathComponent("document").appendingPathExtension("xml")
-        
-        let linkURL=docURL.appendingPathComponent("word").appendingPathComponent("_rels").appendingPathComponent("document.xml.rels")
-        let mediaURL=docURL.appendingPathComponent("word").appendingPathComponent("media", isDirectory: true)
+        let wordSubdirURL = docURL.appendingPathComponent("word")
+        let docPath = wordSubdirURL.appendingPathComponent("document").appendingPathExtension("xml")
+        let linkURL = wordSubdirURL.appendingPathComponent("_rels").appendingPathComponent("document.xml.rels")
+        let mediaURL = wordSubdirURL.appendingPathComponent("media", isDirectory: true)
         let propsURL=docURL.appendingPathComponent("docProps").appendingPathComponent("core").appendingPathExtension("xml")
         
+        // If the DocXOptions contains a styles configuration with a valid styles XML document,
+        // then write that into the docx
+        let configStylesXMLDocument = options.styleConfiguration?.stylesXMLDocument
+        if let configStylesXMLDocument = configStylesXMLDocument {
+            // Construct the path for the `styles.xml` file
+            let stylesURL = wordSubdirURL.appendingPathComponent("styles").appendingPathExtension("xml")
+            
+            // Compact the styles XML and write it
+            let compactStylesXML = configStylesXMLDocument.xmlCompact
+            try compactStylesXML.write(to: stylesURL, atomically: true, encoding: .utf8)
+        }
         
         let linkData=try Data(contentsOf: linkURL)
         var docOptions=AEXMLOptions()
@@ -40,11 +51,28 @@ extension NSAttributedString{
         docOptions.escape = true
         
         let linkDocument=try AEXMLDocument(xml: linkData, options: docOptions)
+        
+        // The `document.xml.rels` files should include a link to styles.xml
+        if configStylesXMLDocument != nil {
+            // Construct the attributes for the Relationship to the styles filename
+            // This Relationship needs a unique id (one greater than the last "rId{#}")
+            // and always points to "styles.xml"
+            let newRelationshipIndex = self.lastRelationshipIdIndex(linkXML: linkDocument) + 1
+            let newIdString = "rId\(newRelationshipIndex)"
+            let attrs = ["Id": newIdString,
+                         "Type": "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles",
+                         "Target": "styles.xml"]
+            
+            // Add the Relationship
+            linkDocument.root.addChild(name: "Relationship", value: nil, attributes: attrs)
+        }
+        
         let linkRelations=self.prepareLinks(linkXML: linkDocument, mediaURL: mediaURL)
         let updatedLinks=linkDocument.xmlCompact
         try updatedLinks.write(to: linkURL, atomically: true, encoding: .utf8)
         
-        let xmlData = try self.docXDocument(linkRelations: linkRelations)
+        let xmlData = try self.docXDocument(linkRelations: linkRelations,
+                                            options: options)
         
         try xmlData.write(to: docPath, atomically: true, encoding: .utf8)
         

@@ -23,6 +23,12 @@ class DocXTests: XCTestCase {
         case validationFailed
     }
 
+    
+#if SWIFT_PACKAGE
+        let bundle=Bundle.module
+#else
+        let bundle=Bundle(for: DocXTests.self)
+#endif
 
     var tempURL:URL=URL(fileURLWithPath: "")
     
@@ -61,7 +67,6 @@ class DocXTests: XCTestCase {
                               options: DocXOptions = DocXOptions()) throws {
         let url = self.tempURL.appendingPathComponent(docxBasename(attributedString: attributedString)).appendingPathExtension("docx")
         try attributedString.writeDocX(to: url, options: options)
-        
         // Validate that writing was successful
         try validateDocX(url: url)
     }
@@ -488,7 +493,9 @@ Specifies the border displayed above a set of paragraphs which have the same set
         let longString = """
         1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum\r.
         """
-        let imageURL=URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("lenna.png")
+        
+        let imageURL=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension: "png"), "ImageURL not found")
+        
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
         let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
         attachement.bounds=CGRect(x: 0, y: 0, width: 128, height: 128)
@@ -546,13 +553,7 @@ And this is a [link](http://www.example.com).
     
     @available(macOS 12, *)
     func testMarkdown_Image() throws {
-        
-#if SWIFT_PACKAGE
-        let bundle=Bundle.module
-#else
-        let bundle=Bundle(for: DocXTests.self)
-#endif
-        
+
         let url=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension: "md"))
 
         let att=try AttributedString(contentsOf: url, baseURL: url.deletingLastPathComponent())
@@ -608,6 +609,152 @@ let string = """
         try writeAndValidateDocX(attributedString: att, options: options)
         
     }
+    
+    func testStyles() throws {
+        // Create a title
+        let text = NSMutableAttributedString(string: "Title", attributes:[.paragraphStyleId: "Title"])
+        
+        // Append a few new lines
+        text.append(NSAttributedString(string: "\n\n\n"))
+        
+        // Append some interesting text
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        text.append(NSAttributedString(string: loremIpsum))
+        
+        // Create a DocXStyleConfiguration that uses the test styles.xml file
+        let stylesURL = try XCTUnwrap(bundle.url(forResource: "styles", withExtension: "xml"),"styles.cml not found")
+           
+        let config = try DocXStyleConfiguration(stylesXMLURL: stylesURL, outputFontFamily: false)
+        
+        // Create DocXOptions and add the style configuration
+        var options = DocXOptions()
+        options.styleConfiguration = config
+        try writeAndValidateDocX(attributedString: text, options: options)
+    }
+    
+    
+    func testAvailableStyles() throws {
+        
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        
+        let stylesURL = try XCTUnwrap(bundle.url(forResource: "styles", withExtension: "xml"),"styles.cml not found")
+           
+        let config = try DocXStyleConfiguration(stylesXMLURL: stylesURL, outputFontFamily: false)
+        let paragraphStyles=try XCTUnwrap(config.availableParagraphStyles, "no styles found")
+        let text=NSMutableAttributedString()
+        for style in paragraphStyles{
+            text.append(NSAttributedString(string: "\(style)\r", attributes:[.paragraphStyleId:style]))
+            text.append(NSAttributedString(string: "\(loremIpsum)\r", attributes:[.paragraphStyleId:style]))
+        }
+        text.append(NSAttributedString(string: "\r", attributes: [.breakType:BreakType.page]))
+
+        let characterStyles=try XCTUnwrap(config.availableCharacterStyles, "no styles found")
+
+        for style in characterStyles{
+            text.append(NSAttributedString(string: "\r\(style):\r", attributes:[.characterStyleId:style]))
+            text.append(NSAttributedString(string: loremIpsum, attributes: [.characterStyleId:style]))
+        }
+        
+        // Create DocXOptions and add the style configuration
+        var options = DocXOptions()
+        options.styleConfiguration = config
+        try writeAndValidateDocX(attributedString: text, options: options)
+    }
+    
+    
+    func testFontErasure() throws{
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        let text=NSMutableAttributedString()
+        let fonts=[NSFont.boldSystemFont(ofSize: 12),
+                   NSFont.systemFont(ofSize: 19, weight: .light),
+                   NSFont(descriptor: NSFontDescriptor().withSymbolicTraits(.italic), size: 15)]
+            .compactMap({$0})
+        
+        for font in fonts{
+            text.append(NSAttributedString(string: loremIpsum, attributes: [.font:font]))
+            text.append(NSAttributedString(string: "\r\r", attributes: [.font:font]))
+        }
+        
+        var options=DocXOptions()
+        options.styleConfiguration=DocXStyleConfiguration(stylesXMLDocument: nil, outputFontFamily: false)
+        
+        try writeAndValidateDocX(attributedString: text, options: options)
+
+        try writeAndValidateDocX(attributedString: text)
+    }
+    
+    
+    func testStylesFomString() throws{
+        
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        
+        let stylesString="""
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh"><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:link w:val="Heading1Char"/><w:uiPriority w:val="9"/><w:qFormat/><w:rsid w:val="002B4C58"/><w:pPr><w:keepNext/><w:keepLines/><w:spacing w:before="240"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:rFonts w:asciiTheme="majorHAnsi" w:eastAsiaTheme="majorEastAsia" w:hAnsiTheme="majorHAnsi" w:cstheme="majorBidi"/><w:color w:val="2F5496" w:themeColor="accent1" w:themeShade="BF"/><w:sz w:val="32"/><w:szCs w:val="32"/></w:rPr></w:style><w:style w:type="character" w:default="1" w:styleId="DefaultParagraphFont"><w:name w:val="Default Paragraph Font"/><w:uiPriority w:val="1"/><w:semiHidden/><w:unhideWhenUsed/></w:style><w:style w:type="table" w:default="1" w:styleId="TableNormal"><w:name w:val="Normal Table"/><w:uiPriority w:val="99"/><w:semiHidden/><w:unhideWhenUsed/><w:tblPr><w:tblInd w:w="0" w:type="dxa"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="108" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="108" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style><w:style w:type="numbering" w:default="1" w:styleId="NoList"><w:name w:val="No List"/><w:uiPriority w:val="99"/><w:semiHidden/><w:unhideWhenUsed/></w:style><w:style w:type="paragraph" w:styleId="Title"><w:name w:val="Title"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:link w:val="TitleChar"/><w:uiPriority w:val="10"/><w:qFormat/><w:rsid w:val="002B4C58"/><w:pPr><w:contextualSpacing/></w:pPr><w:rPr><w:rFonts w:asciiTheme="majorHAnsi" w:eastAsiaTheme="majorEastAsia" w:hAnsiTheme="majorHAnsi" w:cstheme="majorBidi"/><w:spacing w:val="-10"/><w:kern w:val="28"/><w:sz w:val="56"/><w:szCs w:val="56"/></w:rPr></w:style><w:style w:type="character" w:customStyle="1" w:styleId="TitleChar"><w:name w:val="Title Char"/><w:basedOn w:val="DefaultParagraphFont"/><w:link w:val="Title"/><w:uiPriority w:val="10"/><w:rsid w:val="002B4C58"/><w:rPr><w:rFonts w:asciiTheme="majorHAnsi" w:eastAsiaTheme="majorEastAsia" w:hAnsiTheme="majorHAnsi" w:cstheme="majorBidi"/><w:spacing w:val="-10"/><w:kern w:val="28"/><w:sz w:val="56"/><w:szCs w:val="56"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Subtitle"><w:name w:val="Subtitle"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:link w:val="SubtitleChar"/><w:uiPriority w:val="11"/><w:qFormat/><w:rsid w:val="002B4C58"/><w:pPr><w:numPr><w:ilvl w:val="1"/></w:numPr><w:spacing w:after="160"/></w:pPr><w:rPr><w:color w:val="5A5A5A" w:themeColor="text1" w:themeTint="A5"/><w:spacing w:val="15"/><w:sz w:val="22"/><w:szCs w:val="22"/></w:rPr></w:style><w:style w:type="character" w:customStyle="1" w:styleId="SubtitleChar"><w:name w:val="Subtitle Char"/><w:basedOn w:val="DefaultParagraphFont"/><w:link w:val="Subtitle"/><w:uiPriority w:val="11"/><w:rsid w:val="002B4C58"/><w:rPr><w:color w:val="5A5A5A" w:themeColor="text1" w:themeTint="A5"/><w:spacing w:val="15"/><w:sz w:val="22"/><w:szCs w:val="22"/></w:rPr></w:style><w:style w:type="character" w:customStyle="1" w:styleId="Heading1Char"><w:name w:val="Heading 1 Char"/><w:basedOn w:val="DefaultParagraphFont"/><w:link w:val="Heading1"/><w:uiPriority w:val="9"/><w:rsid w:val="002B4C58"/><w:rPr><w:rFonts w:asciiTheme="majorHAnsi" w:eastAsiaTheme="majorEastAsia" w:hAnsiTheme="majorHAnsi" w:cstheme="majorBidi"/><w:color w:val="2F5496" w:themeColor="accent1" w:themeShade="BF"/><w:sz w:val="32"/><w:szCs w:val="32"/></w:rPr></w:style></w:styles>
+"""
+        let config=try DocXStyleConfiguration(stylesXMLString: stylesString, outputFontFamily: false)
+        let characterStyles = try XCTUnwrap(config.availableCharacterStyles)
+        XCTAssertFalse(characterStyles.isEmpty)
+        
+        let paragraphStyles = try XCTUnwrap(config.availableParagraphStyles)
+        XCTAssertFalse(paragraphStyles.isEmpty)
+        
+        let text=NSMutableAttributedString()
+        for style in paragraphStyles{
+            text.append(NSAttributedString(string: "\(style)\r", attributes:[.paragraphStyleId:style]))
+            text.append(NSAttributedString(string: "\(loremIpsum)\r", attributes:[.paragraphStyleId:style]))
+        }
+        text.append(NSAttributedString(string: "\r", attributes: [.breakType:BreakType.page]))
+
+
+        for style in characterStyles{
+            text.append(NSAttributedString(string: "\r\(style):\r", attributes:[.characterStyleId:style]))
+            text.append(NSAttributedString(string: loremIpsum, attributes: [.characterStyleId:style]))
+        }
+        
+        // Create DocXOptions and add the style configuration
+        var options = DocXOptions()
+        options.styleConfiguration = config
+        try writeAndValidateDocX(attributedString: text, options: options)
+        
+    }
+    
+    func testMinimumStyle() throws{
+        
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        
+        let stylesString="""
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:styles xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml" xmlns:w15="http://schemas.microsoft.com/office/word/2012/wordml" xmlns:w16cex="http://schemas.microsoft.com/office/word/2018/wordml/cex" xmlns:w16cid="http://schemas.microsoft.com/office/word/2016/wordml/cid" xmlns:w16="http://schemas.microsoft.com/office/word/2018/wordml" xmlns:w16sdtdh="http://schemas.microsoft.com/office/word/2020/wordml/sdtdatahash" xmlns:w16se="http://schemas.microsoft.com/office/word/2015/wordml/symex" mc:Ignorable="w14 w15 w16se w16cid w16 w16cex w16sdtdh"><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style></w:styles>
+"""
+        let config=try DocXStyleConfiguration(stylesXMLString: stylesString, outputFontFamily: false)
+
+        let paragraphStyles = try XCTUnwrap(config.availableParagraphStyles)
+        XCTAssertFalse(paragraphStyles.isEmpty)
+        
+        let text=NSMutableAttributedString()
+        for style in paragraphStyles{
+            text.append(NSAttributedString(string: "\(style)\r", attributes:[.paragraphStyleId:style]))
+            text.append(NSAttributedString(string: "\(loremIpsum)\r", attributes:[.paragraphStyleId:style]))
+        }
+        text.append(NSAttributedString(string: "\r", attributes: [.breakType:BreakType.page]))
+
+        var options = DocXOptions()
+        options.styleConfiguration = config
+        try writeAndValidateDocX(attributedString: text, options: options)
+        
+    }
+    
     
     // MARK: Performance Tests
     
