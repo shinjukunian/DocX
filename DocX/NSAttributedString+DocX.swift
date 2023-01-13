@@ -22,8 +22,10 @@ extension NSAttributedString:DocX{
     /// - Parameters:
     ///     - url: the destination URL, e.g. ```myfolder/mydocument.docx```
     ///     - options: an optional instance of `DocXOptions`. This allows you to specify metadata for the document.
+    ///     - configuration: an optional instance of `DocXConfiguration` that allows you to control the docx output.
     /// - Throws: Throws for I/O related errors
-    public func writeDocX(to url: URL, options:DocXOptions = DocXOptions()) throws{
+    public func writeDocX(to url: URL,
+                          options: DocXOptions = DocXOptions()) throws{
         try self.writeDocX_builtin(to: url, options: options)
     }
 }

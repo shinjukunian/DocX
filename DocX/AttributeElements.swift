@@ -65,6 +65,10 @@ extension Dictionary where Key == NSAttributedString.Key{
            let vertAlignElement = vertAlignElement(baselineOffset: baselineOffset) {
             attributesElement.addChild(vertAlignElement)
         }
+        // Character styles
+        if let characterStyleId = self[.characterStyleId] as? String {
+            attributesElement.addChild(characterStyleElement(styleId: characterStyleId))
+        }
 
         return attributesElement
     }
@@ -126,7 +130,6 @@ extension Dictionary where Key == NSAttributedString.Key{
         outlineElement.addChild(lineCapElement)
         
         return [colorElement,outlineElement]
-        
     }
     
     func vertAlignElement(baselineOffset: CGFloat) -> AEXMLElement? {
@@ -146,6 +149,11 @@ extension Dictionary where Key == NSAttributedString.Key{
         } else {
             return nil
         }
+    }
+    func characterStyleElement(styleId: String) -> AEXMLElement {
+        return AEXMLElement(name: "w:rStyle",
+                            value: nil,
+                            attributes: ["w:val": styleId])
     }
 }
 
