@@ -18,12 +18,16 @@ import AppKit
 @available(OSX 10.11, *)
 extension DocX where Self : NSAttributedString{
     
-    var pageDef:AEXMLElement{
+    func pageDef(options: DocXOptions?) -> AEXMLElement{
         let pageDef=AEXMLElement(name: "w:sectPr", value: nil, attributes: ["w:rsidR":"00045791", "w:rsidSect":"004F37A0"])
         
         if self.usesVerticalForms{
             let vertical=AEXMLElement(name: "w:textDirection", value: nil, attributes: ["w:val":"tbRl"])
             pageDef.addChild(vertical)
+        }
+        
+        if let page=options?.pageDefinition{
+            pageDef.addChildren(page.pageElements)
         }
         
         //these elements are added for by word, but not by the cocoa docx exporter. word then falls back to the page setup defined by the print settings of the machine. this seems useful
@@ -72,7 +76,7 @@ extension DocX where Self : NSAttributedString{
         body.addChildren(self.buildParagraphs(paragraphRanges: self.paragraphRanges,
                                               linkRelations: linkRelations,
                                               options: options))
-        body.addChild(pageDef)
+        body.addChild(pageDef(options: options))
         return document.xmlCompact
     }
     
