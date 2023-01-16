@@ -97,10 +97,10 @@ extension DocX where Self : NSAttributedString{
         return lastIdIDX
     }
    
-    func prepareLinks(linkXML: AEXMLDocument, mediaURL:URL) -> [DocumentRelationship] {
+    func prepareLinks(linkXML: AEXMLDocument, mediaURL:URL, options:DocXOptions) -> [DocumentRelationship] {
         var linkURLS=[URL]()
         
-        let imageRelationships = prepareImages(linkXML: linkXML, mediaURL:mediaURL)
+        let imageRelationships = prepareImages(linkXML: linkXML, mediaURL:mediaURL, options: options)
         
         self.enumerateAttribute(.link, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
             if let link=attribute as? URL{
@@ -124,7 +124,7 @@ extension DocX where Self : NSAttributedString{
         return linkRelationShips + imageRelationships
     }
     
-    func prepareImages(linkXML: AEXMLDocument, mediaURL:URL) -> [DocumentRelationship]{
+    func prepareImages(linkXML: AEXMLDocument, mediaURL:URL, options:DocXOptions) -> [DocumentRelationship]{
         var attachements=[NSTextAttachment]()
         self.enumerateAttribute(.attachment, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
             if let link=attribute as? NSTextAttachment{
@@ -173,7 +173,7 @@ extension DocX where Self : NSAttributedString{
                 return nil
             }
 
-            let relationShip=ImageRelationship(relationshipID: newID, linkURL: destURL, attachement: attachement)
+            let relationShip=ImageRelationship(relationshipID: newID, linkURL: destURL, attachement: attachement, pageDefinition: options.pageDefinition)
             return relationShip
         })
         

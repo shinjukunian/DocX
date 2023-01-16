@@ -68,7 +68,7 @@ extension NSTextAttachment{
         }
     }
     
-    var extentInEMU:Size{
+    func extentInEMU(pageSize:PageDefinition?) -> Size{
         let size:CGSize
         if self.bounds != .zero{
             size=self.bounds.size
@@ -77,8 +77,23 @@ extension NSTextAttachment{
             size=self.dataImageSize
         }
         
-        let width=size.width
-        let height=size.height
+        let width:CGFloat
+        let height:CGFloat
+        
+        
+        // we have a page size defined and the image is larger (in one dimension) than the page. we shrink the image to fit the printable area of the page.
+        if let bounds=pageSize?.printableSize(unit: .points),
+            (bounds.height < size.height || bounds.width < size.width) {
+            let ratio=min(bounds.height / size.height, bounds.width / size.width)
+            let scaledSize=size.applying(.init(scaleX: ratio, y: ratio))
+            width=scaledSize.width
+            height=scaledSize.height
+        }
+        else{
+            width=size.width
+            height=size.height
+        }
+        
 
         let emuPerInch=CGFloat(914400)
         let dpi=CGFloat(72)
@@ -88,8 +103,8 @@ extension NSTextAttachment{
         
     }
     
-    var extentAttributes:[AEXMLElement]{
-        let size=self.extentInEMU
+    func extentAttribute(pageSize:PageDefinition?) -> [AEXMLElement]{
+        let size=self.extentInEMU(pageSize: pageSize)
         let extent=size.extentAttribute
         let effectiveExtent=AEXMLElement(name: "wp:effectExtent", value: nil, attributes: ["l":"0", "t":"0","r":"0","b":"0"])
         return [extent,effectiveExtent]
