@@ -15,26 +15,20 @@ fileprivate typealias NSEdgeInsets = UIEdgeInsets
 #endif
 
 public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
-    
+        
     /// The size of a page
     public struct PageSize:Equatable, CustomStringConvertible, Hashable{
         
         ///Page width in twips
-        let width:Int
+        let width:Measurement<UnitLength>
         
         /// Page height in twips
-        let height:Int
-        
-        /// Memberwise initializer, width and height are in twips (point / 20)
-        init(width: Int, height: Int) {
-            self.width = width
-            self.height = height
-        }
+        let height:Measurement<UnitLength>
         
         /// Convenience initializer using a `CGSize`. All values are in points.
         public init(size:CGSize){
-            self.width = Int(Measurement(value: size.width, unit: UnitLength.points).converted(to: .twips).value)
-            self.height = Int(Measurement(value: size.height, unit: UnitLength.points).converted(to: .twips).value)
+            self.width = Measurement(value: size.width, unit: UnitLength.points)
+            self.height = Measurement(value: size.height, unit: UnitLength.points)
         }
         
         /// Convenience initializer to define the page size in length units (mm, cm, inches)
@@ -50,23 +44,25 @@ public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
         /// let page=PageSize(width: width, height: height)
         /// ```
         public init(width:Measurement<UnitLength>, height: Measurement<UnitLength>){
-            self.width = Int(width.converted(to: .twips).value)
-            self.height = Int(height.converted(to: .twips).value)
+            self.width = width
+            self.height = height
         }
         
         public var description: String{
             let formatter=MeasurementFormatter()
             formatter.unitOptions = [.providedUnit]
-            return "Width: \(formatter.string(from: Measurement(value: Double(width), unit: UnitLength.twips).converted(to: .points))), height: \(formatter.string(from: Measurement(value: Double(height), unit: UnitLength.twips).converted(to: .points)))\rWidth: \(formatter.string(from: Measurement(value: Double(width), unit: UnitLength.twips).converted(to: UnitLength.centimeters))), height: \(formatter.string(from: Measurement(value: Double(height), unit: UnitLength.twips).converted(to: UnitLength.centimeters)))"
+            return "Width: \(formatter.string(from: width.converted(to: .points))), height: \(formatter.string(from: height.converted(to: .points)))\rWidth: \(formatter.string(from: width.converted(to: UnitLength.centimeters))), height: \(formatter.string(from: height.converted(to: UnitLength.centimeters)))"
         }
         
         /// An A4 page
-        public static let A4:PageSize = PageSize(size: .init(width: CGFloat(595), height: 842))
+        public static let A4:PageSize = PageSize(size: .init(width: 595, height: 842))
         
         /// A Letter page
-        public static let letter:PageSize = PageSize(size: .init(width: CGFloat(612), height: 792))
+        public static let letter:PageSize = PageSize(size: .init(width: 612, height: 792))
         
         var pageSizeElement:AEXMLElement{
+            let width=Int(width.converted(to: .twips).value)
+            let height=Int(height.converted(to: .twips).value)
             return AEXMLElement(name: "w:pgSz", value: nil, attributes: ["w:w":String(width), "w:h":String(height), "w:orient":"landscape"])
         }
         
@@ -77,7 +73,7 @@ public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
         
         /// The size of the page in in a desired unit of length (cm, mm, inches, etc.)
         public func size(unit:UnitLength)->CGSize{
-            return CGSize(width: Measurement(value: Double(width), unit: UnitLength.twips).converted(to: unit).value, height: Measurement(value: Double(width), unit: UnitLength.twips).converted(to: unit).value)
+            return CGSize(width: width.converted(to: unit).value, height: height.converted(to: unit).value)
         }
     }
     
@@ -85,41 +81,25 @@ public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
     public struct PageMargins:Equatable, CustomStringConvertible, Hashable{
         
         /// Top margin in twips
-        let top:Int
+        let top:Measurement<UnitLength>
         
         /// bottom margin in twips.
-        let bottom:Int
+        let bottom:Measurement<UnitLength>
         
         /// left margin in twips
-        let left:Int
+        let left:Measurement<UnitLength>
         
         /// right margin in twips
-        let right:Int
+        let right:Measurement<UnitLength>
         
         /// footer margin in twips. The larger value of `bottom` or `footer` will be used
-        let footer:Int
+        let footer:Measurement<UnitLength>
         
         /// header margin in twips. The larger value of `header` and `top` will be used.
-        let header:Int
+        let header:Measurement<UnitLength>
         
-        /// memberwise initializer. All values are in twips (twentieth of an inch)
-        /// - Parameters:
-        ///     - top: top margin
-        ///     - bottom: bottom margin
-        ///     - left: left margin
-        ///     - right: right margin
-        ///     - footer: footer margin
-        ///     - header: header margin
-        init(top: Int, bottom: Int, left: Int, right: Int, footer: Int=0, header: Int=0) {
-            self.top = top
-            self.bottom = bottom
-            self.left = left
-            self.right = right
-            self.footer = footer
-            self.header = header
-        }
         
-        /// memberwise initializer. All values are in points. One inch (2.54 cm) is 72 points.
+        /// Convenience initializer. All values are in points. One inch (2.54 cm) is 72 points.
         /// - Parameters:
         ///     - top: top margin
         ///     - bottom: bottom margin
@@ -128,22 +108,29 @@ public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
         ///     - footer: footer margin
         ///     - header: header margin
         public init(top:CGFloat, bottom: CGFloat, left: CGFloat, right: CGFloat, footer: CGFloat = 0, header: CGFloat = 0) {
-            self.top = Int(Measurement(value: top, unit: UnitLength.points).converted(to: .twips).value)
-            self.bottom = Int(Measurement(value: bottom, unit: UnitLength.points).converted(to: .twips).value)
-            self.left = Int(Measurement(value: left, unit: UnitLength.points).converted(to: .twips).value)
-            self.right = Int(Measurement(value: right, unit: UnitLength.points).converted(to: .twips).value)
-            self.footer = Int(Measurement(value: footer, unit: UnitLength.points).converted(to: .twips).value)
-            self.header = Int(Measurement(value: header, unit: UnitLength.points).converted(to: .twips).value)
+            self.top = Measurement(value: top, unit: UnitLength.points)
+            self.bottom = Measurement(value: bottom, unit: UnitLength.points)
+            self.left = Measurement(value: left, unit: UnitLength.points)
+            self.right = Measurement(value: right, unit: UnitLength.points)
+            self.footer = Measurement(value: footer, unit: UnitLength.points)
+            self.header = Measurement(value: header, unit: UnitLength.points)
         }
         
-        /// Convenience initializer to define the margins size in length units (mm, cm, inches)
+        /// Memberwise initializer to define the margins size in length units (mm, cm, inches)
+        /// - Parameters:
+        ///     - top: top margin
+        ///     - bottom: bottom margin
+        ///     - left: left margin
+        ///     - right: right margin
+        ///     - footer: footer margin
+        ///     - header: header margin
         public init(top:Measurement<UnitLength>, bottom: Measurement<UnitLength>, left: Measurement<UnitLength>, right: Measurement<UnitLength>, footer: Measurement<UnitLength> = Measurement(value: 0, unit: .centimeters), header: Measurement<UnitLength> = Measurement(value: 0, unit: .centimeters)){
-            self.top = Int(top.converted(to: .twips).value)
-            self.bottom = Int(bottom.converted(to: .twips).value)
-            self.left = Int(left.converted(to: .twips).value)
-            self.right = Int(right.converted(to: .twips).value)
-            self.footer = Int(footer.converted(to: .twips).value)
-            self.header = Int(header.converted(to: .twips).value)
+            self.top = top
+            self.bottom = bottom
+            self.left = left
+            self.right = right
+            self.footer = footer
+            self.header = header
         }
         
 #if os(macOS)
@@ -165,22 +152,22 @@ public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
         
         /// Effective margins of the page in a unit of length.
         public func effectiveMargins(unit:UnitLength)->NSEdgeInsets{
-            let top = top < 0 ? top : max(top, header)
-            let bottom = bottom < 0 ? bottom : max(bottom, footer)
-            return NSEdgeInsets(top: Measurement(value: Double(top), unit: UnitLength.twips).converted(to: unit).value, left: Measurement(value: Double(left), unit: UnitLength.twips).converted(to: unit).value, bottom: Measurement(value: Double(bottom), unit: UnitLength.twips).converted(to: unit).value, right: Measurement(value: Double(right), unit: UnitLength.twips).converted(to: unit).value)
+            let top = top < Measurement(value: 0, unit: .points) ? top : max(top, header)
+            let bottom = bottom < Measurement(value: 0, unit: .points) ? bottom : max(bottom, footer)
+            return NSEdgeInsets(top: top.converted(to: unit).value, left: left.converted(to: unit).value, bottom: bottom.converted(to: unit).value, right: right.converted(to: unit).value)
         }
         
         public var description: String{
             let formatter=MeasurementFormatter()
             formatter.unitOptions = [.providedUnit]
-            return "Top \(formatter.string(from: Measurement(value: Double(top), unit: UnitLength.twips).converted(to: .points))), bottom: \(formatter.string(from: Measurement(value: Double(bottom), unit: UnitLength.twips).converted(to: .points))), left: \(formatter.string(from: Measurement(value: Double(left), unit: UnitLength.twips).converted(to: .points))), right: \(formatter.string(from: Measurement(value: Double(right), unit: UnitLength.twips).converted(to: .points))), footer: \(formatter.string(from: Measurement(value: Double(footer), unit: UnitLength.twips).converted(to: .points))), header: \(formatter.string(from: Measurement(value: Double(header), unit: UnitLength.twips).converted(to: .points)))\rTop \(formatter.string(from: Measurement(value: Double(top), unit: UnitLength.twips).converted(to: .centimeters))), bottom: \(formatter.string(from: Measurement(value: Double(bottom), unit: UnitLength.twips).converted(to: .centimeters))), left: \(formatter.string(from: Measurement(value: Double(left), unit: UnitLength.twips).converted(to: .centimeters))), right: \(formatter.string(from: Measurement(value: Double(right), unit: UnitLength.twips).converted(to: .centimeters))), footer: \(formatter.string(from: Measurement(value: Double(footer), unit: UnitLength.twips).converted(to: .centimeters))), header: \(formatter.string(from: Measurement(value: Double(header), unit: UnitLength.twips).converted(to: .centimeters)))"
+            return "Top \(formatter.string(from: top.converted(to: .points))), bottom: \(formatter.string(from: bottom.converted(to: .points))), left: \(formatter.string(from: left.converted(to: .points))), right: \(formatter.string(from: right.converted(to: .points))), footer: \(formatter.string(from: footer.converted(to: .points))), header: \(formatter.string(from: header.converted(to: .points)))\rTop \(formatter.string(from: top.converted(to: .centimeters))), bottom: \(formatter.string(from: bottom.converted(to: .centimeters))), left: \(formatter.string(from: left.converted(to: .centimeters))), right: \(formatter.string(from: right.converted(to: .centimeters))), footer: \(formatter.string(from: footer.converted(to: .centimeters))), header: \(formatter.string(from: header.converted(to: .centimeters)))"
         }
         
-        /// The default margins if a standard Word document.
+        /// The default margins of a standard Word document (one inch).
         public static let `default` = PageMargins(top: CGFloat(72), bottom: 72, left: 72, right: 72, footer: 35.4, header: 35.4)
         
         var marginElement:AEXMLElement{
-            return AEXMLElement(name: "w:pgMar", value: nil, attributes: ["w:top":String(top), "w:right":String(right), "w:bottom":String(bottom), "w:left":String(left), "w:header":String(header), "w:footer":String(footer), "w:gutter":"0"])
+            return AEXMLElement(name: "w:pgMar", value: nil, attributes: ["w:top":String(Int(top.converted(to: .twips).value)), "w:right":String(Int(right.converted(to: .twips).value)), "w:bottom":String(Int(bottom.converted(to: .twips).value)), "w:left":String(Int(left.converted(to: .twips).value)), "w:header":String(Int(header.converted(to: .twips).value)), "w:footer":String(Int(footer.converted(to: .twips).value)), "w:gutter":"0"])
         }
     }
     
@@ -194,6 +181,7 @@ public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
         return "Paper Size: \(pageSize),\r\rMargins: \(pageMargins)"
     }
     
+   
     /// Initializes a page Definition with a page (paper) size and margins
     /// - Parameters:
     ///     - pageSize: a page (paper) size, e.g. A4.
@@ -221,11 +209,11 @@ public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
 
 public extension UnitLength{
     class var points:UnitLength{
-        return UnitLength(symbol: "points", converter: UnitConverterLinear(coefficient: 1/100 / 28.3465))
+        return UnitLength(symbol: "points", converter: UnitConverterLinear(coefficient: 1/100 / 72 * 2.54))
     }
     
     class var twips:UnitLength{
-        return UnitLength(symbol: "twips", converter: UnitConverterLinear(coefficient: 1/100 / 28.3465 / 20))
+        return UnitLength(symbol: "twips", converter: UnitConverterLinear(coefficient: 1/100 / 72 * 2.54 / 20))
     }
 }
 

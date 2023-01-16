@@ -12,9 +12,8 @@ public class DocXWriter{
     /// Convenience function to write an array of NSAttributedString to separate pages in a .docx file
     /// - Parameters:
     ///   - pages: an array of NSAttributedStrings. A page break fill be inserted after each page.
-    ///   - url: The destination of the resulting .docx, e.g. ```myfile.docx```
-    ///   - options: an optional instance of `DocXOptions`. This allows you to specify metadata for the document.
-    ///   - configuration: an optional instance of `DocXConfiguration` that allows you to control the docx output.
+    ///   - url: The destination of the resulting .docx, e.g. `myfile.docx`
+    ///   - options: an optional instance of `DocXOptions`. This allows you to specify metadata for the document and customize docx output.
     /// - Throws: Throws errors for I/O.
     public class func write(pages:[NSAttributedString],
                             to url:URL,

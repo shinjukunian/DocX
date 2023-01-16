@@ -42,7 +42,7 @@ public struct DocXOptions{
     /// An optional configuration object for style output
     public var styleConfiguration: DocXStyleConfiguration?
     
-    /// An optional parameter that specifies the page (paper) size and margins. If not specified (`nil`) Word will use default values based on the current locale and printer settings. The default value is `nil`.
+    /// An optional parameter that specifies the page (paper) size and margins. If not specified (`nil`), Word will use default values based on the current locale and printer settings. The default value is `nil`.
     public var pageDefinition: PageDefinition?
     
     public init(){}
