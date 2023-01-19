@@ -35,6 +35,12 @@ extension NSTextAttachment{
         let width:Int
         let height:Int
         
+        init(cgSize:CGSize) {
+            self.height=Int(cgSize.height)
+            self.width=Int(cgSize.width)
+        }
+        
+        
         var extentAttribute:AEXMLElement{
             return AEXMLElement(name: "wp:extent", value: nil, attributes: self.extentAttributes)
         }
@@ -68,7 +74,13 @@ extension NSTextAttachment{
         }
     }
     
-    func extentInEMU(pageSize:PageDefinition?) -> Size{
+    /// Autosizing behavior of images.
+    ///
+    /// The default behaviour is:
+    /// - if an explicit `bounds` has been supplied for the `NSTextAttachement`, use this size (in points)
+    /// - if no `bounds` has been suplied (`bounds == CGRect.zero`), use the size of the supplied image (in points).
+    /// - if an optional `PageDefinition` is supplied and no explicit size for the `NSTextAttachement` has been set, scale the image to fit the page if it is larger than the printable area, otherwise do nothing.
+    func extent(for pageSize:PageDefinition?) -> CGSize{
         let size:CGSize
         if self.bounds != .zero{
             size=self.bounds.size
@@ -82,7 +94,9 @@ extension NSTextAttachment{
         
         
         // we have a page size defined and the image is larger (in one dimension) than the page. we shrink the image to fit the printable area of the page.
+        // If there is a user-defined size, we accept this even if it is too large.
         if let bounds=pageSize?.printableSize(unit: .points),
+            size == .zero,
             (bounds.height < size.height || bounds.width < size.width) {
             let ratio=min(bounds.height / size.height, bounds.width / size.width)
             let scaledSize=size.applying(.init(scaleX: ratio, y: ratio))
@@ -94,17 +108,20 @@ extension NSTextAttachment{
             height=size.height
         }
         
-
-        let emuPerInch=CGFloat(914400)
-        let dpi=CGFloat(72)
-        let emuWidth=width/dpi*emuPerInch
-        let emuHeight=height/dpi*emuPerInch
-        return Size(width: Int(emuWidth), height: Int(emuHeight))
-        
+        return CGSize(width: width, height: height)
     }
     
-    func extentAttribute(pageSize:PageDefinition?) -> [AEXMLElement]{
-        let size=self.extentInEMU(pageSize: pageSize)
+    
+    func extentInEMU(size:CGSize) -> Size{
+        let emuPerInch=CGFloat(914400)
+        let dpi=CGFloat(72)
+        let emuSize=size.applying(.init(scaleX: emuPerInch / dpi, y: emuPerInch / dpi))
+        return Size(cgSize: emuSize)
+    }
+    
+    
+    func extentAttributes(pageSize:PageDefinition?) -> [AEXMLElement]{
+        let size=extentInEMU(size: extent(for: pageSize))
         let extent=size.extentAttribute
         let effectiveExtent=AEXMLElement(name: "wp:effectExtent", value: nil, attributes: ["l":"0", "t":"0","r":"0","b":"0"])
         return [extent,effectiveExtent]

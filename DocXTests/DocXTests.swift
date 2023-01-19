@@ -813,6 +813,7 @@ let string = """
             try writeAndValidateDocX(attributedString: text, options: options)
         }
         
+        
     }
     
     // MARK: Performance Tests
