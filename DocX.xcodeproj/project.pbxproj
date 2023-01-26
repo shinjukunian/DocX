@@ -26,6 +26,10 @@
 		5A8406C72609DF39002B8B34 /* NSTextAttachement+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0AD5CE26099AA200C146D3 /* NSTextAttachement+Extensions.swift */; };
 		5A8406CD2609DF65002B8B34 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */; };
 		5A8406CE2609DF65002B8B34 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */; };
+		5A907B882982A35800E1A581 /* DocXPageDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A907B862982A35800E1A581 /* DocXPageDefinition.swift */; };
+		5A907B892982A35800E1A581 /* DocXPageDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A907B862982A35800E1A581 /* DocXPageDefinition.swift */; };
+		5A907B8A2982A35800E1A581 /* DocXStyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A907B872982A35800E1A581 /* DocXStyleConfiguration.swift */; };
+		5A907B8B2982A35800E1A581 /* DocXStyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A907B872982A35800E1A581 /* DocXStyleConfiguration.swift */; };
 		5A9F70AA223502D6008E967C /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70A0223502D6008E967C /* DocX.framework */; };
 		5A9F70AF223502D6008E967C /* DocXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70AE223502D6008E967C /* DocXTests.swift */; };
 		5A9F70B1223502D6008E967C /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -94,6 +98,8 @@
 		5A8406B42609DF1B002B8B34 /* NSAttributedString+Writing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Writing.swift"; sourceTree = "<group>"; };
 		5A8406BB2609DF2B002B8B34 /* ImageRelationship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageRelationship.swift; sourceTree = "<group>"; };
 		5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
+		5A907B862982A35800E1A581 /* DocXPageDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXPageDefinition.swift; sourceTree = "<group>"; };
+		5A907B872982A35800E1A581 /* DocXStyleConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXStyleConfiguration.swift; sourceTree = "<group>"; };
 		5A9F70A0223502D6008E967C /* DocX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DocX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A9F70A3223502D6008E967C /* DocX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocX.h; sourceTree = "<group>"; };
 		5A9F70A4223502D6008E967C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -193,6 +199,8 @@
 		5A9F70A2223502D6008E967C /* DocX */ = {
 			isa = PBXGroup;
 			children = (
+				5A907B862982A35800E1A581 /* DocXPageDefinition.swift */,
+				5A907B872982A35800E1A581 /* DocXStyleConfiguration.swift */,
 				5AE833F2223688A400E68343 /* blank */,
 				5A9F70BF22350300008E967C /* DocumentRoot.swift */,
 				5A9F70BC22350300008E967C /* DocX.swift */,
@@ -444,12 +452,14 @@
 				5AE833F12236861F00E68343 /* PlatformSpecific-macOS.swift in Sources */,
 				5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */,
 				5AE8341B22375D9E00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
+				5A907B8A2982A35800E1A581 /* DocXStyleConfiguration.swift in Sources */,
 				5AE5BE9B25EE283F009A152F /* NSAttributedString+DocX-macOS.swift in Sources */,
 				5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */,
 				5AC6C9B5260ACCEB0059F7B0 /* DocXWriting.swift in Sources */,
 				5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5A4FC7E927FEF5630063F796 /* AttributedString.swift in Sources */,
 				5A6B3DBF26D86D33009F6859 /* DocXOptions.swift in Sources */,
+				5A907B882982A35800E1A581 /* DocXPageDefinition.swift in Sources */,
 				5A9F70C222350300008E967C /* DocX.swift in Sources */,
 				5A9F70F722350D12008E967C /* ParagraphElement.swift in Sources */,
 				5A8406C22609DF38002B8B34 /* NSTextAttachement+Extensions.swift in Sources */,
@@ -479,12 +489,14 @@
 				5AE833D12236831500E68343 /* NSAttributedString+Extensions.swift in Sources */,
 				5AE833D52236831500E68343 /* AttributeElements.swift in Sources */,
 				5AE833DA2236831500E68343 /* RubyAnnotationElement.swift in Sources */,
+				5A907B8B2982A35800E1A581 /* DocXStyleConfiguration.swift in Sources */,
 				5AE5BEA025EE2847009A152F /* NSAttributedString+DocX-macOS.swift in Sources */,
 				5AE833EC223683F000E68343 /* NSAttributedString+DocX.swift in Sources */,
 				5AC6C9B6260ACCEB0059F7B0 /* DocXWriting.swift in Sources */,
 				5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
 				5A4FC7EA27FEF5630063F796 /* AttributedString.swift in Sources */,
 				5A6B3DC026D86D33009F6859 /* DocXOptions.swift in Sources */,
+				5A907B892982A35800E1A581 /* DocXPageDefinition.swift in Sources */,
 				5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
 				5AE833DB2236831500E68343 /* DocX.swift in Sources */,
 				5A8406C72609DF39002B8B34 /* NSTextAttachement+Extensions.swift in Sources */,

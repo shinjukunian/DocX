@@ -139,19 +139,25 @@ public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
             self.init(top: edgeInsets.top, bottom: edgeInsets.bottom, left: edgeInsets.left, right: edgeInsets.right)
         }
         
+        /// Effective margins of the page in a unit of length.
+        public func effectiveMargins(unit:UnitLength = .points)->NSEdgeInsets{
+            return _effectiveMargins(unit: unit)
+        }
+        
 #elseif os(iOS)
         /// Convenience initializer. Edge insets are in points.
         public init(edgeInsets:UIEdgeInsets){
             self.init(top: edgeInsets.top, bottom: edgeInsets.bottom, left: edgeInsets.left, right: edgeInsets.right)
         }
         
-#endif
-        fileprivate var effectiveMargins:NSEdgeInsets{
-            return effectiveMargins(unit: .points)
+        /// Effective margins of the page in a unit of length.
+        public func effectiveMargins(unit:UnitLength = .points)->UIEdgeInsets{
+            return _effectiveMargins(unit: unit)
         }
         
-        /// Effective margins of the page in a unit of length.
-        public func effectiveMargins(unit:UnitLength)->NSEdgeInsets{
+#endif
+        
+        fileprivate func _effectiveMargins(unit:UnitLength)->NSEdgeInsets{
             let top = top < Measurement(value: 0, unit: .points) ? top : max(top, header)
             let bottom = bottom < Measurement(value: 0, unit: .points) ? bottom : max(bottom, footer)
             return NSEdgeInsets(top: top.converted(to: unit).value, left: left.converted(to: unit).value, bottom: bottom.converted(to: unit).value, right: right.converted(to: unit).value)
@@ -208,10 +214,13 @@ public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
 
 
 public extension UnitLength{
+    
+    /// A length units measured in points (1/72 of an inch).
     class var points:UnitLength{
         return UnitLength(symbol: "points", converter: UnitConverterLinear(coefficient: 1/100 / 72 * 2.54))
     }
     
+    /// A length units measured in twips. Twips are a twentieth (1/20) of a point (1/72 of an inch)
     class var twips:UnitLength{
         return UnitLength(symbol: "twips", converter: UnitConverterLinear(coefficient: 1/100 / 72 * 2.54 / 20))
     }
