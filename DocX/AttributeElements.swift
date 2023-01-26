@@ -40,7 +40,12 @@ extension Dictionary where Key == NSAttributedString.Key{
             attributesElement.addChildren(self.outlineProperties(strokeWidth: strokeWidth, font:font))
         }
         
-        if let style=self[.underlineStyle] as? Int, let color=self[.foregroundColor] as? NSColor{
+        if let style=self[.underlineStyle] as? Int {
+            let foregroundColor = self[.foregroundColor] as? NSColor
+            let underlineColor = self[.underlineColor] as? NSColor
+            // If the `underlineColor` attribute is present, prefer that to the
+            // `foregroundColor` (if any)
+            let color = underlineColor ?? foregroundColor
             let underline=NSUnderlineStyle(rawValue: style)
             attributesElement.addChild(underline.underlineElement(for: color))
         }
