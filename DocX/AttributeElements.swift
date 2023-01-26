@@ -41,13 +41,11 @@ extension Dictionary where Key == NSAttributedString.Key{
         }
         
         if let style=self[.underlineStyle] as? Int {
-            let foregroundColor = self[.foregroundColor] as? NSColor
+            // If the `underlineColor` attribute is present, use that as the color
             let underlineColor = self[.underlineColor] as? NSColor
-            // If the `underlineColor` attribute is present, prefer that to the
-            // `foregroundColor` (if any)
-            let color = underlineColor ?? foregroundColor
+            
             let underline=NSUnderlineStyle(rawValue: style)
-            attributesElement.addChild(underline.underlineElement(for: color))
+            attributesElement.addChild(underline.underlineElement(for: underlineColor))
         }
         
         if let backgroundColor=self[.backgroundColor] as? NSColor{
