@@ -41,9 +41,17 @@ extension NSUnderlineStyle{
         return val
     }
     
-    func underlineElement(for color:NSColor)->AEXMLElement{
-        let colorString=color.hexColorString
-        return AEXMLElement(name: "w:u", value: nil, attributes: ["w:color":colorString, "w:val":self.elementValue])
+    func underlineElement(for color:NSColor?)->AEXMLElement{
+        // Always add the underline value, which determines the underline style
+        var attributes = ["w:val": self.elementValue]
+        
+        // If color is specified, include that too
+        if let color = color {
+            let colorString = color.hexColorString
+            attributes["w:color"] = colorString
+        }
+        
+        return AEXMLElement(name: "w:u", value: nil, attributes: attributes)
     }
     
     var strikeThroughElement:AEXMLElement{
