@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'DocX'
-  s.version          = '0.8.7'
+  s.version          = '0.8.8'
   s.summary          = 'Convert NSAttributedString / AttributedString to .docx Word files on iOS and macOS.'
   s.homepage         = 'https://github.com/shinjukunian/DocX'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
