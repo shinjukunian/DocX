@@ -10,7 +10,7 @@ On iOS, `NSAttributedString.DocumentType` supports only HTML and Rich Text, whil
 This library is used in [SimpleFurigana for macOS](https://itunes.apple.com/de/app/simple-furigana/id997615882?l=en&mt=12) and [SimpleFurigana for iOS](https://itunes.apple.com/de/app/simple-furigana/id924351286?l=en&mt=8), hence the focus on furigana annotation export.
 
 ## Installation
-
+### Swift Package Manager
 Add 
 ```swift
 .package(name: "DocX", url: "https://github.com/shinjukunian/DocX.git", .branch("master"))
@@ -18,6 +18,13 @@ Add
 
 to ```dependencies``` in your  ```Package.swift``` file. This requires Swift 5.3, which shipped with Xcode12.
 Alternatively, add  ```DocX``` in Xcode via ```File->Swift Packages->Add Package Dependency```, paste ```https://github.com/shinjukunian/DocX.git``` as URL and specify ```master``` as branch.
+
+### CocoaPods
+Add 
+```
+pod 'DocX'
+```
+to your Podfile.
 
 ## Usage
 
