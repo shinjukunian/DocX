@@ -22,7 +22,7 @@ Alternatively, add  ```DocX``` in Xcode via ```File->Swift Packages->Add Package
 ### CocoaPods
 Add 
 ```
-pod 'DocX'
+pod 'DocX-Swift'
 ```
 to your Podfile.
 
