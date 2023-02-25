@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-  s.name             = 'DocX'
+  s.name             = 'DocX-Swift'
   s.version          = '0.8.8'
   s.summary          = 'Convert NSAttributedString / AttributedString to .docx Word files on iOS and macOS.'
   s.homepage         = 'https://github.com/shinjukunian/DocX'
@@ -8,6 +8,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => 'https://github.com/shinjukunian/DocX.git', :tag => s.version }
   s.ios.deployment_target = '12.0'
   s.swift_version = '5.0'
+  s.module_name = 'DocX'
   s.osx.deployment_target  = '10.13'
   s.source_files = 'DocX/**/*.swift'
       
