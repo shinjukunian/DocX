@@ -759,6 +759,42 @@ let string = """
         
     }
     
+    func testPageSize() throws{
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        
+        func makeText(howMany:Int)->NSMutableAttributedString{
+            let text=NSMutableAttributedString()
+            
+            for _ in 0...howMany{
+                text.append(NSAttributedString(string: loremIpsum))
+                text.append(NSAttributedString(string: "\r\r"))
+            }
+            return text
+        }
+        
+        
+        let defs = [PageDefinition(pageSize: .A4),
+                    PageDefinition(pageSize: .letter),
+                    PageDefinition(pageSize: .A4, pageMargins: .init(edgeInsets: NSEdgeInsets(top: 500, left: 100, bottom: 50, right: 40))),
+                    PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: .centimeters), height: Measurement(value: 10, unit: .centimeters))),
+                    PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: .inches), height: Measurement(value: 10, unit: .centimeters)), pageMargins: PageDefinition.PageMargins(top: Measurement(value: 1, unit: .centimeters), bottom: Measurement(value: 25, unit: .millimeters), left: .init(value: 1, unit: .inches), right: .init(value: 50, unit: .points))),
+                    PageDefinition(pageSize: .init(width: .init(value: 30, unit: .centimeters), height: .init(value: 20, unit: .centimeters)), pageMargins: .init(top: .init(value: 1, unit: .centimeters), bottom: .init(value: 1, unit: .centimeters), left: .init(value: 1, unit: .centimeters), right: .init(value: 1, unit: .centimeters)))
+        ]
+        
+        for def in defs{
+            var options=DocXOptions()
+            options.pageDefinition=def
+            
+            let text=makeText(howMany: 20)
+            text.insert(NSAttributedString(string: "\(def.description)\r\r", attributes: [.foregroundColor: NSColor.red]), at: 0)
+            try writeAndValidateDocX(attributedString: text, options: options)
+        }
+        
+        
+    }
+    
     
     // MARK: Performance Tests
     
