@@ -22,7 +22,7 @@ fileprivate typealias UIFont = NSFont
 fileprivate typealias UIColor = NSColor
 #endif
 
-@available(iOS 16.0, macOS 13.0, *)
+@available(iOS 16.0, macOS 11.0, *)
 class ImageGenerator{
     
     enum ImageGenerationError: Error{
@@ -37,7 +37,7 @@ class ImageGenerator{
     }
     
     func generateImage(type:UTType) throws -> URL{
-        let outURL=FileManager.default.temporaryDirectory.appending(path: UUID().uuidString).appendingPathExtension(for: type)
+        let outURL=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension(for: type)
         switch type{
         case .pdf:
             var rect=CGRect(origin: .zero, size: size)

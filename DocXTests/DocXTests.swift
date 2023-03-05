@@ -816,7 +816,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
     }
     
     
-    @available(macOS 13.0, *)
+    @available(macOS 11.0, *)
     func testImageWriting() throws{
         let types:[UTType] = [.png, .jpeg, .tiff, .pdf]
         let generator=ImageGenerator(size: CGSize(width: 200, height: 200))
