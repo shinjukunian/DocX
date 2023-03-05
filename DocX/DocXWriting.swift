@@ -11,9 +11,16 @@ import AEXML
 
 #if canImport(UIKit)
 import UIKit
+import MobileCoreServices
+fileprivate typealias NSImage = UIImage
 #elseif canImport(AppKit)
 import AppKit
 #endif
+
+enum DocXWriteImageError: Error {
+    case noImageData
+    case invalidImageData
+}
 
 @available(OSX 10.11, *)
 extension DocX where Self : NSAttributedString{
@@ -138,8 +145,6 @@ extension DocX where Self : NSAttributedString{
             })
         }
             
-        
-        
         guard attachements.count > 0 else {return [ImageRelationship]()}
         
         let relationships=linkXML["Relationships"]
@@ -161,16 +166,22 @@ extension DocX where Self : NSAttributedString{
         }
         
         let imageRelationShips=attachements.enumerated().compactMap({(idx, attachement)->ImageRelationship? in
+            // Construct the new relationship identifier
             let newID="rId\(lastIdIDX+1+idx)"
-            let destURL=mediaURL.appendingPathComponent(newID).appendingPathExtension("png")
-            
-            guard let data=attachement.imageData,
-                  ((try? data.write(to: destURL, options: .atomic)) != nil) else{
+
+            // Attempt to write the image
+            if let destURL = try? writeImage(attachment: attachement,
+                                                mediaURL: mediaURL,
+                                                newID: newID) {
+                // We successfully wrote the image
+                // Return the image relationship
+                return ImageRelationship(relationshipID: newID,
+                                         linkURL: destURL,
+                                         attachement: attachement)
+            } else {
+                // Something went wrong
                 return nil
             }
-
-            let relationShip=ImageRelationship(relationshipID: newID, linkURL: destURL, attachement: attachement)
-            return relationShip
         })
         
         relationships.addChildren(imageRelationShips.map({$0.element}))
@@ -178,6 +189,67 @@ extension DocX where Self : NSAttributedString{
         return imageRelationShips
     }
     
+    private func writeImage(attachment: NSTextAttachment, mediaURL: URL, newID: String) throws -> URL {
+        // If there's no image data, return
+        guard var imageData = attachment.imageData else {
+            throw DocXWriteImageError.noImageData
+        }
+        
+        // See if the text attachment's `fileType` is known
+        // If it is, we'll find a valid file extension
+        let fileExtension: String?
+        if let fileType = attachment.fileType,
+           let ext = imageFileExtension(fileType: fileType) {
+            // The `fileType` is known so we'll use the returned file extension
+            fileExtension = ext
+        } else if let image = NSImage(data: imageData),
+                  let pngData = image.pngData {
+            // The `fileType` isn't known, but we were able to convert
+            // the image data to PNG data. Use that instead.
+            imageData = pngData
+            fileExtension = "png"
+        } else {
+            fileExtension = nil
+        }
+        
+        // If the image data is invalid – e.g. we don't have a valid extension –
+        // there's nothing to do
+        guard let fileExtension = fileExtension else {
+            throw DocXWriteImageError.invalidImageData
+        }
+
+        // Construct the path we'll write to
+        let destURL = mediaURL.appendingPathComponent(newID).appendingPathExtension(fileExtension)
+        
+        // Attempt to write the image
+        try imageData.write(to: destURL, options: .atomic)
+        
+        // Return the URL of the image
+        return destURL
+    }
+    
+    /// Returns the file extension for a known `fileType`
+    ///
+    /// ** When adding a new supported fileType to this function,
+    ///    remember to add a corresponding entry for the extension
+    ///    and mimetype to [Content_Types].xml**
+    private func imageFileExtension(fileType:String) -> String? {
+        if (fileType == String(kUTTypeGIF)) {
+            return "gif"
+        } else if (fileType == String(kUTTypeJPEG)) {
+            return "jpeg"
+        } else if (fileType == String(kUTTypePNG)) {
+            return "png"
+        } else if (fileType == String(kUTTypeTIFF)) {
+            return "tiff"
+        } else if (fileType == String(kUTTypePDF)) {
+            return "pdf"
+        } else if (fileType == "com.adobe.photoshop-image") {
+            return "psd"
+        } else {
+            return nil
+        }
+    }
 }
 
 extension LinkRelationship{

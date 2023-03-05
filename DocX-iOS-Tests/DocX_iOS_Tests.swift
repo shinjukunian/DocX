@@ -9,10 +9,21 @@
 #if os(iOS)
 import MobileCoreServices
 import XCTest
+
+#if(canImport(UniformTypeIdentifiers))
+import UniformTypeIdentifiers
+#endif
+
 @testable import DocX
 
 @available(iOS 10.0, *)
 class DocX_iOS_Tests: XCTestCase {
+    
+#if SWIFT_PACKAGE
+        let bundle=Bundle.module
+#else
+        let bundle=Bundle(for: DocX_iOS_Tests.self)
+#endif
 
     var tempURL:URL=URL(fileURLWithPath: "")
     
@@ -278,13 +289,7 @@ And this is a [link](http://www.example.com).
     
     @available(iOS 15, *)
     func testMarkdown_Image()throws{
-        
-#if SWIFT_PACKAGE
-        let bundle=Bundle.module
-#else
-        let bundle=Bundle(for: DocX_iOS_Tests.self)
-#endif
-        
+                
         let url=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension: "md"))
 
         let att=try AttributedString(contentsOf: url, baseURL: url.deletingLastPathComponent())
@@ -309,6 +314,41 @@ And this is a [link](http://www.example.com).
         try string.writeDocX(to: temp)
         
 
+    }
+    
+    @available(iOS 16.0, *)
+    func testImageWriting() throws{
+        let types:[UTType] = [.png, .jpeg, .tiff, .pdf]
+        let generator=ImageGenerator(size: CGSize(width: 200, height: 200))
+        let imageURLs=try types.map({try generator.generateImage(type: $0)})
+        let wrappers=try imageURLs.map({try FileWrapper(url: $0)})
+        // make an `NSTextAttachement` for each supported type.
+        var attachements=wrappers.map({NSTextAttachment(fileWrapper: $0)})
+        
+        let data=wrappers.last!.regularFileContents!
+        let typeErased=NSTextAttachment(data: data, ofType: nil)
+        attachements.append(typeErased)
+        
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        
+        """
+        
+        let loremAtt=NSAttributedString(string: loremIpsum)
+        let newLine=NSAttributedString(string: "\r")
+        
+        let att=NSMutableAttributedString()
+        for attachement in attachements {
+            att.append(loremAtt)
+            let imageAtt=NSAttributedString(attachment: attachement)
+            att.append(imageAtt)
+            att.append(newLine)
+        }
+        
+        let temp=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Attachements")").appendingPathExtension("docx")
+        try att.writeDocX(to: temp)
+
+        
     }
     
 }
