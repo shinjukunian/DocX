@@ -779,7 +779,9 @@ let string = """
                     PageDefinition(pageSize: .letter),
                     PageDefinition(pageSize: .A4, pageMargins: .init(edgeInsets: NSEdgeInsets(top: 500, left: 100, bottom: 50, right: 40))),
                     PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: .centimeters), height: Measurement(value: 10, unit: .centimeters))),
-                    PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: .inches), height: Measurement(value: 10, unit: .centimeters)), pageMargins: PageDefinition.PageMargins(top: Measurement(value: 1, unit: .centimeters), bottom: Measurement(value: 25, unit: .millimeters), left: .init(value: 1, unit: .inches), right: .init(value: 50, unit: .points)))]
+                    PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: .inches), height: Measurement(value: 10, unit: .centimeters)), pageMargins: PageDefinition.PageMargins(top: Measurement(value: 1, unit: .centimeters), bottom: Measurement(value: 25, unit: .millimeters), left: .init(value: 1, unit: .inches), right: .init(value: 50, unit: .points))),
+                    PageDefinition(pageSize: .init(width: .init(value: 30, unit: .centimeters), height: .init(value: 20, unit: .centimeters)), pageMargins: .init(top: .init(value: 1, unit: .centimeters), bottom: .init(value: 1, unit: .centimeters), left: .init(value: 1, unit: .centimeters), right: .init(value: 1, unit: .centimeters)))
+        ]
         
         for def in defs{
             var options=DocXOptions()

@@ -70,6 +70,14 @@ try string.writeDocX(to: url, options:options)
 
 - you can use `DocXStyleConfiguration` to specify that Word should use standard fonts instead of explicitly specified font names. This is useful for cross-platform compatibility when using Apple system fonts. Other font attributes (size, bold / italic) will be preserved if possible.
 
+- you can specify a page size using `.pageDefinition`. Page definitions consist of a paper size and margins to determine the printable area. If no page definition is specified, Word will fall back to useful defaults based on the current system.
+
+```Swift
+let A4 = PageDefinition(pageSize: .A4) // an A4 page with defaults margins
+let square = PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: .centimeters), height: Measurement(value: 10, unit: .centimeters))) // a custom square page size with default (72 pt) margins)
+let custom = PageDefinition(pageSize: .init(width: .init(value: 30, unit: .centimeters), height: .init(value: 20, unit: .centimeters)), pageMargins: .init(top: .init(value: 1, unit: .centimeters), bottom: .init(value: 1, unit: .centimeters), left: .init(value: 1, unit: .centimeters), right: .init(value: 1, unit: .centimeters))) // a page with custom paper and custom margins
+```
+
 See the attached sample projects (for iOS and macOS) for usage and limitations.
 On iOS, DocX also includes a `UIActivityItemProvider` subclass (`DocXActivityItemProvider`) for exporting .docx files through `UIActivityViewController`.
 
