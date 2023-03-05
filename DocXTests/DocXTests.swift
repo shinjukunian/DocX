@@ -11,6 +11,10 @@ import XCTest
 @testable import DocX
 import AppKit
 
+#if(canImport(UniformTypeIdentifiers))
+import UniformTypeIdentifiers
+#endif
+
 class DocXTests: XCTestCase {
     
     // XXX This currently only lists a small subset of possible errors
@@ -775,7 +779,9 @@ let string = """
                     PageDefinition(pageSize: .letter),
                     PageDefinition(pageSize: .A4, pageMargins: .init(edgeInsets: NSEdgeInsets(top: 500, left: 100, bottom: 50, right: 40))),
                     PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: .centimeters), height: Measurement(value: 10, unit: .centimeters))),
-                    PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: .inches), height: Measurement(value: 10, unit: .centimeters)), pageMargins: PageDefinition.PageMargins(top: Measurement(value: 1, unit: .centimeters), bottom: Measurement(value: 25, unit: .millimeters), left: .init(value: 1, unit: .inches), right: .init(value: 50, unit: .points)))]
+                    PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: .inches), height: Measurement(value: 10, unit: .centimeters)), pageMargins: PageDefinition.PageMargins(top: Measurement(value: 1, unit: .centimeters), bottom: Measurement(value: 25, unit: .millimeters), left: .init(value: 1, unit: .inches), right: .init(value: 50, unit: .points))),
+                    PageDefinition(pageSize: .init(width: .init(value: 30, unit: .centimeters), height: .init(value: 20, unit: .centimeters)), pageMargins: .init(top: .init(value: 1, unit: .centimeters), bottom: .init(value: 1, unit: .centimeters), left: .init(value: 1, unit: .centimeters), right: .init(value: 1, unit: .centimeters)))
+        ]
         
         for def in defs{
             var options=DocXOptions()
@@ -788,7 +794,6 @@ let string = """
         
         
     }
-    
     
     func testScaleImageToSize() throws{
         let loremIpsum = """
@@ -858,8 +863,6 @@ Specifies the border displayed above a set of paragraphs which have the same set
         }
     }
     
-    
-    
     func testSubscript_Superscript() throws {
         let string=NSMutableAttributedString(attributedString: NSAttributedString(string: "H"))
         string.append(NSAttributedString(string: "2", attributes: [.baselineOffset:-1, .foregroundColor:NSColor.blue]))
@@ -871,7 +874,40 @@ Specifies the border displayed above a set of paragraphs which have the same set
         string.append(NSAttributedString(string: "2", attributes: [.font:font, .baselineOffset:1]))
         
         try writeAndValidateDocX(attributedString: string)
+    }
+    
+    
+    @available(macOS 11.0, *)
+    func testImageWriting() throws{
+        let types:[UTType] = [.png, .jpeg, .tiff, .pdf]
+        let generator=ImageGenerator(size: CGSize(width: 200, height: 200))
+        let imageURLs=try types.map({try generator.generateImage(type: $0)})
+        let wrappers=try imageURLs.map({try FileWrapper(url: $0)})
+        // make an `NSTextAttachement` for each supported type.
+        var attachements=wrappers.map({NSTextAttachment(fileWrapper: $0)})
+        
+        let data=wrappers.last!.regularFileContents!
+        let typeErased=NSTextAttachment(data: data, ofType: nil)
+        attachements.append(typeErased)
+        
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        
+        """
+        let loremAtt=NSAttributedString(string: loremIpsum)
+        let newLine=NSAttributedString(string: "\r")
+        
+        let att=NSMutableAttributedString()
+        for attachement in attachements {
+            att.append(loremAtt)
+            let imageAtt=NSAttributedString(attachment: attachement)
+            att.append(imageAtt)
+            att.append(newLine)
+        }
+        
+        try writeAndValidateDocX(attributedString: att)
 
+        
     }
 }
 
