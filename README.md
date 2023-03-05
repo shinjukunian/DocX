@@ -115,7 +115,7 @@ Please note that Quicklook (on both platforms) only supports a limited number of
 
 For `AttributedString`, `DocX` supports the attributes present in `NSAttributedString`, i.e. most attributes in `AttributeScopes.AppKitAttributes` or `AttributeScopes.UIKitAttributes` (see above for omissions). For `AttributedStrings` initialized from Markdown (`AttributeScopes.FoundationAttributes`), `DocX` supports links (`AttributeScopes.FoundationAttributes.LinkAttribute`), **bold**, *italic*, and ~~strikethrough~~ (`AttributeScopes.FoundationAttributes.InlinePresentationIntentAttribute`), and inline images (`AttributeScopes.FoundationAttributes.ImageURLAttribute`). Please note that images are not rendered by `SwiftUI`'s `Text`.
 
-Some attributes don't have a direct correspondence. For example `NSAttributedString` does (typically) not have the concept of a page size.  
+Some attributes don't have a direct correspondence. For example `NSAttributedString` does (typically) not have the concept of a page size. The page size can be specified by creating a `PageDefinition` and specifying `DocXOptions.pageDefinition`.
 
 ## Dependencies
 
