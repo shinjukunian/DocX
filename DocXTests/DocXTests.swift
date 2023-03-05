@@ -11,31 +11,17 @@ import XCTest
 @testable import DocX
 import AppKit
 
+#if SWIFT_PACKAGE
+import DocXTestsCommon
+#endif
+
 #if(canImport(UniformTypeIdentifiers))
 import UniformTypeIdentifiers
 #endif
 
-class DocXTests: XCTestCase {
+class DocXTests: XCTestCase, DocXTesting {
     
-    // XXX This currently only lists a small subset of possible errors
-    //     It would be nice to list all possible errors here
-    enum TestError: Error {
-        // Error thrown when the expected link text isn't found in the given string
-        case couldNotFindLinkTitle
-        
-        // Error thrown when validating the docx fails
-        case validationFailed
-    }
-
-    
-#if SWIFT_PACKAGE
-        let bundle=Bundle.module
-#else
-        let bundle=Bundle(for: DocXTests.self)
-#endif
-
     var tempURL:URL=URL(fileURLWithPath: "")
-    
     
     override func setUp() {
         let url=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
@@ -60,46 +46,7 @@ class DocXTests: XCTestCase {
         }
     }
     
-    /// Returns a basename that can be used when exporting a docx
-    private func docxBasename(attributedString: NSAttributedString) -> String {
-        return UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))"
-    }
     
-    /// This function tests writing a docx file using the *DocX* exporter
-    /// Optionally, options may be passed
-    func writeAndValidateDocX(attributedString: NSAttributedString,
-                              options: DocXOptions = DocXOptions()) throws {
-        let url = self.tempURL.appendingPathComponent(docxBasename(attributedString: attributedString)).appendingPathExtension("docx")
-        try attributedString.writeDocX(to: url, options: options)
-        // Validate that writing was successful
-        try validateDocX(url: url)
-    }
-    
-    /// This function tests writing a docx file using the macOS builtin exporter
-    func writeAndValidateDocXUsingBuiltIn(attributedString: NSAttributedString) throws {
-        let url = self.tempURL.appendingPathComponent(docxBasename(attributedString: attributedString)).appendingPathExtension("docx")
-        try attributedString.writeDocX(to: url, useBuiltIn: true)
-        
-        // Validate that writing was successful
-        try validateDocX(url: url)
-    }
-    
-    /// Performs a very simply validation of the docx file by reading it
-    /// in and making sure the document type is OOXML
-    func validateDocX(url: URL) throws {
-        // Read the string from the URL
-        var readAttributes:NSDictionary?
-        let _ = try NSAttributedString(url: url, options: [:], documentAttributes: &readAttributes)
-        
-        // Make sure we read the document attributes
-        guard let attributes = readAttributes as? [String:Any] else {
-            throw TestError.validationFailed
-        }
-        
-        // The document type should be OOXML
-        XCTAssertEqual(attributes[NSAttributedString.DocumentAttributeKey.documentType.rawValue] as! String,
-                       NSAttributedString.DocumentType.officeOpenXML.rawValue)
-    }
     
     func testEscapedCharacters() throws {
         let string="\"You done messed up A'Aron!\" <Key & Peele>"
@@ -364,7 +311,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         let longString = """
             1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         """
-        let imageURL=URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
+        let imageURL=try XCTUnwrap(bundle.url(forResource: "Picture1", withExtension: "png"))
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
         let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
         let attributed=NSAttributedString(string: longString, attributes: [.foregroundColor: NSColor.green])
@@ -379,7 +326,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         let longString = """
         1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         """
-        let imageURL=URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
+        let imageURL=try XCTUnwrap(bundle.url(forResource: "Picture1", withExtension: "png"))
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
         let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
         let attributed=NSMutableAttributedString(string: longString, attributes: [:])
@@ -395,7 +342,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         let longString = """
         1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum\r.
         """
-        let imageURL=URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
+        let imageURL=try XCTUnwrap(bundle.url(forResource: "Picture1", withExtension: "png"))
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
         let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
         let attributed=NSMutableAttributedString(string: longString, attributes: [:])
@@ -461,7 +408,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         let longString = """
         1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         """
-        let imageURL=URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
+        let imageURL=try XCTUnwrap(bundle.url(forResource: "Picture1", withExtension: "png"))
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
         let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
         let attributed=NSMutableAttributedString(string: longString, attributes: [:])
@@ -795,6 +742,31 @@ let string = """
         
     }
     
+    func testScaleImageToSize() throws{
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        
+        let imageURL=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension: "png"), "ImageURL not found")
+        let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
+        let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
+        
+        let text=NSMutableAttributedString()
+        text.append(NSAttributedString(string: loremIpsum, attributes: [.foregroundColor: NSColor.red]))
+        text.append(NSAttributedString(string: "\r"))
+        text.append(NSAttributedString(attachment: attachement))
+        text.append(NSAttributedString(string: loremIpsum, attributes: [.foregroundColor: NSColor.black, .font: NSFont(name: "Helvetica", size: 19)!]))
+        
+        let defs = [PageDefinition(pageSize: .A4)]
+        
+        for def in defs{
+            var options=DocXOptions()
+            options.pageDefinition=def
+            try writeAndValidateDocX(attributedString: text, options: options)
+        }
+        
+        
+    }
     
     // MARK: Performance Tests
     

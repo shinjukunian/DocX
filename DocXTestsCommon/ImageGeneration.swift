@@ -23,7 +23,7 @@ fileprivate typealias UIColor = NSColor
 #endif
 
 @available(iOS 16.0, macOS 11.0, *)
-class ImageGenerator{
+public class ImageGenerator{
     
     enum ImageGenerationError: Error{
         case unsupportedFileType
@@ -32,11 +32,11 @@ class ImageGenerator{
     
     let size:CGSize
     
-    init(size:CGSize){
+    public init(size:CGSize){
         self.size=size
     }
     
-    func generateImage(type:UTType) throws -> URL{
+    public func generateImage(type:UTType) throws -> URL{
         let outURL=FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension(for: type)
         switch type{
         case .pdf:

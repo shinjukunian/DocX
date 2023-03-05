@@ -40,20 +40,24 @@ let package = Package(
                 linkerSettings: nil
         ),
         
+        .target(name: "DocXTestsCommon",
+                dependencies: ["DocX"],
+                path: "DocXTestsCommon",
+                resources: [.copy("blank.docx"), .copy("Picture1.png"), .copy("lenna.png"), .copy("lenna.md"), .copy("styles.xml")]
+        ),
+        
         .testTarget(
             name: "DocXTests",
-            dependencies: ["DocX"],
+            dependencies: ["DocX", "DocXTestsCommon"],
             path: "DocXTests",
-            exclude: ["Info.plist"],
-            resources: [.copy("blank.docx"), .copy("Picture1.png"), .copy("lenna.png"), .copy("lenna.md"), .copy("styles.xml")]
+            exclude: ["Info.plist"]
         ),
         
         .testTarget(
             name: "DocX-iOS-Tests",
-            dependencies: ["DocX"],
+            dependencies: ["DocX", "DocXTestsCommon"],
             path: "DocX-iOS-Tests",
-            exclude: ["Info.plist"],
-            resources: [.copy("Picture1.png"),.copy("lenna.png"), .copy("lenna.md")]
+            exclude: ["Info.plist"]
             )
 
     ]
