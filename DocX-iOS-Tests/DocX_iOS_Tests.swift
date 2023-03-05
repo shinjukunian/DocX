@@ -16,15 +16,13 @@ import UniformTypeIdentifiers
 
 @testable import DocX
 
-@available(iOS 10.0, *)
-class DocX_iOS_Tests: XCTestCase {
-    
 #if SWIFT_PACKAGE
-        let bundle=Bundle.module
-#else
-        let bundle=Bundle(for: DocX_iOS_Tests.self)
+import DocXTestsCommon
 #endif
 
+@available(iOS 10.0, *)
+class DocX_iOS_Tests: XCTestCase, DocXTesting {
+    
     var tempURL:URL=URL(fileURLWithPath: "")
     
     override func setUp() {
@@ -66,54 +64,31 @@ class DocX_iOS_Tests: XCTestCase {
     
     
     
-    func testWriteDocX(attributedString:NSAttributedString){
-        
-        do{
-            let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(attributedString.string.prefix(10))").appendingPathExtension("docx")
-            try attributedString.writeDocX(to: url)
-//            var readAttributes:NSDictionary?=nil
-//            let docXString=try NSAttributedString(url: url, options: [:], documentAttributes: &readAttributes)
-//            guard let attributes=readAttributes as? [String:Any] else{
-//                XCTFail()
-//                return
-//            }
-//            XCTAssertEqual(attributes[NSAttributedString.DocumentAttributeKey.documentType.rawValue] as! String, NSAttributedString.DocumentType.officeOpenXML.rawValue)
-//            let string=docXString.string
-//            print(string)
-//            XCTAssertEqual(docXString.string, string)
-            
-        }
-        catch let error{
-            XCTFail(error.localizedDescription)
-        }
-    }
-    
-    
-    func testBlank(){
+    func testBlank() throws{
         let string=""
         let attributedString=NSAttributedString(string: string)
         
-        testWriteDocX(attributedString: attributedString)
+        try writeAndValidateDocX(attributedString: attributedString)
     }
     
-    func test山田Plain() {
+    func test山田Plain() throws {
         let string="山田"
-        testWriteDocX(attributedString: NSAttributedString(string: string))
+        try writeAndValidateDocX(attributedString: NSAttributedString(string: string))
     }
     
-    func test山田Attributed() {
+    func test山田Attributed() throws {
         let string="山田"
         let attributed=NSAttributedString(string: string, attributes: [.font:UIFont.systemFont(ofSize: UIFont.systemFontSize)])
-        testWriteDocX(attributedString: attributed)
+        try writeAndValidateDocX(attributedString: attributed)
     }
     
-    func test山田FuriganaAttributed() {
+    func test山田FuriganaAttributed() throws{
         let string="山田"
         let furigana="やまだ"
         let ruby=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, furigana as CFString, [kCTRubyAnnotationSizeFactorAttributeName:0.5] as CFDictionary)
         let rubyKey=NSAttributedString.Key(kCTRubyAnnotationAttributeName as String)
         let attributed=NSAttributedString(string: string, attributes: [.font:UIFont.systemFont(ofSize: UIFont.systemFontSize), rubyKey:ruby])
-        testWriteDocX(attributedString: attributed)
+        try writeAndValidateDocX(attributedString: attributed)
     }
     
     
@@ -131,37 +106,37 @@ class DocX_iOS_Tests: XCTestCase {
         return attributedString
     }
     
-    func test山田電気FuriganaAttributed() {
-        testWriteDocX(attributedString: yamadaDenkiString)
-    }
-    
-    func test山田電気FuriganaAttributed_ParagraphStyle() {
-        let attributed=yamadaDenkiString
-        let style=NSParagraphStyle.default
-        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
-        testWriteDocX(attributedString: attributed)
+    func test山田電気FuriganaAttributed() throws {
+        try writeAndValidateDocX(attributedString: yamadaDenkiString)
         
     }
     
-    func test山田電気FuriganaAttributed_ParagraphStyle_vertical() {
+    func test山田電気FuriganaAttributed_ParagraphStyle() throws {
+        let attributed=yamadaDenkiString
+        let style=NSParagraphStyle.default
+        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
+        try writeAndValidateDocX(attributedString: attributed)
+    }
+    
+    func test山田電気FuriganaAttributed_ParagraphStyle_vertical() throws {
         let attributed=yamadaDenkiString
         let style=NSParagraphStyle.default
         attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         attributed.addAttribute(.verticalForms, value: true, range:NSRange(location: 0, length: attributed.length))
-        testWriteDocX(attributedString: attributed)
+        try writeAndValidateDocX(attributedString: attributed)
     }
     
-    func test山田電気FuriganaAttributed_ParagraphStyle_italic() {
+    func test山田電気FuriganaAttributed_ParagraphStyle_italic() throws {
         let attributed=yamadaDenkiString
         let style=NSParagraphStyle.default
         attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         let boldFont=UIFont.italicSystemFont(ofSize: UIFont.systemFontSize)
         attributed.addAttribute(.font, value: boldFont, range: NSRange(location: 0, length: 2))
-        testWriteDocX(attributedString: attributed)
-        
+        try writeAndValidateDocX(attributedString: attributed)
+
     }
     
-    func testLink(){
+    func testLink() throws{
         let string="楽天 https://www.rakuten-sec.co.jp/"
         let attributed=NSMutableAttributedString(string: string)
         attributed.addAttributes([.font:NSFont.systemFont(ofSize: NSFont.systemFontSize)], range: NSRange(location: 0, length: attributed.length))
@@ -169,34 +144,29 @@ class DocX_iOS_Tests: XCTestCase {
         let furiganaAnnotation=CTRubyAnnotationCreateWithAttributes(.auto, .auto, .before, furigana as CFString, [kCTRubyAnnotationSizeFactorAttributeName:0.5] as CFDictionary)
         attributed.addAttribute(.ruby, value: furiganaAnnotation, range: NSRange(location: 0, length: 2))
         attributed.addAttribute(.link, value: URL(string: "https://www.rakuten-sec.co.jp/")!, range: NSRange(location: 3, length: 30))
-        testWriteDocX(attributedString: attributed)
-        
+        try writeAndValidateDocX(attributedString: attributed)
         
     }
 
-    func test山田電気FuriganaAttributed_ParagraphStyle_underline() {
+    func test山田電気FuriganaAttributed_ParagraphStyle_underline() throws {
         let attributed=yamadaDenkiString
         //        let style=NSParagraphStyle.default
         //        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         let underlineStyle:NSUnderlineStyle = [.single,.byWord]
         attributed.addAttribute(.underlineStyle, value: underlineStyle.rawValue, range:NSRange(location: 0, length: attributed.length))
-        testWriteDocX(attributedString: attributed)
-        
-        
+        try writeAndValidateDocX(attributedString: attributed)
     }
     
-    func test山田電気FuriganaAttributed_ParagraphStyle_strikethrough() {
+    func test山田電気FuriganaAttributed_ParagraphStyle_strikethrough() throws {
         let attributed=yamadaDenkiString
         //        let style=NSParagraphStyle.default
         //        attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         let underlineStyle:NSUnderlineStyle = [.single]
         attributed.addAttribute(.strikethroughStyle, value: underlineStyle.rawValue, range:NSRange(location: 0, length: attributed.length))
-        testWriteDocX(attributedString: attributed)
-        
-        sleep(1)
+        try writeAndValidateDocX(attributedString: attributed)
     }
     
-    func test山田電気FuriganaAttributed_ParagraphStyle_backgroundColor() {
+    func test山田電気FuriganaAttributed_ParagraphStyle_backgroundColor() throws {
         let attributed=yamadaDenkiString
         let style=NSMutableParagraphStyle()
         style.setParagraphStyle(NSParagraphStyle.default)
@@ -204,12 +174,11 @@ class DocX_iOS_Tests: XCTestCase {
         attributed.addAttribute(.paragraphStyle, value: style, range: NSRange(location: 0, length: attributed.length))
         
         attributed.addAttribute(.backgroundColor, value: NSColor.blue, range:NSRange(location: 0, length: attributed.length))
-        testWriteDocX(attributedString: attributed)
-        
-        sleep(1)
+        try writeAndValidateDocX(attributedString: attributed)
+
     }
     
-    func testMultipage(){
+    func testMultipage() throws{
         let longString = """
             1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             
@@ -221,8 +190,8 @@ class DocX_iOS_Tests: XCTestCase {
             5. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             """
         let attributed=NSAttributedString(string: longString, attributes: [.font:NSFont.systemFont(ofSize: 20)])
-        testWriteDocX(attributedString: attributed)
-        
+        try writeAndValidateDocX(attributedString: attributed)
+
     }
     
 
@@ -231,11 +200,8 @@ class DocX_iOS_Tests: XCTestCase {
         let longString = """
             1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
         """
-#if SWIFT_PACKAGE
-        let imageURL=try XCTUnwrap(Bundle.module.url(forResource: "Picture1", withExtension: "png"))
-#else
-        let imageURL=try XCTUnwrap(Bundle(for: DocX_iOS_Tests.self).url(forResource: "Picture1", withExtension: "png"))
-#endif
+
+        let imageURL=try XCTUnwrap(bundle.url(forResource: "Picture1", withExtension: "png"))
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
         let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
         let attributed=NSAttributedString(string: longString, attributes: [.foregroundColor: NSColor.green])
@@ -243,7 +209,7 @@ class DocX_iOS_Tests: XCTestCase {
         let result=NSMutableAttributedString()
         result.append(attributed)
         result.append(imageString)
-        testWriteDocX(attributedString: result)
+        try writeAndValidateDocX(attributedString: result)
     }
 
     
@@ -254,11 +220,10 @@ class DocX_iOS_Tests: XCTestCase {
         att.strokeWidth = -2
         att.font = UIFont(name: "Helvetica", size: 12)
         att.foregroundColor = .gray
-        let title=String(att.characters.prefix(10))
-        let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(title)").appendingPathExtension("docx")
-        print(url.absoluteString)
+
         do{
-            try att.writeDocX(to: url)
+            let attributed = NSAttributedString(att)
+            try writeAndValidateDocX(attributedString: attributed)
         }
         catch let error{
             XCTFail(error.localizedDescription)
@@ -310,8 +275,7 @@ And this is a [link](http://www.example.com).
         let font=NSFont(name: "Courier", size: 15)!
         string.append(NSAttributedString(string: "E=m•c", attributes: [.font:font]))
         string.append(NSAttributedString(string: "2", attributes: [.font:font, .baselineOffset:1]))
-        let temp=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Subscript")").appendingPathExtension("docx")
-        try string.writeDocX(to: temp)
+        try writeAndValidateDocX(attributedString: string)
         
 
     }
@@ -345,10 +309,8 @@ And this is a [link](http://www.example.com).
             att.append(newLine)
         }
         
-        let temp=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\("Attachements")").appendingPathExtension("docx")
-        try att.writeDocX(to: temp)
+        try writeAndValidateDocX(attributedString: att)
 
-        
     }
     
 }
