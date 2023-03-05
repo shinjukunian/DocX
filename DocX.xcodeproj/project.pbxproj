@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A2E47BD29B4535200DFAC1F /* DocXStyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2E47BC29B4535200DFAC1F /* DocXStyleConfiguration.swift */; };
+		5A2E47BE29B4535200DFAC1F /* DocXStyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2E47BC29B4535200DFAC1F /* DocXStyleConfiguration.swift */; };
+		5A2E47C029B4536300DFAC1F /* ImageGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2E47BF29B4536300DFAC1F /* ImageGeneration.swift */; };
+		5A2E47C129B4537D00DFAC1F /* ImageGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2E47BF29B4536300DFAC1F /* ImageGeneration.swift */; };
+		5A2E47C329B453AB00DFAC1F /* styles.xml in Resources */ = {isa = PBXBuildFile; fileRef = 5A2E47C229B453AB00DFAC1F /* styles.xml */; };
 		5A4FC7E927FEF5630063F796 /* AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FC7E827FEF5630063F796 /* AttributedString.swift */; };
 		5A4FC7EA27FEF5630063F796 /* AttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4FC7E827FEF5630063F796 /* AttributedString.swift */; };
 		5A4FC7F827FFB4630063F796 /* lenna.md in Resources */ = {isa = PBXBuildFile; fileRef = 5A4FC7F727FFB4630063F796 /* lenna.md */; };
@@ -86,6 +91,9 @@
 
 /* Begin PBXFileReference section */
 		5A0AD5CE26099AA200C146D3 /* NSTextAttachement+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextAttachement+Extensions.swift"; sourceTree = "<group>"; };
+		5A2E47BC29B4535200DFAC1F /* DocXStyleConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXStyleConfiguration.swift; sourceTree = "<group>"; };
+		5A2E47BF29B4536300DFAC1F /* ImageGeneration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageGeneration.swift; sourceTree = "<group>"; };
+		5A2E47C229B453AB00DFAC1F /* styles.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = styles.xml; sourceTree = "<group>"; };
 		5A4FC7E827FEF5630063F796 /* AttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedString.swift; sourceTree = "<group>"; };
 		5A4FC7F727FFB4630063F796 /* lenna.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = lenna.md; sourceTree = "<group>"; };
 		5A4FC7F927FFB46C0063F796 /* lenna.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lenna.png; sourceTree = "<group>"; };
@@ -215,6 +223,7 @@
 				5A8406BB2609DF2B002B8B34 /* ImageRelationship.swift */,
 				5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */,
 				5A4FC7E827FEF5630063F796 /* AttributedString.swift */,
+				5A2E47BC29B4535200DFAC1F /* DocXStyleConfiguration.swift */,
 				5A9F70A3223502D6008E967C /* DocX.h */,
 				5A9F70A4223502D6008E967C /* Info.plist */,
 			);
@@ -224,6 +233,8 @@
 		5A9F70AD223502D6008E967C /* DocXTests */ = {
 			isa = PBXGroup;
 			children = (
+				5A2E47C229B453AB00DFAC1F /* styles.xml */,
+				5A2E47BF29B4536300DFAC1F /* ImageGeneration.swift */,
 				5A4FC7F727FFB4630063F796 /* lenna.md */,
 				5A4FC7F927FFB46C0063F796 /* lenna.png */,
 				5A9F70C62235031B008E967C /* blank.docx */,
@@ -406,6 +417,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A9F70C72235031B008E967C /* blank.docx in Resources */,
+				5A2E47C329B453AB00DFAC1F /* styles.xml in Resources */,
 				5A4FC7F827FFB4630063F796 /* lenna.md in Resources */,
 				5A4FC7FA27FFB46C0063F796 /* lenna.png in Resources */,
 			);
@@ -440,6 +452,7 @@
 				5AE834122237573F00E68343 /* FontElements.swift in Sources */,
 				5A9F711D223607A8008E967C /* NSAttributedString+Extensions.swift in Sources */,
 				5A8406CD2609DF65002B8B34 /* Bundle+Extensions.swift in Sources */,
+				5A2E47BD29B4535200DFAC1F /* DocXStyleConfiguration.swift in Sources */,
 				5AC6C9B8260AD4CF0059F7B0 /* DocXWriter.swift in Sources */,
 				5AE833F12236861F00E68343 /* PlatformSpecific-macOS.swift in Sources */,
 				5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */,
@@ -464,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A9F70AF223502D6008E967C /* DocXTests.swift in Sources */,
+				5A2E47C029B4536300DFAC1F /* ImageGeneration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,6 +489,7 @@
 				5AE834132237573F00E68343 /* FontElements.swift in Sources */,
 				5AE833EF2236852500E68343 /* PlatformSpecific-iOS.swift in Sources */,
 				5A8406CE2609DF65002B8B34 /* Bundle+Extensions.swift in Sources */,
+				5A2E47BE29B4535200DFAC1F /* DocXStyleConfiguration.swift in Sources */,
 				5AC6C9B9260AD4CF0059F7B0 /* DocXWriter.swift in Sources */,
 				5AE833D12236831500E68343 /* NSAttributedString+Extensions.swift in Sources */,
 				5AE833D52236831500E68343 /* AttributeElements.swift in Sources */,
@@ -499,6 +514,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AE8340422368ADC00E68343 /* DocX_iOS_Tests.swift in Sources */,
+				5A2E47C129B4537D00DFAC1F /* ImageGeneration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -666,7 +682,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telethon.docx;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -700,7 +716,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telethon.docx;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
