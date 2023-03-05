@@ -11,6 +11,8 @@ import AEXML
 
 #if canImport(UIKit)
 import UIKit
+import MobileCoreServices
+fileprivate typealias NSImage = UIImage
 #elseif canImport(AppKit)
 import AppKit
 #endif
