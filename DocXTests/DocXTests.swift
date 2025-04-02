@@ -795,6 +795,31 @@ let string = """
         
     }
     
+    func testScaleImageToSize() throws{
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        
+        let imageURL=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension: "png"), "ImageURL not found")
+        let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
+        let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
+        
+        let text=NSMutableAttributedString()
+        text.append(NSAttributedString(string: loremIpsum, attributes: [.foregroundColor: NSColor.red]))
+        text.append(NSAttributedString(string: "\r"))
+        text.append(NSAttributedString(attachment: attachement))
+        text.append(NSAttributedString(string: loremIpsum, attributes: [.foregroundColor: NSColor.black, .font: NSFont(name: "Helvetica", size: 19)!]))
+        
+        let defs = [PageDefinition(pageSize: .A4)]
+        
+        for def in defs{
+            var options=DocXOptions()
+            options.pageDefinition=def
+            try writeAndValidateDocX(attributedString: text, options: options)
+        }
+        
+        
+    }
     
     // MARK: Performance Tests
     
