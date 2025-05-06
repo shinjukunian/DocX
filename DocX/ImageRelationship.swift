@@ -19,6 +19,9 @@ struct ImageRelationship: DocumentRelationship{
     let relationshipID:String
     let linkURL:URL
     let attachement:NSTextAttachment
+    let pageDefinition:PageDefinition?
+    
+    
 }
 
 extension ImageRelationship{
@@ -97,7 +100,9 @@ extension ImageRelationship{
         let frameProperties=AEXMLElement(name: "wp:cNvGraphicFramePr")
         frameProperties.addChild(AEXMLElement(name: "a:graphicFrameLocks", value: nil, attributes: ["xmlns:a":"http://schemas.openxmlformats.org/drawingml/2006/main", "noChangeAspect":"1"]))
         
-        inline.addChildren(attachement.extentAttributes + [docPr, frameProperties, graphic])
+        let extentAttributes=attachement.extentAttributes(pageSize: pageDefinition)
+        
+        inline.addChildren(extentAttributes + [docPr, frameProperties, graphic])
         
         let graphicData=AEXMLElement(name: "a:graphicData", value: nil, attributes: ["uri":"http://schemas.openxmlformats.org/drawingml/2006/picture"])
         
@@ -126,7 +131,8 @@ extension ImageRelationship{
         pic.addChild(shapeProperties)
         let xFrame=AEXMLElement(name: "a:xfrm")
         xFrame.addChild(AEXMLElement(name: "a:off", value: nil, attributes: ["x":"0","y":"0"]))
-        let extent=AEXMLElement(name: "a:ext", value: nil, attributes: self.attachement.extentInEMU.extentAttributes)
+        let extentInEmu=attachement.extentInEMU(size: attachement.extent(for: pageDefinition))
+        let extent=AEXMLElement(name: "a:ext", value: nil, attributes: extentInEmu.extentAttributes)
         xFrame.addChild(extent)
         shapeProperties.addChild(xFrame)
         
