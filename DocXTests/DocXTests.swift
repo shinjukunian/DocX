@@ -15,6 +15,10 @@ import AppKit
 import UniformTypeIdentifiers
 #endif
 
+#if(canImport(SwiftUI))
+import SwiftUI
+#endif
+
 class DocXTests: XCTestCase {
     
     // XXX This currently only lists a small subset of possible errors
@@ -366,7 +370,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         """
         let imageURL=URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
-        let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
+        let attachement=NSTextAttachment(data: imageData, ofType: UTType.png.identifier)
         let attributed=NSAttributedString(string: longString, attributes: [.foregroundColor: NSColor.green])
         let imageString=NSAttributedString(attachment: attachement)
         let result=NSMutableAttributedString()
@@ -381,7 +385,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         """
         let imageURL=URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
-        let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
+        let attachement=NSTextAttachment(data: imageData, ofType: UTType.png.identifier)
         let attributed=NSMutableAttributedString(string: longString, attributes: [:])
         attributed.addAttributes([.link:URL(string: "http://officeopenxml.com/index.php")!], range: NSRange(location: 2, length: 6))
         let imageString=NSAttributedString(attachment: attachement)
@@ -397,7 +401,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         """
         let imageURL=URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
-        let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
+        let attachement=NSTextAttachment(data: imageData, ofType: UTType.png.identifier)
         let attributed=NSMutableAttributedString(string: longString, attributes: [:])
         attributed.addAttributes([.link:URL(string: "http://officeopenxml.com/index.php")!], range: NSRange(location: 2, length: 6))
         let imageString=NSAttributedString(attachment: attachement)
@@ -463,7 +467,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         """
         let imageURL=URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
-        let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
+        let attachement=NSTextAttachment(data: imageData, ofType: UTType.png.identifier)
         let attributed=NSMutableAttributedString(string: longString, attributes: [:])
         attributed.addAttributes([.link:URL(string: "http://officeopenxml.com/index.php")!], range: NSRange(location: 2, length: 6))
         let imageString=NSAttributedString(attachment: attachement)
@@ -501,7 +505,7 @@ Specifies the border displayed above a set of paragraphs which have the same set
         let imageURL=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension: "png"), "ImageURL not found")
         
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
-        let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
+        let attachement=NSTextAttachment(data: imageData, ofType: UTType.png.identifier)
         attachement.bounds=CGRect(x: 0, y: 0, width: 128, height: 128)
         
         let attributed=NSMutableAttributedString(string: longString, attributes: [:])

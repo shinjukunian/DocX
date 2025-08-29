@@ -14,6 +14,11 @@ import XCTest
 import UniformTypeIdentifiers
 #endif
 
+#if(canImport(SwiftUI))
+import SwiftUI
+#endif
+
+
 @testable import DocX
 
 @available(iOS 10.0, *)
