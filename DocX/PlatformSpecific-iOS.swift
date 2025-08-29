@@ -99,7 +99,7 @@ public extension NSAttributedString{
 
 #if os(iOS)
 
-@objc public class DocXActivityItemProvider:UIActivityItemProvider{
+@objc public class DocXActivityItemProvider:UIActivityItemProvider, @unchecked Sendable{
     
     let attributedString:NSAttributedString
     let tempURL:URL
