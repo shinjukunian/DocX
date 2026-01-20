@@ -67,7 +67,7 @@ extension NSAttributedString{
             linkDocument.root.addChild(name: "Relationship", value: nil, attributes: attrs)
         }
         
-        let linkRelations=self.prepareLinks(linkXML: linkDocument, mediaURL: mediaURL)
+        let linkRelations=self.prepareLinks(linkXML: linkDocument, mediaURL: mediaURL, options: options)
         let updatedLinks=linkDocument.xmlCompact
         try updatedLinks.write(to: linkURL, atomically: true, encoding: .utf8)
         

@@ -29,7 +29,7 @@ protocol DocX{
                       options:DocXOptions) throws ->String
     func writeDocX(to url:URL)throws
     func writeDocX(to url:URL, options:DocXOptions) throws
-    func prepareLinks(linkXML:AEXMLDocument, mediaURL:URL)->[DocumentRelationship]
+    func prepareLinks(linkXML:AEXMLDocument, mediaURL:URL, options:DocXOptions)->[DocumentRelationship]
 }
 
 public let docXUTIType="org.openxmlformats.wordprocessingml.document"
