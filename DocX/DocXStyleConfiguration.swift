@@ -66,7 +66,7 @@ public struct DocXStyleConfiguration {
     }
     
     /// Returns the AEXML options used to create an AEXMLDocument
-    private static var xmlOptions: AEXMLOptions = {
+    private static var xmlOptions: AEXMLOptions  {
         var options = AEXMLOptions()
         options.parserSettings.shouldTrimWhitespace=false
         options.documentHeader.standalone="yes"
@@ -77,5 +77,5 @@ public struct DocXStyleConfiguration {
         options.escape = true
         
         return options
-    }()
+    }
 }

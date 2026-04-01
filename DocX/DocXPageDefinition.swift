@@ -17,7 +17,7 @@ fileprivate typealias NSEdgeInsets = UIEdgeInsets
 public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
         
     /// The size of a page
-    public struct PageSize:Equatable, CustomStringConvertible, Hashable{
+    public struct PageSize:Equatable, CustomStringConvertible, Hashable, Sendable{
         
         ///Page width in twips
         let width:Measurement<UnitLength>
@@ -78,7 +78,7 @@ public struct PageDefinition: Equatable, CustomStringConvertible, Hashable{
     }
     
     /// The margins of a page (insets of the printable area).
-    public struct PageMargins:Equatable, CustomStringConvertible, Hashable{
+    public struct PageMargins:Equatable, CustomStringConvertible, Hashable, Sendable{
         
         /// Top margin in twips
         let top:Measurement<UnitLength>
