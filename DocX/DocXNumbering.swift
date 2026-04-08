@@ -59,15 +59,15 @@ public enum DocXListStyle: Int, Hashable, Comparable {
     // Initializer that creates a DocXListStyle from an NSText.MarkerFormat
     init(markerFormat: NSTextList.MarkerFormat) {
         switch markerFormat {
-        case .decimal:
+        case _ where markerFormat.rawValue.contains(NSTextList.MarkerFormat.decimal.rawValue):
             self = .decimal
-        case .lowercaseLatin:
+        case _ where markerFormat.rawValue.contains(NSTextList.MarkerFormat.lowercaseLatin.rawValue):
             self = .lowerLetter
-        case .lowercaseRoman:
+        case _ where markerFormat.rawValue.contains(NSTextList.MarkerFormat.lowercaseRoman.rawValue):
             self = .lowerRoman
-        case .uppercaseLatin:
+        case _ where markerFormat.rawValue.contains(NSTextList.MarkerFormat.uppercaseLatin.rawValue):
             self = .upperLetter
-        case .uppercaseRoman:
+        case _ where markerFormat.rawValue.contains(NSTextList.MarkerFormat.uppercaseRoman.rawValue):
             self = .upperRoman
         default:
             // Everything else uses bullet
