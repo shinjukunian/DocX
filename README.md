@@ -81,6 +81,8 @@ let square = PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: 
 let custom = PageDefinition(pageSize: .init(width: .init(value: 30, unit: .centimeters), height: .init(value: 20, unit: .centimeters)), pageMargins: .init(top: .init(value: 1, unit: .centimeters), bottom: .init(value: 1, unit: .centimeters), left: .init(value: 1, unit: .centimeters), right: .init(value: 1, unit: .centimeters))) // a page with custom paper and custom margins
 ```
 
+- you can add endnotes and footnotes using the `.endnoteReferenceId` / `.endnoteBodyId` or `.footnoteReferenceId` / `.footnoteBodyId` attributes.
+
 See the attached sample projects (for iOS and macOS) for usage and limitations.
 On iOS, DocX also includes a `UIActivityItemProvider` subclass (`DocXActivityItemProvider`) for exporting .docx files through `UIActivityViewController`.
 
@@ -89,7 +91,7 @@ On iOS, DocX also includes a `UIActivityItemProvider` subclass (`DocXActivityIte
 ```swift
 try DocXWriter.write(pages:[NSAttributedString], to url:URL)
 ```
-to render each `NSAttributedString` as a separate page.
+to render each `NSAttributedString` as a separate page. Alternatively, you can use `DocXWriter.write(sections: [NSAttributedString], to url: URL, options: DocXOptions = DocXOptions())` to write attributed strings as sections.
 
 ![Screenshot macOS](/images/screenshot_mac.jpg)
 
