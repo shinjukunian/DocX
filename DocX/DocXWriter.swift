@@ -15,18 +15,35 @@ public class DocXWriter{
     ///   - url: The destination of the resulting .docx, e.g. `myfile.docx`
     ///   - options: an optional instance of `DocXOptions`. This allows you to specify metadata for the document and customize docx output.
     /// - Throws: Throws errors for I/O.
-    public class func write(pages:[NSAttributedString],
-                            to url:URL,
-                            options:DocXOptions = DocXOptions()) throws {
-        guard let first=pages.first else {return}
-        let result=NSMutableAttributedString(attributedString: first)
-        let pageSeperator=NSAttributedString(string: "\r", attributes: [.breakType:BreakType.page])
-        
-        for page in pages.dropFirst(){
-            result.append(pageSeperator)
-            result.append(page)
+    public class func write(pages: [NSAttributedString],
+                            to url: URL,
+                            options: DocXOptions = DocXOptions()) throws {
+        guard let first = pages.first else {
+            return
         }
         
+        let result = NSMutableAttributedString(attributedString: first)
+        let separatorString = NSAttributedString(string: "\r", attributes: [.breakType: BreakType.page])
+
+        for page in pages.dropFirst() {
+            result.append(separatorString)
+            result.append(page)
+        }
+
         try result.writeDocX(to: url, options: options)
+    }
+
+    /// Convenience function to write an array of attributed strings as separate
+    /// document sections in a single .docx file.
+    /// - Parameters:
+    ///   - sections: an array of section contents in document order
+    ///   - url: The destination of the resulting .docx, e.g. `myfile.docx`
+    ///   - options: an optional instance of `DocXOptions`. This allows you to specify metadata for the document and customize docx output
+    /// - Throws: Throws errors for I/O.
+    public class func write(sections: [NSAttributedString],
+                            to url: URL,
+                            options: DocXOptions = DocXOptions()) throws {
+        guard !sections.isEmpty else { return }
+        try sections.writeDocXSections(to: url, options: options)
     }
 }

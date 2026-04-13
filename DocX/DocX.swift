@@ -12,6 +12,7 @@ import AEXML
 enum DocXSavingErrors:Error{
     case noBlankDocument
     case compressionFailed
+    case duplicateNoteId(kind: String, id: Int)
 }
 
 protocol DocumentRelationship {
@@ -29,7 +30,7 @@ protocol DocX{
                       options:DocXOptions) throws ->String
     func writeDocX(to url:URL)throws
     func writeDocX(to url:URL, options:DocXOptions) throws
-    func prepareLinks(linkXML:AEXMLDocument, mediaURL:URL)->[DocumentRelationship]
+    func prepareLinks(linkXML:AEXMLDocument, mediaURL:URL, options:DocXOptions, mediaFilenamePrefix: String)->[DocumentRelationship]
 }
 
 public let docXUTIType="org.openxmlformats.wordprocessingml.document"
@@ -54,10 +55,22 @@ public extension NSAttributedString.Key{
     
     /// A custom attribute that specifies the styleId to use for characters
     static let characterStyleId = NSAttributedString.Key("com.telethon.docx.attributedstringkey.characterStyleId")
+    
+    /// A custom attribute that specifies the id for a footnote reference
+    static let footnoteReferenceId = NSAttributedString.Key("com.telethon.docx.attributedstringkey.footnoteReferenceId")
+
+    /// A custom attribute that specifies the id for an endnote reference
+    static let endnoteReferenceId = NSAttributedString.Key("com.telethon.docx.attributedstringkey.endnoteReferenceId")
+
+    /// A custom attribute that assigns a paragraph to a footnote body
+    static let footnoteBodyId = NSAttributedString.Key("com.telethon.docx.attributedstringkey.footnoteBodyId")
+
+    /// A custom attribute that assigns a paragraph to an endnote body
+    static let endnoteBodyId = NSAttributedString.Key("com.telethon.docx.attributedstringkey.endnoteBodyId")
 }
 
 /// Encapsulates different break types in a document.
-public enum BreakType: String, Equatable{
+public enum BreakType: String, Equatable {
     /// The text continues in the next line
     case wrap
     /// The text continues on the next page

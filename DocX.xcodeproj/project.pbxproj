@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -33,8 +33,6 @@
 		5A8406CE2609DF65002B8B34 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8406CC2609DF65002B8B34 /* Bundle+Extensions.swift */; };
 		5A907B882982A35800E1A581 /* DocXPageDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A907B862982A35800E1A581 /* DocXPageDefinition.swift */; };
 		5A907B892982A35800E1A581 /* DocXPageDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A907B862982A35800E1A581 /* DocXPageDefinition.swift */; };
-		5A907B8A2982A35800E1A581 /* DocXStyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A907B872982A35800E1A581 /* DocXStyleConfiguration.swift */; };
-		5A907B8B2982A35800E1A581 /* DocXStyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A907B872982A35800E1A581 /* DocXStyleConfiguration.swift */; };
 		5A9F70AA223502D6008E967C /* DocX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9F70A0223502D6008E967C /* DocX.framework */; };
 		5A9F70AF223502D6008E967C /* DocXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9F70AE223502D6008E967C /* DocXTests.swift */; };
 		5A9F70B1223502D6008E967C /* DocX.h in Headers */ = {isa = PBXBuildFile; fileRef = 5A9F70A3223502D6008E967C /* DocX.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -74,10 +72,11 @@
 		5AE8342722377A5B00E68343 /* NSUnderlineStyle+Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */; };
 		5AE83428223781F600E68343 /* NSAttributedString+DocX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE833EB223683F000E68343 /* NSAttributedString+DocX.swift */; };
 		5AE834292237822B00E68343 /* blank in Resources */ = {isa = PBXBuildFile; fileRef = 5AE833F2223688A400E68343 /* blank */; };
-		6D51921D29AD8B7A0043ECA8 /* DocXStyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D51921C29AD8B7A0043ECA8 /* DocXStyleConfiguration.swift */; };
-		6D51921F29AD8C800043ECA8 /* DocXStyleConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D51921C29AD8B7A0043ECA8 /* DocXStyleConfiguration.swift */; };
-		6D51922129AD8D320043ECA8 /* styles.xml in Resources */ = {isa = PBXBuildFile; fileRef = 6D51922029AD8D320043ECA8 /* styles.xml */; };
 		6D51922229AD8D320043ECA8 /* styles.xml in Resources */ = {isa = PBXBuildFile; fileRef = 6D51922029AD8D320043ECA8 /* styles.xml */; };
+		6D98C4DC2F7C4F06004C4FFB /* DocXNumbering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D98C4DB2F7C4F06004C4FFB /* DocXNumbering.swift */; };
+		6D98C4DD2F7C4F06004C4FFB /* DocXNumbering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D98C4DB2F7C4F06004C4FFB /* DocXNumbering.swift */; };
+		6D98C4DF2F7C4F1B004C4FFB /* DocXNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D98C4DE2F7C4F1B004C4FFB /* DocXNotes.swift */; };
+		6D98C4E02F7C4F1B004C4FFB /* DocXNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D98C4DE2F7C4F1B004C4FFB /* DocXNotes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -141,6 +140,8 @@
 		5AE8341A22375D9E00E68343 /* NSUnderlineStyle+Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSUnderlineStyle+Elements.swift"; sourceTree = "<group>"; };
 		6D51921C29AD8B7A0043ECA8 /* DocXStyleConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocXStyleConfiguration.swift; sourceTree = "<group>"; };
 		6D51922029AD8D320043ECA8 /* styles.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = styles.xml; sourceTree = "<group>"; };
+		6D98C4DB2F7C4F06004C4FFB /* DocXNumbering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocXNumbering.swift; sourceTree = "<group>"; };
+		6D98C4DE2F7C4F1B004C4FFB /* DocXNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocXNotes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,6 +220,8 @@
 				5A9F70BF22350300008E967C /* DocumentRoot.swift */,
 				5A9F70BC22350300008E967C /* DocX.swift */,
 				5AC6C9B4260ACCEB0059F7B0 /* DocXWriting.swift */,
+				6D98C4DE2F7C4F1B004C4FFB /* DocXNotes.swift */,
+				6D98C4DB2F7C4F06004C4FFB /* DocXNumbering.swift */,
 				5A6B3DBE26D86D33009F6859 /* DocXOptions.swift */,
 				6D51921C29AD8B7A0043ECA8 /* DocXStyleConfiguration.swift */,
 				5AC6C9B7260AD4CF0059F7B0 /* DocXWriter.swift */,
@@ -378,8 +381,9 @@
 		5A9F7097223502D6008E967C /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1420;
+				LastUpgradeCheck = 2630;
 				ORGANIZATIONNAME = "telethon k.k.";
 				TargetAttributes = {
 					5A9F709F223502D6008E967C = {
@@ -474,8 +478,8 @@
 				5AE833F12236861F00E68343 /* PlatformSpecific-macOS.swift in Sources */,
 				5A9F70F922350DDE008E967C /* AttributeElements.swift in Sources */,
 				5AE8341B22375D9E00E68343 /* NSUnderlineStyle+Elements.swift in Sources */,
-				5A907B8A2982A35800E1A581 /* DocXStyleConfiguration.swift in Sources */,
 				5AE5BE9B25EE283F009A152F /* NSAttributedString+DocX-macOS.swift in Sources */,
+				6D98C4DD2F7C4F06004C4FFB /* DocXNumbering.swift in Sources */,
 				5A9F70FB22354F1C008E967C /* RubyAnnotationElement.swift in Sources */,
 				5AC6C9B5260ACCEB0059F7B0 /* DocXWriting.swift in Sources */,
 				5AE8340C22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
@@ -487,6 +491,7 @@
 				5A8406C22609DF38002B8B34 /* NSTextAttachement+Extensions.swift in Sources */,
 				5A8406B52609DF1B002B8B34 /* NSAttributedString+Writing.swift in Sources */,
 				5A8406BC2609DF2B002B8B34 /* ImageRelationship.swift in Sources */,
+				6D98C4DF2F7C4F1B004C4FFB /* DocXNotes.swift in Sources */,
 				5AE83428223781F600E68343 /* NSAttributedString+DocX.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,8 +518,8 @@
 				5AE833D12236831500E68343 /* NSAttributedString+Extensions.swift in Sources */,
 				5AE833D52236831500E68343 /* AttributeElements.swift in Sources */,
 				5AE833DA2236831500E68343 /* RubyAnnotationElement.swift in Sources */,
-				5A907B8B2982A35800E1A581 /* DocXStyleConfiguration.swift in Sources */,
 				5AE5BEA025EE2847009A152F /* NSAttributedString+DocX-macOS.swift in Sources */,
+				6D98C4DC2F7C4F06004C4FFB /* DocXNumbering.swift in Sources */,
 				5AE833EC223683F000E68343 /* NSAttributedString+DocX.swift in Sources */,
 				5AC6C9B6260ACCEB0059F7B0 /* DocXWriting.swift in Sources */,
 				5AE8340D22373A5200E68343 /* NSParagraphStyle+Elements.swift in Sources */,
@@ -526,6 +531,7 @@
 				5A8406C72609DF39002B8B34 /* NSTextAttachement+Extensions.swift in Sources */,
 				5A8406B62609DF1B002B8B34 /* NSAttributedString+Writing.swift in Sources */,
 				5A8406BD2609DF2B002B8B34 /* ImageRelationship.swift in Sources */,
+				6D98C4E02F7C4F1B004C4FFB /* DocXNotes.swift in Sources */,
 				5AE833DC2236831500E68343 /* ParagraphElement.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -609,7 +615,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -669,7 +675,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -694,6 +700,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = DocX/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -703,7 +710,8 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telethon.docx;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -728,6 +736,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = DocX/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -737,7 +746,8 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telethon.docx;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -750,18 +760,17 @@
 		5A9F70B8223502D6008E967C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = DVQ96RL2KL;
+				DEVELOPMENT_TEAM = XCAC6BGJ49;
 				INFOPLIST_FILE = DocXTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telethon.docx.DocXTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -771,18 +780,17 @@
 		5A9F70B9223502D6008E967C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = DVQ96RL2KL;
+				DEVELOPMENT_TEAM = XCAC6BGJ49;
 				INFOPLIST_FILE = DocXTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telethon.docx.DocXTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -802,6 +810,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/DocX/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -811,7 +820,8 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telethon.docx;
 				PRODUCT_MODULE_NAME = DocX;
@@ -838,6 +848,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/DocX/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -847,7 +858,8 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.telethon.docx;
 				PRODUCT_MODULE_NAME = DocX;
@@ -863,7 +875,6 @@
 		5AE8340122368A4500E68343 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DVQ96RL2KL;
@@ -874,7 +885,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.telethon.docx.DocX-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -887,7 +898,6 @@
 		5AE8340222368A4500E68343 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DVQ96RL2KL;
@@ -898,7 +908,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.telethon.docx.DocX-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

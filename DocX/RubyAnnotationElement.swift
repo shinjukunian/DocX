@@ -31,7 +31,7 @@ extension CTRubyAnnotation{
         
         let rubyTextElementWrapper=AEXMLElement(name: "w:rt", value: nil, attributes: [:])
         rubyElement.addChild(rubyTextElementWrapper)
-        let rubyTextElement=AEXMLElement(name: "w:r", value: nil, attributes: ["w:rsidR":"00604B72", "w:rsidRPr":"00604B72"])
+        let rubyTextElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])
         rubyTextElementWrapper.addChild(rubyTextElement)
         
         let rubyRunElement=baseAttributes.rubyAnnotationRunProperties(scaleFactor: scaleFactor)
@@ -42,7 +42,7 @@ extension CTRubyAnnotation{
         
         let baseElement=AEXMLElement(name: "w:rubyBase", value: nil, attributes: [:])
         rubyElement.addChild(baseElement)
-        let baseRun=AEXMLElement(name: "w:r", value: nil, attributes: ["w:rsidR":"00604B72"])
+        let baseRun=AEXMLElement(name: "w:r", value: nil, attributes: [:])
         baseElement.addChild(baseRun)
 
         let baseRunFormat=baseAttributes.runProperties

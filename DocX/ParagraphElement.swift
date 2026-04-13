@@ -15,19 +15,31 @@ import AppKit
 import AEXML
 
 class ParagraphElement:AEXMLElement{
+    enum NoteReferenceKind {
+        case footnote
+        case endnote
+    }
     
     fileprivate override init(name: String, value: String? = nil, attributes: [String : String] = [String : String]()) {
         fatalError()
     }
     
     let linkRelations:[DocumentRelationship]
+    let leadingNoteBodyReferenceKind: NoteReferenceKind?
     
+    /// Creates a paragraph element for `range` within `string`.
+    ///
+    /// If `leadingNoteBodyReferenceKind` is provided, the paragraph will start
+    /// with Word's required `w:footnoteRef` or `w:endnoteRef` marker for a note
+    /// body. This should only be set for the first paragraph of a note body.
     init(string:NSAttributedString,
          range:NSAttributedString.ParagraphRange,
          linkRelations:[DocumentRelationship],
-         options:DocXOptions) {
+         options:DocXOptions,
+         leadingNoteBodyReferenceKind: NoteReferenceKind? = nil) {
         self.linkRelations=linkRelations
-        super.init(name: "w:p", value: nil, attributes: ["rsidR":"00045791", "w:rsidRDefault":"008111DF"])
+        self.leadingNoteBodyReferenceKind = leadingNoteBodyReferenceKind
+        super.init(name: "w:p", value: nil, attributes: [:])
         self.addChildren(self.buildRuns(string: string, range: range, options: options))
     }
     
@@ -53,10 +65,19 @@ class ParagraphElement:AEXMLElement{
         if let paragraphStyleElement = range.styleElement {
             paragraphPropertiesElement.addChild(paragraphStyleElement)
         }
+        
+        // If there's list numbering info for this paragraph, add it
+        if let numberingElement = range.numberingElement {
+            paragraphPropertiesElement.addChild(numberingElement)
+        }
 
         // If the paragraph properties element contains any properties, add it
         if paragraphPropertiesElement.children.count > 0 {
             elements.append(paragraphPropertiesElement)
+        }
+
+        if let leadingNoteBodyReferenceKind {
+            elements.append(noteBodyReferenceElement(kind: leadingNoteBodyReferenceKind))
         }
         
         // If the sub string is empty, then we can append the break (if necessary)
@@ -66,7 +87,6 @@ class ParagraphElement:AEXMLElement{
                 elements.append(breakElement)
             }
             return elements
-
         }
         
         subString.enumerateAttributes(in: NSRange(location: 0, length: subString.length), options: [], using: {attributes, effectiveRange, stop in
@@ -76,6 +96,12 @@ class ParagraphElement:AEXMLElement{
             if let link=attributes[.link] as? URL,
                let relationship=self.linkRelations.first(where: {$0.linkURL == link}) as? LinkRelationship{
                 elements.append(attributes.linkProperties(relationship: relationship, affectedString: affectedSubstring))
+            }
+            else if let footnoteId = attributes[.footnoteReferenceId] as? Int {
+                elements.append(noteReferenceElement(id: footnoteId, kind: .footnote, attributes: attributes))
+            }
+            else if let endnoteId = attributes[.endnoteReferenceId] as? Int {
+                elements.append(noteReferenceElement(id: endnoteId, kind: .endnote, attributes: attributes))
             }
             else if let imageAttachement=attributes[.attachment] as? NSTextAttachment,
                     let relationship=self.linkRelations.first(where: {rel in
@@ -131,26 +157,45 @@ class ParagraphElement:AEXMLElement{
         if let breakElement=range.breakType.breakElement{
             elements.append(breakElement)
         }
-        
+
         return elements
+    }
+
+    private func noteReferenceElement(id: Int,
+                                      kind: NoteReferenceKind,
+                                      attributes: [NSAttributedString.Key: Any]) -> AEXMLElement {
+        let runElement = AEXMLElement(name: "w:r", value: nil, attributes: [:])
+        runElement.addChild(attributes.runProperties)
+        let name = (kind == .footnote) ? "w:footnoteReference" : "w:endnoteReference"
+        runElement.addChild(AEXMLElement(name: name,
+                                         value: nil,
+                                         attributes: ["w:id": "\(id)"]))
+        return runElement
+    }
+
+    private func noteBodyReferenceElement(kind: NoteReferenceKind) -> AEXMLElement {
+        let runElement = AEXMLElement(name: "w:r", value: nil, attributes: [:])
+        let name = (kind == .footnote) ? "w:footnoteRef" : "w:endnoteRef"
+        runElement.addChild(AEXMLElement(name: name))
+        return runElement
     }
 }
 
 
 
 extension BreakType{
-    var breakElement:AEXMLElement?{
+    var breakElement : AEXMLElement? {
         switch self {
         case .wrap:
             return nil
         case .page, .column:
             let runElement=AEXMLElement(name: "w:r", value: nil, attributes: [:])
-            runElement.addChild(AEXMLElement(name: "w:br", value: nil, attributes: self.breakElementAttributes))
+            runElement.addChild(AEXMLElement(name: "w:br", value: nil, attributes: breakElementAttributes))
             return runElement
         }
     }
     
-    var breakElementAttributes:[String:String]{
+    var breakElementAttributes : [String:String] {
         switch self {
         case .wrap:
             return [:]

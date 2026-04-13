@@ -56,7 +56,7 @@ extension NSAttributedString{
             options.escape = true
 
             let linkDocument=try AEXMLDocument(xml: linkData, options: options)
-            let linkRelations=self.prepareLinks(linkXML: linkDocument, mediaURL: mediaURL)
+            let linkRelations=self.prepareLinks(linkXML: linkDocument, mediaURL: mediaURL, options: DocXOptions())
             let updatedLinks=linkDocument.xmlCompact
             try updatedLinks.write(to: linkURL, atomically: true, encoding: .utf8)
             

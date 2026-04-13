@@ -78,6 +78,14 @@ class DocXTests: XCTestCase {
         // Validate that writing was successful
         try validateDocX(url: url)
     }
+
+    func writeAndValidateSections(_ sections: [NSAttributedString],
+                                  options: DocXOptions = DocXOptions()) throws {
+        let basename = sections.first.map(docxBasename(attributedString:)) ?? UUID().uuidString
+        let url = self.tempURL.appendingPathComponent(basename).appendingPathExtension("docx")
+        try DocXWriter.write(sections: sections, to: url, options: options)
+        try validateDocX(url: url)
+    }
     
     /// This function tests writing a docx file using the macOS builtin exporter
     func writeAndValidateDocXUsingBuiltIn(attributedString: NSAttributedString) throws {
@@ -521,11 +529,13 @@ Specifies the border displayed above a set of paragraphs which have the same set
     
     @available(macOS 12, *)
     func testAttributed() throws {
-        var att=AttributedString("Lorem ipsum dolor sit amet")
-        att.strokeColor = .green
-        att.strokeWidth = -2
-        att.font = NSFont(name: "Helvetica", size: 12)
-        att.foregroundColor = .gray
+        let font = try XCTUnwrap(NSFont(name: "Helvetica", size: 12))
+        var att=AttributedString(NSAttributedString(string: "Lorem ipsum dolor sit amet", attributes: [.font: font]))
+        var attributes = AttributeContainer()
+        attributes.appKit.strokeColor = .green
+        attributes.appKit.strokeWidth = -2
+        attributes.appKit.foregroundColor = .gray
+        att.mergeAttributes(attributes)
         
         try writeAndValidateDocX(attributedString: NSAttributedString(att))
     }
@@ -533,9 +543,11 @@ Specifies the border displayed above a set of paragraphs which have the same set
     
     @available(macOS 12, *)
     func testAttributed2() throws{
-        var att=AttributedString("Lorem ipsum dolor sit amet")
-        att.font = NSFont(name: "Helvetica", size: 12)
-        att[att.range(of: "Lorem")!].backgroundColor = .blue
+        let font = try XCTUnwrap(NSFont(name: "Helvetica", size: 12))
+        var att=AttributedString(NSAttributedString(string: "Lorem ipsum dolor sit amet", attributes: [.font: font]))
+        var attributes = AttributeContainer()
+        attributes.appKit.backgroundColor = .blue
+        att[try XCTUnwrap(att.range(of: "Lorem"))].mergeAttributes(attributes)
         try writeAndValidateDocX(attributedString: NSAttributedString(att))
         
     }
@@ -580,9 +592,11 @@ And this is a [link](http://www.example.com).
 ~~This~~ is a **Markdown** *string*.\\
 And this is a [link](http://www.example.com).
 """
-                             
+        
         var att=try AttributedString(markdown: mD)
-        att[att.range(of: "This")!].foregroundColor = .red
+        var attributes = AttributeContainer()
+        attributes.appKit.foregroundColor = .red
+        att[try XCTUnwrap(att.range(of: "This"))].mergeAttributes(attributes)
         try writeAndValidateDocX(attributedString: NSAttributedString(att))
     }
     
@@ -597,7 +611,9 @@ These are ~~emoji~~ faces 👶🏼👩🏾‍🦰👱🏻‍♀️👷🏿‍♀
 """
                              
         var att=try AttributedString(markdown: mD)
-        att[att.range(of: "This")!].foregroundColor = .red
+        var attributes = AttributeContainer()
+        attributes.appKit.foregroundColor = .red
+        att[try XCTUnwrap(att.range(of: "This"))].mergeAttributes(attributes)
         try writeAndValidateDocX(attributedString: NSAttributedString(att))
     }
     
@@ -784,8 +800,7 @@ let string = """
                     PageDefinition(pageSize: .A4, pageMargins: .init(edgeInsets: NSEdgeInsets(top: 500, left: 100, bottom: 50, right: 40))),
                     PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: .centimeters), height: Measurement(value: 10, unit: .centimeters))),
                     PageDefinition(pageSize: .init(width: Measurement(value: 10, unit: .inches), height: Measurement(value: 10, unit: .centimeters)), pageMargins: PageDefinition.PageMargins(top: Measurement(value: 1, unit: .centimeters), bottom: Measurement(value: 25, unit: .millimeters), left: .init(value: 1, unit: .inches), right: .init(value: 50, unit: .points))),
-                    PageDefinition(pageSize: .init(width: .init(value: 30, unit: .centimeters), height: .init(value: 20, unit: .centimeters)), pageMargins: .init(top: .init(value: 1, unit: .centimeters), bottom: .init(value: 1, unit: .centimeters), left: .init(value: 1, unit: .centimeters), right: .init(value: 1, unit: .centimeters)))
-        ]
+                    PageDefinition(pageSize: .init(width: .init(value: 30, unit: .centimeters), height: .init(value: 20, unit: .centimeters)), pageMargins: .init(top: .init(value: 1, unit: .centimeters), bottom: .init(value: 1, unit: .centimeters), left: .init(value: 1, unit: .centimeters), right: .init(value: 1, unit: .centimeters)))]
         
         for def in defs{
             var options=DocXOptions()
@@ -800,6 +815,227 @@ let string = """
     }
     
     
+    func testScaleImageToSize() throws{
+        let loremIpsum = """
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        """
+        
+        let imageURL=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension: "png"), "ImageURL not found")
+        let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
+        let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
+        
+        let text=NSMutableAttributedString()
+        text.append(NSAttributedString(string: loremIpsum, attributes: [.foregroundColor: NSColor.red]))
+        text.append(NSAttributedString(string: "\r"))
+        text.append(NSAttributedString(attachment: attachement))
+        text.append(NSAttributedString(string: loremIpsum, attributes: [.foregroundColor: NSColor.black, .font: NSFont(name: "Helvetica", size: 19)!]))
+        
+        let defs = [PageDefinition(pageSize: .A4)]
+        
+        for def in defs{
+            var options=DocXOptions()
+            options.pageDefinition=def
+            try writeAndValidateDocX(attributedString: text, options: options)
+        }
+        
+    }
+    
+    func testLists() throws {
+        let string = """
+List 1 Level 0
+List 1 Level 1
+Some text
+List 2 Level 0
+List 2 Level 1
+Some more text
+List 3 Level 0
+"""
+        let attributedString = NSMutableAttributedString(string: string)
+        let nsString = string as NSString
+
+        // Build NSTextList objects for two separate lists with nested levels
+        //
+        let list1Level0 = NSTextList(markerFormat: .decimal, options: 0)
+        let list1Level1 = NSTextList(markerFormat: .disc, options: 0)
+        
+        let list2Level0 = NSTextList(markerFormat: .lowercaseLatin, options: 0)
+        let list2Level1 = NSTextList(markerFormat: .uppercaseRoman, options: 0)
+        
+        // Create a third list and set its `startingItemNumber` to 2, to indicate
+        // that it continues from the first list
+        let list3Level0 = NSTextList(markerFormat: .decimal, options: 0)
+        list3Level0.startingItemNumber = 2
+
+        let paragraphDefinitions: [(text: String, textLists: [NSTextList], expectedStyle: DocXListStyle, expectedLevel: Int)] = [
+            ("List 1 Level 0", [list1Level0], .decimal, 0),
+            ("List 1 Level 1", [list1Level0, list1Level1], .bullet, 1),
+            ("List 2 Level 0", [list2Level0], .lowerLetter, 0),
+            ("List 2 Level 1", [list2Level0, list2Level1], .upperRoman, 1),
+            ("List 3 Level 0", [list3Level0], .decimal, 0),
+        ]
+
+        for definition in paragraphDefinitions {
+            let range = nsString.range(of: definition.text)
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.textLists = definition.textLists
+            attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: range)
+        }
+
+        let paragraphRanges = attributedString.paragraphRanges
+        XCTAssertEqual(paragraphRanges.count, 7)
+
+        // Map only the list paragraphs (skip the non-list text at indices 2 and 5)
+        let listParagraphIndices = [0, 1, 3, 4, 6]
+        for (defIndex, paraIndex) in listParagraphIndices.enumerated() {
+            let definition = paragraphDefinitions[defIndex]
+            XCTAssertNotNil(paragraphRanges[paraIndex].numberingId)
+            XCTAssertEqual(paragraphRanges[paraIndex].numberingLevel, definition.expectedLevel)
+            XCTAssertEqual(paragraphRanges[paraIndex].listStyle, definition.expectedStyle)
+            XCTAssertNotNil(paragraphRanges[paraIndex].numberingElement)
+        }
+
+        // The first two lists should have different numbering IDs
+        XCTAssertNotEqual(paragraphRanges[0].numberingId, paragraphRanges[3].numberingId)
+        
+        // The first and third lists should shared the same ID
+        XCTAssertEqual(paragraphRanges[0].numberingId, paragraphRanges[6].numberingId)
+
+        var numberingConfig = DocXNumberingConfiguration()
+        for (defIndex, paraIndex) in listParagraphIndices.enumerated() {
+            if let numId = paragraphRanges[paraIndex].numberingId,
+               let style = paragraphRanges[paraIndex].listStyle {
+                numberingConfig.register(numId: numId, style: style, level: paragraphDefinitions[defIndex].expectedLevel)
+            }
+        }
+        
+        // This isn't a great check, but at least make sure that some of the XML
+        // appears correct
+        let xml = numberingConfig.numberingXML()
+        XCTAssertTrue(xml.contains("w:numbering"))
+        XCTAssertTrue(xml.contains("w:val=\"decimal\""))
+        XCTAssertTrue(xml.contains("w:val=\"bullet\""))
+        XCTAssertTrue(xml.contains("w:val=\"lowerLetter\""))
+        XCTAssertTrue(xml.contains("w:val=\"upperRoman\""))
+
+        try writeAndValidateDocX(attributedString: attributedString)
+    }
+
+    func testFootnotes() throws {
+        let string = "Body text note one and note two\rFirst footnote body\rSecond footnote body"
+        let attributedString = NSMutableAttributedString(string: string)
+        let nsString = string as NSString
+        attributedString.addAttribute(.footnoteReferenceId,
+                                      value: 1,
+                                      range: nsString.range(of: "note one"))
+        attributedString.addAttribute(.footnoteReferenceId,
+                                      value: 2,
+                                      range: nsString.range(of: "note two"))
+        attributedString.addAttribute(.footnoteBodyId,
+                                      value: 1,
+                                      range: nsString.range(of: "First footnote body"))
+        attributedString.addAttribute(.footnoteBodyId,
+                                      value: 2,
+                                      range: nsString.range(of: "Second footnote body"))
+
+        let noteConfig = DocXNoteConfiguration(attributedString: attributedString)
+        XCTAssertTrue(noteConfig.hasFootnotes)
+        let xml = noteConfig.notesXML(for: .footnote, linkRelations: [], options: DocXOptions())
+        XCTAssertTrue(xml.contains("w:footnotes"))
+        XCTAssertTrue(xml.contains("w:id=\"1\""))
+        XCTAssertTrue(xml.contains("w:id=\"2\""))
+        XCTAssertTrue(xml.contains("w:footnoteRef"))
+
+        try writeAndValidateDocX(attributedString: attributedString)
+    }
+
+    func testEndnotes() throws {
+        let string = "Body text note one and note two\rFirst endnote body\rSecond endnote body"
+        let attributedString = NSMutableAttributedString(string: string)
+        let nsString = string as NSString
+        attributedString.addAttribute(.endnoteReferenceId,
+                                      value: 1,
+                                      range: nsString.range(of: "note one"))
+        attributedString.addAttribute(.endnoteReferenceId,
+                                      value: 2,
+                                      range: nsString.range(of: "note two"))
+        attributedString.addAttribute(.endnoteBodyId,
+                                      value: 1,
+                                      range: nsString.range(of: "First endnote body"))
+        attributedString.addAttribute(.endnoteBodyId,
+                                      value: 2,
+                                      range: nsString.range(of: "Second endnote body"))
+
+        let noteConfig = DocXNoteConfiguration(attributedString: attributedString)
+        XCTAssertTrue(noteConfig.hasEndnotes)
+        let xml = noteConfig.notesXML(for: .endnote, linkRelations: [], options: DocXOptions())
+        XCTAssertTrue(xml.contains("w:endnotes"))
+        XCTAssertTrue(xml.contains("w:id=\"1\""))
+        XCTAssertTrue(xml.contains("w:id=\"2\""))
+        XCTAssertTrue(xml.contains("w:endnoteRef"))
+
+        try writeAndValidateDocX(attributedString: attributedString)
+    }
+
+    func testWriteSections() throws {
+        let section1 = NSMutableAttributedString(string: "Section 1 note\rSection 1 footnote body")
+        let section1String = section1.string as NSString
+        section1.addAttribute(.footnoteReferenceId,
+                              value: 1,
+                              range: section1String.range(of: "note"))
+        section1.addAttribute(.footnoteBodyId,
+                              value: 1,
+                              range: section1String.range(of: "Section 1 footnote body"))
+
+        let section2 = NSMutableAttributedString(string: "Section 2 note\rSection 2 footnote body")
+        let section2String = section2.string as NSString
+        section2.addAttribute(.footnoteReferenceId,
+                              value: 2,
+                              range: section2String.range(of: "note"))
+        section2.addAttribute(.footnoteBodyId,
+                              value: 2,
+                              range: section2String.range(of: "Section 2 footnote body"))
+
+        let sections = [section1 as NSAttributedString, section2 as NSAttributedString]
+        var options = DocXOptions()
+        options.footnoteNumberRestart = .eachSection
+
+        let xml = try sections[0].docXDocument(sectionStrings: sections, options: options)
+        XCTAssertTrue(xml.contains("w:type w:val=\"nextPage\""))
+        
+        // `components(separatedBy:) - 1` gives the number of times each XML marker appears
+        XCTAssertEqual(xml.components(separatedBy: "<w:sectPr").count - 1, 2)
+        XCTAssertEqual(xml.components(separatedBy: "<w:footnotePr>").count - 1, 2)
+        XCTAssertEqual(xml.components(separatedBy: "w:numRestart w:val=\"eachSect\"").count - 1, 2)
+
+        try writeAndValidateSections(sections, options: options)
+    }
+
+    func testWriteSections_duplicateFootnoteIdThrows() throws {
+        let section1 = NSMutableAttributedString(string: "Section 1 note\rSection 1 footnote body")
+        let section1String = section1.string as NSString
+        section1.addAttribute(.footnoteReferenceId, value: 1, range: section1String.range(of: "note"))
+        section1.addAttribute(.footnoteBodyId, value: 1, range: section1String.range(of: "Section 1 footnote body"))
+
+        let section2 = NSMutableAttributedString(string: "Section 2 note\rSection 2 footnote body")
+        let section2String = section2.string as NSString
+        section2.addAttribute(.footnoteReferenceId, value: 1, range: section2String.range(of: "note"))
+        section2.addAttribute(.footnoteBodyId, value: 1, range: section2String.range(of: "Section 2 footnote body"))
+
+        let sections = [section1 as NSAttributedString, section2 as NSAttributedString]
+        var options = DocXOptions()
+        options.footnoteNumberRestart = .eachSection
+
+        let url = self.tempURL.appendingPathComponent("duplicate-ids").appendingPathExtension("docx")
+        XCTAssertThrowsError(try DocXWriter.write(sections: sections, to: url, options: options)) { error in
+            guard case DocXSavingErrors.duplicateNoteId(let kind, let id) = error else {
+                XCTFail("Expected duplicateNoteId error, got \(error)")
+                return
+            }
+            XCTAssertEqual(kind, "footnote")
+            XCTAssertEqual(id, 1)
+        }
+    }
+
     // MARK: Performance Tests
     
     func testPerformanceLongBook() {
@@ -891,4 +1127,3 @@ Specifies the border displayed above a set of paragraphs which have the same set
 }
 
 #endif
-

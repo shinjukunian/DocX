@@ -6,8 +6,9 @@
 //  Copyright © 2019 telethon k.k. All rights reserved.
 //
 
-import Foundation
 import AEXML
+import Foundation
+import UniformTypeIdentifiers
 
 #if canImport(UIKit)
 import UIKit
@@ -26,7 +27,10 @@ enum DocXWriteImageError: Error {
 extension DocX where Self : NSAttributedString{
     
     func pageDef(options: DocXOptions?) -> AEXMLElement{
-        let pageDef=AEXMLElement(name: "w:sectPr", value: nil, attributes: ["w:rsidR":"00045791", "w:rsidSect":"004F37A0"])
+        let pageDef=AEXMLElement(name: "w:sectPr", value: nil, attributes: [:])
+        
+        // Add any footnote or endnote section properties
+        pageDef.addChildren(noteSectionProperties(options: options))
         
         if self.usesVerticalForms{
             let vertical=AEXMLElement(name: "w:textDirection", value: nil, attributes: ["w:val":"tbRl"])
@@ -51,22 +55,79 @@ extension DocX where Self : NSAttributedString{
         
         return pageDef
     }
+
+    func noteSectionProperties(options: DocXOptions?) -> [AEXMLElement] {
+        var properties = [AEXMLElement]()
+
+        if let footnotePr = noteSectionProperty(name: "w:footnotePr",
+                                                numberFormat: options?.footnoteNumberFormat,
+                                                numberRestart: options?.footnoteNumberRestart) {
+            properties.append(footnotePr)
+        }
+
+        if let endnotePr = noteSectionProperty(name: "w:endnotePr",
+                                               numberFormat: options?.endnoteNumberFormat,
+                                               numberRestart: options?.endnoteNumberRestart) {
+            properties.append(endnotePr)
+        }
+
+        return properties
+    }
+
+    private func noteSectionProperty(name: String,
+                                     numberFormat: DocXNoteNumberFormat?,
+                                     numberRestart: DocXNoteNumberRestart?) -> AEXMLElement? {
+        guard numberFormat != nil || numberRestart != nil else {
+            return nil
+        }
+
+        let property = AEXMLElement(name: name)
+
+        if let numberFormat {
+            property.addChild(AEXMLElement(name: "w:numFmt",
+                                           value: nil,
+                                           attributes: ["w:val": numberFormat.numFmtValue]))
+        }
+
+        if let numberRestart {
+            property.addChild(AEXMLElement(name: "w:numRestart",
+                                           value: nil,
+                                           attributes: ["w:val": numberRestart.numRestartValue]))
+        }
+
+        return property
+    }
     
     
+    /// Builds `<w:p>` elements for the supplied paragraph ranges.
     func buildParagraphs(paragraphRanges:[ParagraphRange],
                          linkRelations:[DocumentRelationship],
-                         options:DocXOptions) -> [AEXMLElement]{
-        return paragraphRanges.map({range in
+                         options:DocXOptions,
+                         leadingNoteBodyReferenceKind: ParagraphElement.NoteReferenceKind? = nil) -> [AEXMLElement]{
+        return paragraphRanges.enumerated().map({ idx, range in
+            // When exporting a note body, `leadingNoteBodyReferenceKind` inserts Word's
+            // required `w:footnoteRef` or `w:endnoteRef` marker at the start of the
+            // note. That marker should only appear in the first paragraph of the note
+            // body, so we only pass the value through for index `0`.
             let paragraph=ParagraphElement(string: self,
                                            range: range,
                                            linkRelations: linkRelations,
-                                           options: options)
+                                           options: options,
+                                           leadingNoteBodyReferenceKind: (idx == 0) ? leadingNoteBodyReferenceKind : nil)
             return paragraph
         })
     }
     
     func docXDocument(linkRelations:[DocumentRelationship] = [DocumentRelationship](),
                       options:DocXOptions = DocXOptions())throws ->String{
+        try docXDocument(sectionStrings: [self],
+                         linkRelations: linkRelations,
+                         options: options)
+    }
+
+    func docXDocument(sectionStrings: [NSAttributedString],
+                      linkRelations:[DocumentRelationship] = [DocumentRelationship](),
+                      options:DocXOptions = DocXOptions()) throws -> String {
         var xmlOptions=AEXMLOptions()
         xmlOptions.documentHeader.standalone="yes"
         
@@ -80,13 +141,61 @@ extension DocX where Self : NSAttributedString{
         let document=AEXMLDocument(root: root, options: xmlOptions)
         let body=AEXMLElement(name: "w:body")
         root.addChild(body)
-        body.addChildren(self.buildParagraphs(paragraphRanges: self.paragraphRanges,
-                                              linkRelations: linkRelations,
-                                              options: options))
+
+        for (index, sectionString) in sectionStrings.enumerated() {
+            var paragraphs = sectionString.buildParagraphs(paragraphRanges: sectionString.documentParagraphRanges,
+                                                           linkRelations: linkRelations,
+                                                           options: options)
+            // Insert an explicit section break after every section except the
+            // last one. The final section properties are written separately as
+            // the trailing `<w:sectPr>` on the document body.
+            if index < sectionStrings.count - 1 {
+                sectionString.addSectionBreak(to: &paragraphs, options: options)
+            }
+            body.addChildren(paragraphs)
+        }
+
         body.addChild(pageDef(options: options))
         return document.xmlCompact
     }
     
+    func addSectionBreak(to paragraphs: inout [AEXMLElement], options: DocXOptions) {
+        // For now, always create a Section Break (Next Page)
+        // There are other types of section breaks, but we don't support them yet
+        let sectionPropertiesElement = AEXMLElement(name: "w:sectPr")
+        sectionPropertiesElement.addChild(AEXMLElement(name: "w:type",
+                                                       value: nil,
+                                                       attributes: ["w:val": "nextPage"]))
+        sectionPropertiesElement.addChildren(noteSectionProperties(options: options))
+
+        // Intermediate section breaks must live on a paragraph's properties.
+        // Reuse the last paragraph when one exists; otherwise create an empty
+        // paragraph solely to carry the `w:sectPr` for an otherwise empty section.
+        if let lastParagraph = paragraphs.last {
+            let paragraphPropertiesElement: AEXMLElement
+            if let existingParagraphProperties = lastParagraph.children.first(where: { $0.name == "w:pPr" }) {
+                paragraphPropertiesElement = existingParagraphProperties
+            } else {
+                // w:pPr must be the first child of w:p
+                // Remove existing children, add w:pPr, then re-add them
+                let existingChildren = lastParagraph.children
+                existingChildren.forEach { $0.removeFromParent() }
+                paragraphPropertiesElement = AEXMLElement(name: "w:pPr")
+                lastParagraph.addChild(paragraphPropertiesElement)
+                lastParagraph.addChildren(existingChildren)
+            }
+            paragraphPropertiesElement.addChild(sectionPropertiesElement)
+        } else {
+            let paragraph = AEXMLElement(name: "w:p",
+                                         value: nil,
+                                         attributes: [:])
+            let paragraphPropertiesElement = AEXMLElement(name: "w:pPr")
+            paragraphPropertiesElement.addChild(sectionPropertiesElement)
+            paragraph.addChild(paragraphPropertiesElement)
+            paragraphs.append(paragraph)
+        }
+    }
+
     func lastRelationshipIdIndex(linkXML: AEXMLDocument) -> Int {
         let relationships=linkXML["Relationships"]
         let presentIds=relationships.children.map({$0.attributes}).compactMap({$0["Id"]}).sorted(by: {s1, s2 in
@@ -104,10 +213,16 @@ extension DocX where Self : NSAttributedString{
         return lastIdIDX
     }
    
-    func prepareLinks(linkXML: AEXMLDocument, mediaURL:URL) -> [DocumentRelationship] {
+    func prepareLinks(linkXML: AEXMLDocument,
+                      mediaURL:URL,
+                      options:DocXOptions,
+                      mediaFilenamePrefix: String = "") -> [DocumentRelationship] {
         var linkURLS=[URL]()
         
-        let imageRelationships = prepareImages(linkXML: linkXML, mediaURL:mediaURL)
+        let imageRelationships = prepareImages(linkXML: linkXML,
+                                               mediaURL: mediaURL,
+                                               options: options,
+                                               mediaFilenamePrefix: mediaFilenamePrefix)
         
         self.enumerateAttribute(.link, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
             if let link=attribute as? URL{
@@ -131,7 +246,12 @@ extension DocX where Self : NSAttributedString{
         return linkRelationShips + imageRelationships
     }
     
-    func prepareImages(linkXML: AEXMLDocument, mediaURL:URL) -> [DocumentRelationship]{
+    // Since all images live in `word/media`, use `mediaFilenamePrefix` to
+    // prevent name collisions (e.g. for images in endnotes and footnotes).
+    func prepareImages(linkXML: AEXMLDocument,
+                       mediaURL:URL,
+                       options:DocXOptions,
+                       mediaFilenamePrefix: String = "") -> [DocumentRelationship]{
         var attachements=[NSTextAttachment]()
         self.enumerateAttribute(.attachment, in: NSRange(location: 0, length: self.length), options: [.longestEffectiveRangeNotRequired], using: {attribute, _, stop in
             if let link=attribute as? NSTextAttachment{
@@ -175,13 +295,15 @@ extension DocX where Self : NSAttributedString{
 
             // Attempt to write the image
             if let destURL = try? writeImage(attachment: attachement,
-                                                mediaURL: mediaURL,
-                                                newID: newID) {
+                                             mediaURL: mediaURL,
+                                             newID: newID,
+                                             fileNamePrefix: mediaFilenamePrefix) {
                 // We successfully wrote the image
                 // Return the image relationship
                 return ImageRelationship(relationshipID: newID,
                                          linkURL: destURL,
-                                         attachement: attachement)
+                                         attachement: attachement,
+                                         pageDefinition: options.pageDefinition)
             } else {
                 // Something went wrong
                 return nil
@@ -193,7 +315,10 @@ extension DocX where Self : NSAttributedString{
         return imageRelationShips
     }
     
-    private func writeImage(attachment: NSTextAttachment, mediaURL: URL, newID: String) throws -> URL {
+    private func writeImage(attachment: NSTextAttachment,
+                            mediaURL: URL,
+                            newID: String,
+                            fileNamePrefix: String) throws -> URL {
         // If there's no image data, return
         guard var imageData = attachment.imageData else {
             throw DocXWriteImageError.noImageData
@@ -222,8 +347,10 @@ extension DocX where Self : NSAttributedString{
             throw DocXWriteImageError.invalidImageData
         }
 
-        // Construct the path we'll write to
-        let destURL = mediaURL.appendingPathComponent(newID).appendingPathExtension(fileExtension)
+        // Construct the path we'll write to. `fileNamePrefix` is empty
+        // for main-document media, but note parts pass prefixes like
+        // `footnotes-` and `endnotes-` to keep filenames unique
+        let destURL = mediaURL.appendingPathComponent(fileNamePrefix + newID).appendingPathExtension(fileExtension)
         
         // Attempt to write the image
         try imageData.write(to: destURL, options: .atomic)
@@ -238,15 +365,15 @@ extension DocX where Self : NSAttributedString{
     ///    remember to add a corresponding entry for the extension
     ///    and mimetype to [Content_Types].xml**
     private func imageFileExtension(fileType:String) -> String? {
-        if (fileType == String(kUTTypeGIF)) {
+        if (fileType == UTType.gif.identifier) {
             return "gif"
-        } else if (fileType == String(kUTTypeJPEG)) {
+        } else if (fileType == UTType.jpeg.identifier) {
             return "jpeg"
-        } else if (fileType == String(kUTTypePNG)) {
+        } else if (fileType == UTType.png.identifier) {
             return "png"
-        } else if (fileType == String(kUTTypeTIFF)) {
+        } else if (fileType == UTType.tiff.identifier) {
             return "tiff"
-        } else if (fileType == String(kUTTypePDF)) {
+        } else if (fileType == UTType.pdf.identifier) {
             return "pdf"
         } else if (fileType == "com.adobe.photoshop-image") {
             return "psd"
@@ -264,4 +391,3 @@ extension LinkRelationship{
     }
     
 }
-

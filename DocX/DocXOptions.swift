@@ -9,6 +9,63 @@ import Foundation
 import AEXML
 
 
+public enum DocXNoteNumberFormat {
+    case decimal
+    case lowerRoman
+    case upperRoman
+    case lowerLetter
+    case upperLetter
+    case chicago
+    
+    var numFmtValue: String {
+        switch self {
+        case .decimal:
+            return "decimal"
+        case .lowerRoman:
+            return "lowerRoman"
+        case .upperRoman:
+            return "upperRoman"
+        case .lowerLetter:
+            return "lowerLetter"
+        case .upperLetter:
+            return "upperLetter"
+        case .chicago:
+            return "chicago"
+        }
+    }
+}
+
+public enum DocXNoteNumberRestart {
+    case continuous
+    case eachSection
+    case eachPage
+    
+    var numRestartValue: String {
+        switch self {
+        case .continuous:
+            return "continuous"
+        case .eachSection:
+            return "eachSect"
+        case .eachPage:
+            return "eachPage"
+        }
+    }
+}
+
+public enum DocXEndnotePosition {
+    case endOfDocument
+    case endOfSection
+    
+    var posValue: String {
+        switch self {
+        case .endOfDocument:
+            return "docEnd"
+        case .endOfSection:
+            return "sectEnd"
+        }
+    }
+}
+
 /// Metadata and output settings for docx creation
 public struct DocXOptions{
     
@@ -44,6 +101,21 @@ public struct DocXOptions{
     
     /// An optional parameter that specifies the page (paper) size and margins. If not specified (`nil`), Word will use default values based on the current locale and printer settings. The default value is `nil`.
     public var pageDefinition: PageDefinition?
+
+    /// The numbering format to use for native footnotes. If `nil`, Word defaults are used.
+    public var footnoteNumberFormat: DocXNoteNumberFormat?
+
+    /// The restart behavior to use for native footnotes. If `nil`, Word defaults are used.
+    public var footnoteNumberRestart: DocXNoteNumberRestart?
+
+    /// The numbering format to use for native endnotes. If `nil`, Word defaults are used.
+    public var endnoteNumberFormat: DocXNoteNumberFormat?
+
+    /// The restart behavior to use for native endnotes. If `nil`, Word defaults are used.
+    public var endnoteNumberRestart: DocXNoteNumberRestart?
+
+    /// The document-wide position to use for native endnotes. If `nil`, Word defaults are used.
+    public var endnotePosition: DocXEndnotePosition?
     
     public init(){}
     

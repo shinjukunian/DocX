@@ -255,10 +255,12 @@ class DocX_iOS_Tests: XCTestCase {
     @available(iOS 15, *)
     func testAttributed(){
         var att=AttributedString("Lorem ipsum dolor sit amet")
-        att.strokeColor = .green
-        att.strokeWidth = -2
-        att.font = UIFont(name: "Helvetica", size: 12)
-        att.foregroundColor = .gray
+        var attributes = AttributeContainer()
+        attributes.uiKit.strokeColor = .green
+        attributes.uiKit.strokeWidth = -2
+        attributes.uiKit.font = UIFont(name: "Helvetica", size: 12)
+        attributes.uiKit.foregroundColor = .gray
+        att.mergeAttributes(attributes)
         let title=String(att.characters.prefix(10))
         let url=self.tempURL.appendingPathComponent(UUID().uuidString + "_myDocument_\(title)").appendingPathExtension("docx")
         print(url.absoluteString)
