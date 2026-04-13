@@ -822,7 +822,7 @@ let string = """
         
         let imageURL=try XCTUnwrap(bundle.url(forResource: "lenna", withExtension: "png"), "ImageURL not found")
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
-        let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
+        let attachement=NSTextAttachment(data: imageData, ofType: UTType.png.identifier as String)
         
         let text=NSMutableAttributedString()
         text.append(NSAttributedString(string: loremIpsum, attributes: [.foregroundColor: NSColor.red]))
