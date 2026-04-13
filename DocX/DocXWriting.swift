@@ -176,8 +176,13 @@ extension DocX where Self : NSAttributedString{
             if let existingParagraphProperties = lastParagraph.children.first(where: { $0.name == "w:pPr" }) {
                 paragraphPropertiesElement = existingParagraphProperties
             } else {
+                // w:pPr must be the first child of w:p
+                // Remove existing children, add w:pPr, then re-add them
+                let existingChildren = lastParagraph.children
+                existingChildren.forEach { $0.removeFromParent() }
                 paragraphPropertiesElement = AEXMLElement(name: "w:pPr")
                 lastParagraph.addChild(paragraphPropertiesElement)
+                lastParagraph.addChildren(existingChildren)
             }
             paragraphPropertiesElement.addChild(sectionPropertiesElement)
         } else {

@@ -12,6 +12,7 @@ import AEXML
 enum DocXSavingErrors:Error{
     case noBlankDocument
     case compressionFailed
+    case duplicateNoteId(kind: String, id: Int)
 }
 
 protocol DocumentRelationship {

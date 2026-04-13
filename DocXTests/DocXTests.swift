@@ -989,10 +989,10 @@ List 3 Level 0
         let section2 = NSMutableAttributedString(string: "Section 2 note\rSection 2 footnote body")
         let section2String = section2.string as NSString
         section2.addAttribute(.footnoteReferenceId,
-                              value: 1,
+                              value: 2,
                               range: section2String.range(of: "note"))
         section2.addAttribute(.footnoteBodyId,
-                              value: 1,
+                              value: 2,
                               range: section2String.range(of: "Section 2 footnote body"))
 
         let sections = [section1 as NSAttributedString, section2 as NSAttributedString]
@@ -1009,7 +1009,33 @@ List 3 Level 0
 
         try writeAndValidateSections(sections, options: options)
     }
-    
+
+    func testWriteSections_duplicateFootnoteIdThrows() throws {
+        let section1 = NSMutableAttributedString(string: "Section 1 note\rSection 1 footnote body")
+        let section1String = section1.string as NSString
+        section1.addAttribute(.footnoteReferenceId, value: 1, range: section1String.range(of: "note"))
+        section1.addAttribute(.footnoteBodyId, value: 1, range: section1String.range(of: "Section 1 footnote body"))
+
+        let section2 = NSMutableAttributedString(string: "Section 2 note\rSection 2 footnote body")
+        let section2String = section2.string as NSString
+        section2.addAttribute(.footnoteReferenceId, value: 1, range: section2String.range(of: "note"))
+        section2.addAttribute(.footnoteBodyId, value: 1, range: section2String.range(of: "Section 2 footnote body"))
+
+        let sections = [section1 as NSAttributedString, section2 as NSAttributedString]
+        var options = DocXOptions()
+        options.footnoteNumberRestart = .eachSection
+
+        let url = self.tempURL.appendingPathComponent("duplicate-ids").appendingPathExtension("docx")
+        XCTAssertThrowsError(try DocXWriter.write(sections: sections, to: url, options: options)) { error in
+            guard case DocXSavingErrors.duplicateNoteId(let kind, let id) = error else {
+                XCTFail("Expected duplicateNoteId error, got \(error)")
+                return
+            }
+            XCTAssertEqual(kind, "footnote")
+            XCTAssertEqual(id, 1)
+        }
+    }
+
     // MARK: Performance Tests
     
     func testPerformanceLongBook() {

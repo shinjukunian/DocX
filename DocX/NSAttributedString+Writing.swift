@@ -60,6 +60,9 @@ extension Array where Element == NSAttributedString {
             combinedAttributedString.appendSectionPreservingParagraphBoundary(section)
         }
 
+        // Make sure we don't have duplicate footnote or endnote IDs
+        try validateNoteIds(in: combinedAttributedString)
+
         let allParagraphRanges = combinedAttributedString.paragraphRanges
         
         // Collect list numbering info
@@ -229,6 +232,32 @@ private extension NSMutableAttributedString {
             return false
         }
         return CharacterSet.newlines.contains(lastScalar)
+    }
+}
+
+/// Throws if any footnote or endnote reference ID appears more than once in the
+/// combined attributed string. Each note ID must be globally unique.
+private func validateNoteIds(in attributedString: NSAttributedString) throws {
+    let fullRange = NSRange(location: 0, length: attributedString.length)
+    
+    for (key, kind) in [
+        (NSAttributedString.Key.footnoteReferenceId, "footnote"),
+        (NSAttributedString.Key.endnoteReferenceId, "endnote")
+    ] {
+        var foundNoteIDs = Set<Int>()
+        var duplicateID: Int?
+        attributedString.enumerateAttribute(key, in: fullRange, options: []) { value, _, stop in
+            if let id = value as? Int {
+                if foundNoteIDs.contains(id) {
+                    duplicateID = id
+                    stop.pointee = true
+                }
+                foundNoteIDs.insert(id)
+            }
+        }
+        if let id = duplicateID {
+            throw DocXSavingErrors.duplicateNoteId(kind: kind, id: id)
+        }
     }
 }
 
