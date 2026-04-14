@@ -68,6 +68,30 @@ extension NSTextAttachment{
         }
     }
     
+    func sizeInEMU(imageWidthFraction: Double?,
+                   pageSize: PageDefinition?) -> Size {
+        guard let fraction = imageWidthFraction,
+              fraction > 0,
+              let pageSize else {
+            return extentInEMU(pageSize: pageSize)
+        }
+
+        let printableWidthPoints = pageSize.printableSize(unit: .points).width
+        let printableWidthEMU = printableWidthPoints / 72 * 914400
+        let desiredWidthEMU = printableWidthEMU * fraction
+
+        let nativeSize = dataImageSize
+        guard nativeSize.width > 0, nativeSize.height > 0 else {
+            return extentInEMU(pageSize: pageSize)
+        }
+
+        let aspectRatio = nativeSize.height / nativeSize.width
+        let desiredHeightEMU = desiredWidthEMU * aspectRatio
+
+        return NSTextAttachment.Size(width: Int(desiredWidthEMU),
+                                     height: Int(desiredHeightEMU))
+    }
+    
     func extentInEMU(pageSize:PageDefinition?) -> Size{
         let size:CGSize
         if self.bounds != .zero{

@@ -104,10 +104,16 @@ class ParagraphElement:AEXMLElement{
                 elements.append(noteReferenceElement(id: endnoteId, kind: .endnote, attributes: attributes))
             }
             else if let imageAttachement=attributes[.attachment] as? NSTextAttachment,
-                    let relationship=self.linkRelations.first(where: {rel in
+                    var relationship=self.linkRelations.first(where: {rel in
                 guard let rel=rel as? ImageRelationship else {return false}
                 return rel.attachement == imageAttachement
             }) as? ImageRelationship{
+                if let docXAttachment = imageAttachement as? DocXImageAttachment {
+                    relationship.imageWidthFraction = docXAttachment.imageWidthFraction
+                    relationship.imageFlow = docXAttachment.imageFlow
+                    relationship.imageDescription = docXAttachment.imageDescription
+                }
+
                 elements.append(relationship.attributeElement)
             }
             else if #available(macOS 12.0,iOS 15.0, *) ,

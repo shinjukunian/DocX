@@ -18,13 +18,40 @@ import AEXML
 struct ImageRelationship: DocumentRelationship{
     let relationshipID:String
     let linkURL:URL
+    
+    /// The image data
     let attachement:NSTextAttachment
+    
+    /// The size of the page
     let pageDefinition:PageDefinition?
     
+    /// The image width as a fraction of the printable column width
+    /// When `nil`, the image uses its native dimensions (constrained to the page)
+    var imageWidthFraction: Double?
     
+    /// How text flows around the image. When `nil`, the image is rendered inline
+    /// Set to `.left` or `.right` to produce a floating image with square text wrapping
+    var imageFlow: DocXImageAttachment.Flow?
+    
+    /// Alt text for the image
+    var imageDescription: String?
 }
 
 extension ImageRelationship{
+    
+    /// Constructs the meta attributes for an image
+    private var imageMetaAttributes: [String: String] {
+        let id = relationshipID.trimmingCharacters(in: .letters)
+        var meta = ["id": id, "name": "image"]
+
+        // Include the image description (alt text), if specified
+        if let imageDescription,
+           !imageDescription.isEmpty {
+            meta["descr"] = imageDescription
+        }
+
+        return meta
+    }
     
     var linkString:String {
         return self.linkURL.pathComponents.suffix(2).joined(separator: "/")
@@ -79,9 +106,19 @@ extension ImageRelationship{
      </pic:spPr>
      </pic:pic>
      */
-    
-    var attributeElement:AEXMLElement{
         
+    var attributeElement:AEXMLElement{
+        // If flow is specified, we'll return an anchored image with square text wrapping
+        if let imageFlow {
+            return anchoredAttributeElement(flow: imageFlow)
+        }
+        
+        // We can return an inline image (no text wrapping)
+        return inlineAttributeElement
+    }
+    
+    /// Returns XML for an inline image (no text wrapping)
+    private var inlineAttributeElement: AEXMLElement {
         let run=AEXMLElement(name: "w:r", value: nil, attributes: [:])
         let para=AEXMLElement(name: "w:rPr")
         para.addChild(AEXMLElement(name: "w:noProof"))
@@ -92,24 +129,97 @@ extension ImageRelationship{
         
         let inline=AEXMLElement(name: "wp:inline", value: nil, attributes: ["distT":String(0), "distB":String(0), "distL":String(0), "distR":String(0)])
         drawing.addChild(inline)
-        
-        let graphic=AEXMLElement(name: "a:graphic", value: nil, attributes: ["xmlns:a":"http://schemas.openxmlformats.org/drawingml/2006/main"])
-        let id=self.relationshipID.trimmingCharacters(in: .letters)
-        let meta=["id":id, "name":"image", "descr":"An Image"]
+
+        let size = attachement.sizeInEMU(imageWidthFraction: imageWidthFraction, pageSize: pageDefinition)
+        let extent = size.extentAttribute
+        let effectiveExtent=AEXMLElement(name: "wp:effectExtent", value: nil, attributes: ["l":"0", "t":"0","r":"0","b":"0"])
+        let meta = imageMetaAttributes
         let docPr=AEXMLElement(name: "wp:docPr", value: nil, attributes: meta)
         let frameProperties=AEXMLElement(name: "wp:cNvGraphicFramePr")
         frameProperties.addChild(AEXMLElement(name: "a:graphicFrameLocks", value: nil, attributes: ["xmlns:a":"http://schemas.openxmlformats.org/drawingml/2006/main", "noChangeAspect":"1"]))
+
+        let graphic=AEXMLElement(name: "a:graphic", value: nil, attributes: ["xmlns:a":"http://schemas.openxmlformats.org/drawingml/2006/main"])
         
-        let extentAttributes=attachement.extentAttribute(pageSize: pageDefinition)
-        
-        inline.addChildren(extentAttributes + [docPr, frameProperties, graphic])
+        inline.addChildren([extent, effectiveExtent, docPr, frameProperties, graphic])
         
         let graphicData=AEXMLElement(name: "a:graphicData", value: nil, attributes: ["uri":"http://schemas.openxmlformats.org/drawingml/2006/picture"])
         
         graphic.addChild(graphicData)
+        graphicData.addChild(picElement(size: size, meta: meta))
         
+        return run
+    }
+
+    /// Returns XML for an anchored image with the specified `flow`
+    private func anchoredAttributeElement(flow: DocXImageAttachment.Flow) -> AEXMLElement {
+        let run = AEXMLElement(name: "w:r", value: nil, attributes: [:])
+        let para = AEXMLElement(name: "w:rPr")
+        para.addChild(AEXMLElement(name: "w:noProof"))
+        run.addChild(para)
+
+        let drawing = AEXMLElement(name: "w:drawing", value: nil, attributes: ["xmlns:a":"http://schemas.openxmlformats.org/drawingml/2006/main"])
+        run.addChild(drawing)
+
+        let textSideMargin = "91440"
+        let distL: String
+        let distR: String
+        switch flow {
+        case .left:
+            distL = "0"
+            distR = textSideMargin
+        case .right:
+            distL = textSideMargin
+            distR = "0"
+        }
+
+        let anchor = AEXMLElement(name: "wp:anchor", value: nil, attributes: [
+            "distT": "0",
+            "distB": "0",
+            "distL": distL,
+            "distR": distR,
+            "simplePos": "0",
+            "relativeHeight": "0",
+            "behindDoc": "0",
+            "locked": "0",
+            "layoutInCell": "1",
+            "allowOverlap": "1"
+        ])
+        drawing.addChild(anchor)
+
+        anchor.addChild(AEXMLElement(name: "wp:simplePos", value: nil, attributes: ["x": "0", "y": "0"]))
+
+        let positionH = AEXMLElement(name: "wp:positionH", value: nil, attributes: ["relativeFrom": "column"])
+        positionH.addChild(AEXMLElement(name: "wp:align", value: flow == .left ? "left" : "right"))
+        anchor.addChild(positionH)
+
+        let positionV = AEXMLElement(name: "wp:positionV", value: nil, attributes: ["relativeFrom": "paragraph"])
+        positionV.addChild(AEXMLElement(name: "wp:posOffset", value: "0"))
+        anchor.addChild(positionV)
+
+        let size = attachement.sizeInEMU(imageWidthFraction: imageWidthFraction, pageSize: pageDefinition)
+        anchor.addChild(size.extentAttribute)
+        anchor.addChild(AEXMLElement(name: "wp:effectExtent", value: nil, attributes: ["l":"0", "t":"0", "r":"0", "b":"0"]))
+        anchor.addChild(AEXMLElement(name: "wp:wrapSquare", value: nil, attributes: ["wrapText": "bothSides"]))
+
+        let meta = imageMetaAttributes
+        anchor.addChild(AEXMLElement(name: "wp:docPr", value: nil, attributes: meta))
+
+        let frameProperties = AEXMLElement(name: "wp:cNvGraphicFramePr")
+        frameProperties.addChild(AEXMLElement(name: "a:graphicFrameLocks", value: nil, attributes: ["xmlns:a":"http://schemas.openxmlformats.org/drawingml/2006/main", "noChangeAspect":"1"]))
+        anchor.addChild(frameProperties)
+
+        let graphic = AEXMLElement(name: "a:graphic", value: nil, attributes: ["xmlns:a":"http://schemas.openxmlformats.org/drawingml/2006/main"])
+        anchor.addChild(graphic)
+
+        let graphicData = AEXMLElement(name: "a:graphicData", value: nil, attributes: ["uri":"http://schemas.openxmlformats.org/drawingml/2006/picture"])
+        graphic.addChild(graphicData)
+        graphicData.addChild(picElement(size: size, meta: meta))
+
+        return run
+    }
+
+    private func picElement(size: NSTextAttachment.Size, meta: [String:String]) -> AEXMLElement {
         let pic=AEXMLElement(name: "pic:pic", value: nil, attributes: ["xmlns:pic":"http://schemas.openxmlformats.org/drawingml/2006/picture"])
-        graphicData.addChild(pic)
         
         let nvPicPr=AEXMLElement(name: "pic:nvPicPr")
         nvPicPr.addChild(AEXMLElement(name: "pic:cNvPr", value: nil, attributes: meta))
@@ -131,8 +241,7 @@ extension ImageRelationship{
         pic.addChild(shapeProperties)
         let xFrame=AEXMLElement(name: "a:xfrm")
         xFrame.addChild(AEXMLElement(name: "a:off", value: nil, attributes: ["x":"0","y":"0"]))
-        let extentInEmu=attachement.extentInEMU(pageSize: pageDefinition)
-        let extent=AEXMLElement(name: "a:ext", value: nil, attributes: extentInEmu.extentAttributes)
+        let extent=AEXMLElement(name: "a:ext", value: nil, attributes: size.extentAttributes)
         xFrame.addChild(extent)
         shapeProperties.addChild(xFrame)
         
@@ -140,8 +249,7 @@ extension ImageRelationship{
         geometry.addChild(AEXMLElement(name: "a:avLst"))
         shapeProperties.addChild(geometry)
         
-        return run
+        return pic
     }
     
 }
-

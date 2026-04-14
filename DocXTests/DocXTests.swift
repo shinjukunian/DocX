@@ -386,7 +386,35 @@ Specifies the border displayed above a set of paragraphs which have the same set
         result.append(imageString)
         try writeAndValidateDocX(attributedString: result)
     }
-    
+
+    func testDocXImageAttachment() throws {
+        let loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+
+        let imageURL = URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
+        let imageData = try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
+
+        // Half-width image with alt text
+        let attachment1 = DocXImageAttachment(data: imageData, ofType: UTType.png.identifier)
+        attachment1.imageWidthFraction = 0.5
+        attachment1.imageDescription = "Half-width image"
+
+        // Floating left image
+        let attachment2 = DocXImageAttachment(data: imageData, ofType: UTType.png.identifier)
+        attachment2.imageFlow = .left
+        attachment2.imageDescription = "Floating left image"
+
+        let result = NSMutableAttributedString()
+        result.append(NSAttributedString(string: loremIpsum))
+        result.append(NSAttributedString(attachment: attachment1))
+        result.append(NSAttributedString(string: loremIpsum))
+        result.append(NSAttributedString(attachment: attachment2))
+        result.append(NSAttributedString(string: loremIpsum))
+
+        var options = DocXOptions()
+        options.pageDefinition = PageDefinition(pageSize: .A4)
+        try writeAndValidateDocX(attributedString: result, options: options)
+    }
+
     func testImageAndLink() throws{
         let longString = """
         1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
