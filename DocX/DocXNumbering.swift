@@ -6,7 +6,11 @@
 //
 
 import AEXML
+#if canImport(AppKit)
 import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 import Foundation
 
 /// Describes the visual style of a list numbering definition
