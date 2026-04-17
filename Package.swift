@@ -7,7 +7,7 @@ let package = Package(
     name: "DocX",
     platforms: [
         .macOS(.v11),
-        .iOS(.v10),
+        .iOS(.v14),
         .tvOS(.v9),
         .watchOS(.v3)
     ],

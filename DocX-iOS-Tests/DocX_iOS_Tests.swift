@@ -242,7 +242,7 @@ class DocX_iOS_Tests: XCTestCase {
         let imageURL=try XCTUnwrap(Bundle(for: DocX_iOS_Tests.self).url(forResource: "Picture1", withExtension: "png"))
 #endif
         let imageData=try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
-        let attachement=NSTextAttachment(data: imageData, ofType: kUTTypePNG as String)
+        let attachement=NSTextAttachment(data: imageData, ofType: UTType.png.identifier)
         let attributed=NSAttributedString(string: longString, attributes: [.foregroundColor: NSColor.green])
         let imageString=NSAttributedString(attachment: attachement)
         let result=NSMutableAttributedString()
