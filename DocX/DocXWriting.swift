@@ -23,6 +23,45 @@ enum DocXWriteImageError: Error {
     case invalidImageData
 }
 
+/// The bytes and file extension written to `word/media` for an image.
+/// Used as a key so identical images are only written once.
+struct PreparedImage: Hashable {
+    let data: Data
+    let fileExtension: String
+}
+
+/// Assigns sequential `id`s to every drawing's `wp:docPr` and `pic:cNvPr`
+///
+/// Each image placed in the document is a separate drawing that needs its own id,
+/// even when multiple drawings reference the same image file. For example, an ornament
+/// used three times is stored once (`rId5`), but its three drawings need ids 1, 2 and 3.
+/// So ids can't be derived from the relationship ID, which repeats.
+///
+/// The spec wants ids unique across the whole document, but this numbers each part
+/// (document, footnotes, endnotes) from 1, so an image in a note may share an id
+/// with one in the body. Word opens such documents without complaint.
+private func renumberDrawingIds(in root: AEXMLElement) {
+    var nextId = 1
+    func visit(_ element: AEXMLElement) {
+        if element.name == "wp:docPr" {
+            element.attributes["id"] = String(nextId)
+            if let cNvPr = element.parent?.allDescendants(where: { $0.name == "pic:cNvPr" }).first {
+                cNvPr.attributes["id"] = String(nextId)
+            }
+            nextId += 1
+        }
+        element.children.forEach(visit)
+    }
+    visit(root)
+}
+
+/// Serializes a part that contains paragraphs (e.g. `document.xml`, `footnotes.xml`)
+func serializePartXML(_ document: AEXMLDocument) -> String {
+    // Assign sequential ids to every image in this part
+    renumberDrawingIds(in: document.root)
+    return document.xmlCompact
+}
+
 @available(OSX 10.11, *)
 extension DocX where Self : NSAttributedString{
     
@@ -156,7 +195,8 @@ extension DocX where Self : NSAttributedString{
         }
 
         body.addChild(pageDef(options: options))
-        return document.xmlCompact
+        
+        return serializePartXML(document)
     }
     
     func addSectionBreak(to paragraphs: inout [AEXMLElement], options: DocXOptions) {
@@ -289,36 +329,77 @@ extension DocX where Self : NSAttributedString{
             try? FileManager.default.createDirectory(at: mediaURL, withIntermediateDirectories: false, attributes: [:])
         }
         
-        let imageRelationShips=attachements.enumerated().compactMap({(idx, attachement)->ImageRelationship? in
-            // Construct the new relationship identifier
-            let newID="rId\(lastIdIDX+1+idx)"
+        // Write or reference each image
+        //
+        // Identical images are only written once. Every occurrence still gets its
+        // own `ImageRelationship` (so `ParagraphElement` can find it by attachment),
+        // but occurrences of the same image share a relationship ID and media file.
+        var writtenImages = [PreparedImage: (relationshipID: String, url: URL)]()
+        var newRelationshipElements = [AEXMLElement]()
+        var nextIdIDX = lastIdIDX + 1
+        var imageRelationShips = [ImageRelationship]()
 
-            // Attempt to write the image
-            if let destURL = try? writeImage(attachment: attachement,
-                                             mediaURL: mediaURL,
-                                             newID: newID,
-                                             fileNamePrefix: mediaFilenamePrefix) {
-                // We successfully wrote the image
-                // Return the image relationship
-                return ImageRelationship(relationshipID: newID,
-                                         linkURL: destURL,
-                                         attachement: attachement,
-                                         pageDefinition: options.pageDefinition)
+        for attachement in attachements {
+            // If the image data is invalid, skip it
+            guard let preparedImage = try? preparedImage(attachment: attachement) else { continue }
+
+            let relationshipID: String
+            let destURL: URL
+            if let written = writtenImages[preparedImage] {
+                // We've already written this image. Reference it.
+                relationshipID = written.relationshipID
+                destURL = written.url
             } else {
-                // Something went wrong
-                return nil
+                // Construct the new relationship identifier
+                let newID = "rId\(nextIdIDX)"
+
+                // Attempt to write the image
+                guard let url = try? writeImage(preparedImage,
+                                                mediaURL: mediaURL,
+                                                newID: newID,
+                                                fileNamePrefix: mediaFilenamePrefix) else { continue }
+                nextIdIDX += 1
+                relationshipID = newID
+                destURL = url
+                writtenImages[preparedImage] = (newID, url)
+
+                let relationship = ImageRelationship(relationshipID: newID,
+                                                     linkURL: url,
+                                                     attachement: attachement,
+                                                     pageDefinition: options.pageDefinition)
+                newRelationshipElements.append(relationship.element)
             }
-        })
-        
-        relationships.addChildren(imageRelationShips.map({$0.element}))
-        
+
+            imageRelationShips.append(ImageRelationship(relationshipID: relationshipID,
+                                                        linkURL: destURL,
+                                                        attachement: attachement,
+                                                        pageDefinition: options.pageDefinition))
+        }
+
+        relationships.addChildren(newRelationshipElements)
+
         return imageRelationShips
     }
-    
-    private func writeImage(attachment: NSTextAttachment,
+
+    /// Writes the prepared image into `mediaURL` and returns its URL
+    private func writeImage(_ preparedImage: PreparedImage,
                             mediaURL: URL,
                             newID: String,
                             fileNamePrefix: String) throws -> URL {
+        // Construct the path we'll write to. `fileNamePrefix` is empty
+        // for main-document media, but note parts pass prefixes like
+        // `footnotes-` and `endnotes-` to keep filenames unique
+        let destURL = mediaURL.appendingPathComponent(fileNamePrefix + newID).appendingPathExtension(preparedImage.fileExtension)
+
+        // Attempt to write the image
+        try preparedImage.data.write(to: destURL, options: .atomic)
+
+        // Return the URL of the image
+        return destURL
+    }
+
+    /// Returns the data and file extension that will be written for `attachment`
+    private func preparedImage(attachment: NSTextAttachment) throws -> PreparedImage {
         // If there's no image data, return
         guard var imageData = attachment.imageData else {
             throw DocXWriteImageError.noImageData
@@ -347,16 +428,7 @@ extension DocX where Self : NSAttributedString{
             throw DocXWriteImageError.invalidImageData
         }
 
-        // Construct the path we'll write to. `fileNamePrefix` is empty
-        // for main-document media, but note parts pass prefixes like
-        // `footnotes-` and `endnotes-` to keep filenames unique
-        let destURL = mediaURL.appendingPathComponent(fileNamePrefix + newID).appendingPathExtension(fileExtension)
-        
-        // Attempt to write the image
-        try imageData.write(to: destURL, options: .atomic)
-        
-        // Return the URL of the image
-        return destURL
+        return PreparedImage(data: imageData, fileExtension: fileExtension)
     }
     
     /// Returns the file extension for a known `fileType`

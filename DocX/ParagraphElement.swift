@@ -114,7 +114,13 @@ class ParagraphElement:AEXMLElement{
                     relationship.imageDescription = docXAttachment.imageDescription
                 }
 
-                elements.append(relationship.attributeElement)
+                // Adjacent copies of the same attachment merge into a single run,
+                // so output one image per attachment character in the run
+                let attachmentCharacter = Character(Unicode.Scalar(NSTextAttachment.character)!)
+                let imageCount = max(1, affectedSubstring.string.filter { $0 == attachmentCharacter }.count)
+                for _ in 0..<imageCount {
+                    elements.append(relationship.attributeElement)
+                }
             }
             else if #available(macOS 12.0,iOS 15.0, *) ,
                     let imageURLAttachement=attributes[.imageURL] as? URL,

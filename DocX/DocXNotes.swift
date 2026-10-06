@@ -120,7 +120,9 @@ struct DocXNoteConfiguration {
                                 value: nil,
                                 attributes: [
                                     "xmlns:w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main",
-                                    "xmlns:r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+                                    "xmlns:r": "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+                                    // Needed for images in notes
+                                    "xmlns:wp": "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
                                 ])
         let document = AEXMLDocument(root: root, options: xmlOptions)
         root.addChildren(separatorElements(for: kind))
@@ -138,7 +140,7 @@ struct DocXNoteConfiguration {
             root.addChild(noteElement)
         }
 
-        return document.xmlCompact
+        return serializePartXML(document)
     }
 
     private func notes(for kind: DocXNoteKind) -> [DocXNoteDefinition] {

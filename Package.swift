@@ -20,7 +20,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/shinjukunian/AEXML.git", .upToNextMajor(from: "4.6.0")),
 //        .package(name: "AEXML", url: "https://github.com/shinjukunian/AEXML.git", .branch("master")),
-        .package(url: "https://github.com/weichsel/ZIPFoundation.git", .upToNextMajor(from: "0.9.0")),
+        .package(url: "https://github.com/weichsel/ZIPFoundation.git", .upToNextMajor(from: "0.9.17")),
         
     ],
     targets: [
@@ -42,7 +42,7 @@ let package = Package(
         
         .testTarget(
             name: "DocXTests",
-            dependencies: ["DocX"],
+            dependencies: ["DocX", "ZIPFoundation"],
             path: "DocXTests",
             exclude: ["Info.plist"],
             resources: [.copy("blank.docx"), .copy("Picture1.png"), .copy("lenna.png"), .copy("lenna.md"), .copy("styles.xml")]
