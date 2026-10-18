@@ -10,6 +10,7 @@
 import XCTest
 @testable import DocX
 import AppKit
+import ZIPFoundation
 
 #if(canImport(UniformTypeIdentifiers))
 import UniformTypeIdentifiers
@@ -449,7 +450,142 @@ Specifies the border displayed above a set of paragraphs which have the same set
         result.append(attributed)
         try writeAndValidateDocX(attributedString: result)
     }
-    
+
+    func testDuplicateImagesAreDeduplicated() throws {
+        let imageURL = URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
+        let imageData = try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
+        let otherImageURL = try ImageGenerator(size: CGSize(width: 200, height: 200)).generateImage(type: .jpeg)
+        let otherImageData = try Data(contentsOf: otherImageURL)
+
+        // The same attachment used twice, a separate attachment with identical data,
+        // and one different image
+        let attachment = DocXImageAttachment(data: imageData, ofType: UTType.png.identifier)
+        let identicalAttachment = DocXImageAttachment(data: imageData, ofType: UTType.png.identifier)
+        identicalAttachment.imageWidthFraction = 0.5
+        let otherAttachment = DocXImageAttachment(data: otherImageData, ofType: UTType.jpeg.identifier)
+
+        let result = NSMutableAttributedString()
+        for imageAttachment in [attachment, attachment, identicalAttachment, otherAttachment] {
+            result.append(NSAttributedString(string: "Lorem ipsum\r"))
+            result.append(NSAttributedString(attachment: imageAttachment))
+            result.append(NSAttributedString(string: "\r"))
+        }
+
+        var options = DocXOptions()
+        options.pageDefinition = PageDefinition(pageSize: .A4)
+        let url = self.tempURL.appendingPathComponent(UUID().uuidString).appendingPathExtension("docx")
+        try result.writeDocX(to: url, options: options)
+        try validateDocX(url: url)
+
+        let archive = try ZIPFoundation.Archive(url: url, accessMode: .read)
+
+        // Only the two distinct images are written
+        let mediaEntries = archive.filter { $0.path.hasPrefix("word/media/") && $0.type == .file }
+        XCTAssertEqual(mediaEntries.count, 2)
+
+        let rels = try contents(of: "word/_rels/document.xml.rels", in: archive)
+        XCTAssertEqual(try captures(of: "(relationships/image)\"", in: rels).count, 2)
+
+        // All four occurrences reference one of the two relationships
+        let document = try contents(of: "word/document.xml", in: archive)
+        let embeds = try captures(of: "r:embed=\"(rId[0-9]+)\"", in: document)
+        XCTAssertEqual(embeds.count, 4)
+        XCTAssertEqual(Set(embeds.prefix(3)).count, 1)
+        XCTAssertNotEqual(embeds[0], embeds[3])
+
+        // Drawing ids must remain unique
+        let drawingIds = try captures(of: drawingIdPattern, in: document)
+        XCTAssertEqual(drawingIds.count, 4)
+        XCTAssertEqual(Set(drawingIds).count, 4)
+    }
+
+    func testImagesInEveryPart() throws {
+        let imageURL = URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("Picture1.png")
+        let imageData = try XCTUnwrap(Data(contentsOf: imageURL), "Image not found")
+        let attachment = DocXImageAttachment(data: imageData, ofType: UTType.png.identifier)
+        let image = NSAttributedString(attachment: attachment)
+
+        // The same image twice in a row in the body, in a footnote and in an endnote.
+        // Adjacent copies merge into a single run but should still produce two images.
+        let result = NSMutableAttributedString()
+        result.append(NSAttributedString(string: "Body"))
+        result.append(image)
+        result.append(image)
+        result.append(NSAttributedString(string: " footnote", attributes: [.footnoteReferenceId: 1]))
+        result.append(NSAttributedString(string: " endnote", attributes: [.endnoteReferenceId: 1]))
+        result.append(NSAttributedString(string: "\r"))
+
+        let footnoteBody = NSMutableAttributedString(string: "Footnote body")
+        footnoteBody.append(image)
+        footnoteBody.append(image)
+        footnoteBody.addAttribute(.footnoteBodyId, value: 1, range: NSRange(location: 0, length: footnoteBody.length))
+        result.append(footnoteBody)
+        result.append(NSAttributedString(string: "\r"))
+
+        let endnoteBody = NSMutableAttributedString(string: "Endnote body")
+        endnoteBody.append(image)
+        endnoteBody.append(image)
+        endnoteBody.addAttribute(.endnoteBodyId, value: 1, range: NSRange(location: 0, length: endnoteBody.length))
+        result.append(endnoteBody)
+
+        // Make sure the adjacent images really did merge, or this doesn't test that case
+        var effectiveRange = NSRange()
+        _ = result.attribute(.attachment, at: ("Body" as NSString).length, effectiveRange: &effectiveRange)
+        XCTAssertEqual(effectiveRange.length, 2, "Expected the adjacent attachments to merge into one run")
+
+        let url = self.tempURL.appendingPathComponent(UUID().uuidString).appendingPathExtension("docx")
+        try result.writeDocX(to: url)
+        try validateDocX(url: url)
+
+        // Check every XML part, not just the ones we know about today, so a new
+        // part that skips `serializePartXML` fails here
+        let archive = try ZIPFoundation.Archive(url: url, accessMode: .read)
+        var drawingCounts = [String: Int]()
+        for entry in archive where entry.path.hasSuffix(".xml") {
+            let xml = try contents(of: entry.path, in: archive)
+
+            // Every part must be well-formed XML with all its prefixes declared, or Word
+            // won't open the file. `validateDocX` doesn't catch this, since macOS's reader
+            // is more forgiving.
+            let validator = XMLNamespaceValidator()
+            let parser = XMLParser(data: Data(xml.utf8))
+            parser.shouldProcessNamespaces = true
+            parser.delegate = validator
+            XCTAssertTrue(parser.parse(), "Invalid XML in \(entry.path): \(String(describing: parser.parserError))")
+            XCTAssertEqual(validator.undeclaredPrefixes, [], "Undeclared namespace prefixes in \(entry.path)")
+
+            let drawingIds = try captures(of: drawingIdPattern, in: xml)
+            XCTAssertEqual(Set(drawingIds).count, drawingIds.count, "Duplicate drawing ids in \(entry.path): \(drawingIds)")
+            if !drawingIds.isEmpty {
+                drawingCounts[entry.path] = drawingIds.count
+            }
+        }
+
+        // Make sure the drawings actually landed in each part
+        XCTAssertEqual(drawingCounts, ["word/document.xml": 2,
+                                       "word/footnotes.xml": 2,
+                                       "word/endnotes.xml": 2])
+    }
+
+    /// Matches each drawing's `wp:docPr` id, regardless of attribute order
+    private let drawingIdPattern = "<wp:docPr[^>]* id=\"([0-9]+)\""
+
+    /// Returns the UTF-8 contents of the file at `path` in `archive`
+    private func contents(of path: String, in archive: ZIPFoundation.Archive) throws -> String {
+        let entry = try XCTUnwrap(archive[path])
+        var data = Data()
+        _ = try archive.extract(entry, consumer: { data.append($0) })
+        return try XCTUnwrap(String(data: data, encoding: .utf8))
+    }
+
+    /// Returns the first capture group of every match of `pattern` in `string`
+    private func captures(of pattern: String, in string: String) throws -> [String] {
+        let regex = try NSRegularExpression(pattern: pattern)
+        return regex.matches(in: string, range: NSRange(string.startIndex..., in: string)).map {
+            String(string[Range($0.range(at: 1), in: string)!])
+        }
+    }
+
     func testMultiPage() throws {
         let string =
         """
@@ -1151,6 +1287,24 @@ Specifies the border displayed above a set of paragraphs which have the same set
         try writeAndValidateDocX(attributedString: att)
 
         
+    }
+}
+
+/// Records element prefixes that aren't declared, e.g. `wp:inline` without `xmlns:wp`
+///
+/// `XMLParser` doesn't fail on these. It reports the element with an empty namespace URI.
+private class XMLNamespaceValidator: NSObject, XMLParserDelegate {
+    private(set) var undeclaredPrefixes = Set<String>()
+
+    func parser(_ parser: XMLParser,
+                didStartElement elementName: String,
+                namespaceURI: String?,
+                qualifiedName: String?,
+                attributes: [String: String] = [:]) {
+        guard let qualifiedName,
+              let colon = qualifiedName.firstIndex(of: ":"),
+              namespaceURI?.isEmpty ?? true else { return }
+        undeclaredPrefixes.insert(String(qualifiedName[..<colon]))
     }
 }
 
